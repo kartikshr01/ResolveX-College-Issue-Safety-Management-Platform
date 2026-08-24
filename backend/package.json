@@ -1,0 +1,25 @@
+{
+  "name": "resolve_x_backend",
+  "version": "1.0.0",
+  "description": "This directory container the backend of the ResolveX application.",
+  "license": "ISC",
+  "author": "Kartik Sharma",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dns": "^0.2.2",
+    "dotenv": "^17.4.2",
+    "joi": "^18.2.5",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.3"
+  },
+  "devDependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
