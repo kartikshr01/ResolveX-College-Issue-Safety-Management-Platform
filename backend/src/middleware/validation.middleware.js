@@ -1,4 +1,6 @@
-const validationMiddleware = (schema) => {
+const apiError = require("../utils/apiError");
+
+const validate = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body, {
       abortEarly: false,
@@ -6,11 +8,10 @@ const validationMiddleware = (schema) => {
     });
 
     if (error) {
-      return res.status(400).json({
-        success: false,
-        message: "Validation failed",
-        errors: error.details.map((detail) => detail.message),
-      });
+      throw apiError(
+        400,
+        error.details.map((detail) => detail.message).join(", "),
+      );
     }
 
     req.body = value;
@@ -19,4 +20,4 @@ const validationMiddleware = (schema) => {
   };
 };
 
-module.exports = validationMiddleware;
+module.exports = validate;
