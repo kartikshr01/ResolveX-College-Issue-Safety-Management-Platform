@@ -29,6 +29,30 @@ const register = async ({ name, email, password }) => {
   };
 };
 
+const login = async ({ email, password }) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw apiError(401, "Invalid email or password");
+  }
+
+  if (!user.active) {
+    throw apiError(403, "Your account is inactive");
+  }
+
+  const passwordMatch = await bcrypt.compare(
+    password,
+    user.passwordHash,
+  );
+
+  if (!passwordMatch) {
+    throw apiError(401, "Invalid email or password");
+  }
+
+  return user;
+};
+
 module.exports = {
   register,
+  login,
 };
