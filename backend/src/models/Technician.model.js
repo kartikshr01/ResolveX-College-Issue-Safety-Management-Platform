@@ -1,6 +1,11 @@
-const mongoose = require(mongoose);
+const mongoose = require("mongoose");
 const technicianSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -16,13 +21,12 @@ const technicianSchema = new mongoose.Schema(
     phone: {
       type: Number,
       required: true,
-      trim: true,
-      minlength: 10,
+      min: 10,
     },
-    department: {
-      type: mongoose.Schema.Types.objectId,
-      ref: "Department ",
-      required: true,
+    departmentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      required: false,
     },
     skills: {
       type: [String],
@@ -40,8 +44,9 @@ const technicianSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["active", "inactive"],
-      default: active,
+      default: "active",
     },
   },
-  { timeStamps: true },
+  { timestamps:true },
 );
+module.exports=mongoose.model("Technician",technicianSchema);

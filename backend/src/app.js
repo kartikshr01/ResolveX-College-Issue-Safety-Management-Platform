@@ -1,11 +1,18 @@
-const express=require("express");
-const cors=require("cors");
-const cookieParsar=require("cookie-parser");
-const app=express();
+const express = require("express");
+const app = express();
+require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const technicianRoutes = require("./routes/technician.route");
 app.use(express.json());
-app.get("/api/health",(req,res)=>{
-    res.json({success:true,
-            message:"ResolveX is Runnning",
-    })
-})
-module.exports=app;
+app.use(cookieParser());
+
+app.use("/api/technicians", technicianRoutes);
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+
+  res.status(statusCode).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+module.exports = app;
