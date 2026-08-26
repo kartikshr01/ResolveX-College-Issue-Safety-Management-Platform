@@ -1,4 +1,4 @@
-const Ticket = require("../tickets/ticket.model");
+const Ticket = require("../models/Ticket.model");
 
 const getPublicSafetyIssues = async () => {
   const issues = await Ticket.find({
