@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 const createTicketValidator = joi.object({
-  title: joi.string().required().trim().min(5).max(150),
+  title: joi.string().required().trim().min(5).max(150),  
   description: joi.string().required().trim().min(10).max(2000),
   departmentId: joi.string().required(),
   category: joi.string().required().trim(),
