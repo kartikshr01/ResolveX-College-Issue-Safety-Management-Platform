@@ -1,5 +1,6 @@
 const Department = require("../models/Department.model");
 const Ticket = require("../models/Ticket.model");
+const { assignTechnician } = require("./assignment.service"); 
 const apiError = require("../utils/apiError");
 const uploadImage = require("../utils/uploadImage");
 
@@ -26,8 +27,15 @@ const createTicket = async (userId, ticketData, imageFile) => {
     userId,
     status: "OPEN",
   });
-  return ticket;
+   await assignTechnician(
+    ticket._id,
+    ticket.departmentId
+  );
+ const updatedTicket = await Ticket.findById(ticket._id);
+
+  return updatedTicket;
 };
+
 
 // Service : get my tickets
 const getMyTickets = async (userId) => {
@@ -64,7 +72,7 @@ const deleteTicketById = async (ticketId, userId) => {
   }
   if (ticket.status !== "OPEN") {
     return {
-      nonDeletable: true,
+      notDeletable: false,
       ticket,
     };
   }
@@ -74,7 +82,7 @@ const deleteTicketById = async (ticketId, userId) => {
   });
 
   return {
-    nonDeletable: false,
+    notDeletable: false,
     ticket,
   };
 };

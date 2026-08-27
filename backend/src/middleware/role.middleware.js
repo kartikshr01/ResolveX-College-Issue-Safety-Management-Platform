@@ -7,7 +7,7 @@ const roleMiddleware = (...allowedRoles) => {
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      throw apiError(403, "You are not authorized to access this resource");
+      throw apiError(403, "You are not authorized");
     }
 
     next();

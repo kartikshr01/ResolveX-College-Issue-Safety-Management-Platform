@@ -10,7 +10,7 @@ const createTicket = async (req, res) => {
 
 //Controller - get my tickets
 const getMyTickets = async (req, res) => {
-  const tickets = await ticketService.getMyTickets(zereq.user._id);
+  const tickets = await ticketService.getMyTickets(req.user._id);
 
   return apiResponse(res, 200, "Tickets fetched successfully", tickets);
 };
@@ -25,7 +25,7 @@ const getTicketById = async (req, res) => {
     throw apiError(
       404,
       null,
-      `Ticket not found for Ticket Id : ${req.params.ticketId}`,
+      `Ticket not found for Ticket Id : ${req.params.ticketId}`,ticket
     );
   }
 
