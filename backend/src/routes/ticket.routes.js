@@ -3,54 +3,20 @@ const router = express.Router();
 const authMiddleware = require("../middleware/auth.middleware");
 const asyncHandler = require("../utils/asyncHandler");
 const validate = require("../middleware/validation.middleware");
-const {
-  createTicketValidator,
-  updateTicketValidator,
-} = require("../validators/ticket.validator");
+const { createTicketValidator } = require("../validators/ticket.validator");
 const ticketController = require("../controllers/ticket.controller");
 const upload = require("../middleware/upload.middleware");
 
-//Route : create ticket
 router.post(
   "/",
   authMiddleware,
-  upload.single("image"),
+  upload.single("image") ,  
   validate(createTicketValidator),
   asyncHandler(ticketController.createTicket),
 );
 
-//Route : get All User Tickets
-router.get("/my", authMiddleware, asyncHandler(ticketController.getMyTickets));
-
-//Route : get ticket by id
-router.get(
-  "/my/:ticketId",
-  authMiddleware,
-  asyncHandler(ticketController.getTicketById),
-);
-
-//Route : delete ticket
-router.delete(
-  "/my/:ticketId",
-  authMiddleware,
-  asyncHandler(ticketController.deleteTicketById),
-);
-
-//Route : update ticket
-router.patch(
-  "/:id",
-  authMiddleware,
-  validate(updateTicketValidator),
-  asyncHandler(ticketController.updateTicket),
-);
-
-//Route : update image in ticket 
-router.patch(
-  "/:id/image",
-  authMiddleware,
-  upload.single("image"),
-  asyncHandler(ticketController.updateTicketImage),
-);
-
+router.get("/my", authMiddleware, asyncHandler(ticketController.getMyTickets)); 
+router.get("/my/:ticketId" , authMiddleware , asyncHandler(ticketController.getTicketById));
+router.delete("/my/:ticketId" ,authMiddleware ,asyncHandler(ticketController.deleteTicketById)); 
 
 module.exports = router;

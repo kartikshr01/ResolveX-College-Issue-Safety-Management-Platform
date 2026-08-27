@@ -1,21 +1,18 @@
 const cloudinary = require("../config/cloudinary");
+require("dotenv").config();
 
 const uploadImage = (buffer) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      {
-        folder: "resolveX/images",
-      },
+      { folder: "resolveX/images" },
       (error, result) => {
         if (error) {
           reject(error);
           return;
         }
-
         resolve(result);
       },
     );
-
     uploadStream.end(buffer);
   });
 };
