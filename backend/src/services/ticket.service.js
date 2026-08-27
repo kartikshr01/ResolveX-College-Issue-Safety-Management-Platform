@@ -4,6 +4,10 @@ const apiError = require("../utils/apiError");
 const uploadImage = require("../utils/uploadImage");
 const deleteImage = require("../utils/deleteImage");
 
+const notificationService = require("../services/notification.service");
+const activityService = require("../services/activity.service");
+const User = require("../models/user.model");
+
 //Service : create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
   const department = await Department.findById(ticketData.departmentId);
@@ -28,6 +32,36 @@ const createTicket = async (userId, ticketData, imageFile) => {
     userId,
     status: "OPEN",
   });
+
+  // Notify ticket creator
+  await notificationService.createNotification({
+    userId: ticket.userId,
+    ticketId: ticket._id,
+    type: "TICKET_CREATED",
+    message: `Your ticket "${ticket.title}" has been created successfully.`,
+  });
+
+  // Find admin
+  const admin = await User.findOne({ role: "ADMIN" });
+
+  // Notify admin
+  if (admin) {
+    await notificationService.createNotification({
+      userId: admin._id,
+      ticketId: ticket._id,
+      type: "TICKET_CREATED",
+      message: `New ticket "${ticket.title}" has been created.`,
+    });
+  }
+
+  // Create activity
+  await activityService.createActivity({
+    ticketId: ticket._id,
+    actorId: ticket.userId,
+    action: "TICKET_CREATED",
+    message: `You created ticket "${ticket.title}".`,
+  });
+
   return ticket;
 };
 
