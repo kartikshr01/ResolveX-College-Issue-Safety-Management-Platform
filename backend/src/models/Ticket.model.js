@@ -55,6 +55,11 @@ const ticketSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    imagePublicId: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     status: {
       type: String,
       enum: ["OPEN", "ASSIGNED", "IN_PROGRESS", "RESOLVED", "CLOSED"],
@@ -67,4 +72,4 @@ const ticketSchema = new mongoose.Schema(
 );
 
 const Ticket = mongoose.model("ticket", ticketSchema);
-module.exports = Ticket ;
+module.exports = Ticket;

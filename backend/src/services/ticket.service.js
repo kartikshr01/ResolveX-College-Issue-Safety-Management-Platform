@@ -2,6 +2,7 @@ const Department = require("../models/Department.model");
 const Ticket = require("../models/Ticket.model");
 const apiError = require("../utils/apiError");
 const uploadImage = require("../utils/uploadImage");
+const deleteImage = require("../utils/deleteImage");
 
 //Service : create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
@@ -18,6 +19,7 @@ const createTicket = async (userId, ticketData, imageFile) => {
   if (imageFile) {
     const result = await uploadImage(imageFile.buffer);
     imageUrl = result.secure_url;
+    imagePublicId = result.public_id;
   }
 
   const ticket = await Ticket.create({
@@ -79,9 +81,79 @@ const deleteTicketById = async (ticketId, userId) => {
   };
 };
 
+// Service : update ticket
+const updateTicketById = async (ticketId, userId, updateData) => {
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+    userId,
+  });
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  if (ticket.status !== "OPEN") {
+    throw apiError(403, "Ticket can only be updated while it is OPEN");
+  }
+
+  if (updateData.departmentId) {
+    const department = await Department.findById(updateData.departmentId);
+
+    if (!department) {
+      throw apiError(404, "Department not found");
+    }
+
+    if (!department.active) {
+      throw apiError(403, "Department is inactive");
+    }
+  }
+
+  Object.assign(ticket, updateData);
+
+  await ticket.save();
+
+  return ticket;
+};
+
+// Service : update image
+const updateTicketImage = async (ticketId, userId, imageFile) => {
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+    userId,
+  });
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  if (ticket.status !== "OPEN") {
+    throw apiError(403, "Ticket image can only be updated while it is OPEN");
+  }
+
+  if (!imageFile) {
+    throw apiError(400, "Image is required");
+  }
+  const oldImagePublicId = ticket.imagePublicId;
+
+  const result = await uploadImage(imageFile.buffer);
+
+  ticket.imageUrl = result.secure_url;
+  ticket.imagePublicId = result.public_id;
+
+  await ticket.save();
+
+  if (oldImagePublicId) {
+    await deleteImage(oldImagePublicId);
+  }
+
+  return ticket;
+};
+
 module.exports = {
   createTicket,
   getMyTickets,
   getTicketById,
   deleteTicketById,
+  updateTicketById,
+  updateTicketImage,
 };
