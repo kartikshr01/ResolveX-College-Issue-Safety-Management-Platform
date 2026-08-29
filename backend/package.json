@@ -1,9 +1,9 @@
 {
   "name": "resolve_x_backend",
   "version": "1.0.0",
-  "description": "This directory container the backend of the ResolveX application.",
+  "description": "This directory contains the backend of the ResolveX application.",
   "license": "ISC",
-  "author": "Kartik Sharma",
+  "author": "",
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
