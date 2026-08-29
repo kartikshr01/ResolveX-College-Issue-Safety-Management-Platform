@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const safetyController = require("./safety.controller");
+const safetyController = require("../controllers/safety.controller");
 
 router.get("/public", safetyController.getPublicSafetyIssues);
 
