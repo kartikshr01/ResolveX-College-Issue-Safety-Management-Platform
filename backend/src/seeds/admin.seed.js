@@ -11,7 +11,7 @@ const seedAdmin = async () => {
 
     console.log("MongoDB connected");
 
-    const adminEmail = "admin@fixit.com";
+    const adminEmail = "testAdmin@ResolveX";
 
     const existingAdmin = await User.findOne({
       email: adminEmail,
@@ -28,7 +28,7 @@ const seedAdmin = async () => {
     );
 
     await User.create({
-      name: "FixIt Admin",
+      name: "Test Admin",
       email: adminEmail,
       passwordHash,
       role: "ADMIN",
