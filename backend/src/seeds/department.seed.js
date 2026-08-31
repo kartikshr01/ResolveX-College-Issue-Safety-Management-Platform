@@ -50,7 +50,7 @@ const departments = [
 
 const seedDepartments = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.DB_URL);
 
     await Department.deleteMany({});
 

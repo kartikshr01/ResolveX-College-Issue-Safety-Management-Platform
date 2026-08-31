@@ -1,6 +1,7 @@
 const Technician = require("../models/Technician.model");
 const Ticket = require("../models/Ticket.model");
-
+const activityService=require("../services/activity.service");
+const notificationService = require("../services/notification.service");
 const findBestTechnician = async (departmentId) => {
   const technicians = await Technician.find({
     departmentId: departmentId,
@@ -28,6 +29,7 @@ const assignTechnician = async (ticketId, departmentId) => {
     ticketId,
     {
       technicianId: technician._id,
+       status: "ASSIGNED",
     },
     {
       new: true,
@@ -54,6 +56,14 @@ const assignTechnician = async (ticketId, departmentId) => {
     type: "TICKET_ASSIGNED",
     message: `A new ticket "${ticket.title}" has been assigned to you.`,
   });
+  await activityService.createActivity({
+  ticketId: ticket._id,
+  actorId: technician.userId,
+  action: "TICKET_ASSIGNED",
+  oldStatus: "OPEN",
+  newStatus: "ASSIGNED",
+  message: `Ticket "${ticket.title}" has been assigned to you.`,
+});
   return {
     ticket,
     technician,

@@ -1,5 +1,7 @@
 const Notification = require("../models/notification.model");
 const apiError = require("../utils/apiError");
+const { getIO } = require("../config/socket");
+
 
 const createNotification = async ({
   userId,
@@ -13,6 +15,10 @@ const createNotification = async ({
     type,
     message,
   });
+
+  const io = getIO();
+
+  io.to(`user:${userId}`).emit("notification", notification);
 
   return notification;
 };
