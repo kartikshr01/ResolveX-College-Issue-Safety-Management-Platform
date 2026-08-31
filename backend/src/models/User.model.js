@@ -31,17 +31,9 @@ const userSchema = new mongoose.Schema(
       enum: ["TECHNICIAN", "ADMIN", "STUDENT", "FACULTY"],
     },
 
-    department: {
-      type: String,
-      enum: [
-        "Electrical",
-        "Plumbing",
-        "IT Support",
-        "Maintenance",
-        "Cleaning",
-        "Security",
-        "General Maintenance",
-      ],
+    departmentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
     },
 
     active: {
@@ -55,5 +47,5 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);
+

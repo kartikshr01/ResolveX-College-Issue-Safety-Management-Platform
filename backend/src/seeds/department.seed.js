@@ -1,11 +1,7 @@
-const dns = require("dns");
-
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
-
 require("dotenv").config();
 
 const mongoose = require("mongoose");
-const Department = require("../models/Department.model");
+const Department = require("../models/Department");
 
 const departments = [
   {
