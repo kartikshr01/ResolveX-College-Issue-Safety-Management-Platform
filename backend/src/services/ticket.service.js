@@ -2,6 +2,7 @@ const Department = require("../models/Department.model");
 const Ticket = require("../models/Ticket.model");
 const apiError = require("../utils/apiError");
 const uploadImage = require("../utils/uploadImage");
+const assignmentService = require("./assignmentService");
 
 //Service : create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
@@ -19,6 +20,8 @@ const createTicket = async (userId, ticketData, imageFile) => {
     const result = await uploadImage(imageFile.buffer);
     imageUrl = result.secure_url;
   }
+
+  assignTechnician(ticketData._id, ticketData.departmentId);
 
   const ticket = await Ticket.create({
     ...ticketData,
