@@ -1,9 +1,7 @@
-const http = require("http");
-const app = require("./app");
+const express = require("express");
+const app = require("./app")
 const connectDB = require("./config/db");
 require("dotenv").config();
-
-const { initializeSocket } = require("./config/socket");
 
 const start = async () => {
   try {

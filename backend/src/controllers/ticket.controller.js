@@ -3,8 +3,12 @@ const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 
 //Controller - create ticket
-const createTicket = async (req, res) => { 
-  const ticket = await ticketService.createTicket(req.user._id, req.body ,req.file );
+const createTicket = async (req, res) => {
+  const ticket = await ticketService.createTicket(
+    req.user._id,
+    req.body,
+    req.file,
+  );
   return apiResponse(res, 201, "Ticket created successfully ", ticket);
 };
 
@@ -25,7 +29,7 @@ const getTicketById = async (req, res) => {
     throw apiError(
       404,
       null,
-      `Ticket not found for Ticket Id : ${req.params.ticketId}`,ticket
+      `Ticket not found for Ticket Id : ${req.params.ticketId}`,
     );
   }
 
@@ -48,4 +52,33 @@ const deleteTicketById = async (req, res) => {
 
 };
 
-module.exports = { createTicket, getMyTickets, getTicketById ,deleteTicketById};
+//Controller : update ticket
+const updateTicket = async (req, res) => {
+  const ticket = await ticketService.updateTicketById(
+    req.params.id,
+    req.user._id,
+    req.body,
+  );
+
+  return apiResponse(res, 200, "Ticket updated successfully", ticket);
+};
+
+//Controller : image update in ticket
+const updateTicketImage = async (req, res) => {
+  const ticket = await ticketService.updateTicketImage(
+    req.params.id,
+    req.user._id,
+    req.file,
+  );
+
+  return apiResponse(res, 200, "Ticket image updated successfully", ticket);
+};
+
+module.exports = {
+  createTicket,
+  getMyTickets,
+  getTicketById,
+  deleteTicketById,
+  updateTicket,
+  updateTicketImage,
+};
