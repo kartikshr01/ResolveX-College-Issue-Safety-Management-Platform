@@ -19,6 +19,7 @@ const getMyTickets = async (req, res) => {
   return apiResponse(res, 200, "Tickets fetched successfully", tickets);
 };
 
+
 //Controller -  get ticket by id
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
