@@ -9,7 +9,8 @@ const getMyProfile = async (req, res) => {
   if (!user) {
     throw apiError(404, "User not found");
   }
-
+  
+  
   return apiResponse(
     res,
     200,

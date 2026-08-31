@@ -63,6 +63,7 @@ const updateTicket = async (req, res) => {
   return apiResponse(res, 200, "Ticket updated successfully", ticket);
 };
 
+
 //Controller : image update in ticket
 const updateTicketImage = async (req, res) => {
   const ticket = await ticketService.updateTicketImage(
