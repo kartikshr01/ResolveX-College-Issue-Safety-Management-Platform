@@ -80,7 +80,7 @@ const deleteTechnician = asyncHandler(async (req, res) => {
     res,
     200,
     "Technician deleted successfully",
-    null
+    
   );
 });
 
