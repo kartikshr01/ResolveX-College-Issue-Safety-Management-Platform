@@ -33,7 +33,9 @@ const createTicket = async (userId, ticketData, imageFile) => {
     imagePublicId = result.public_id;
   }
 
-  // 1. Create ticket
+  
+  assignTechnician(ticketData._id, ticketData.departmentId);
+
   const ticket = await Ticket.create({
     ...ticketData,
     userId,
