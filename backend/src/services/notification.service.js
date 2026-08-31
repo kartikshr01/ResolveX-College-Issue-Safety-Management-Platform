@@ -1,4 +1,4 @@
-const Notification = require("../models/notification.model");
+const Notification = require("../models/Notification.model");
 const apiError = require("../utils/apiError");
 const { getIO } = require("../config/socket");
 
