@@ -13,13 +13,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/activity", activityRoutes);
-app.use("/api/issues", safetyRoutes);
-app.use("/api/notifications", notificationRoutes);
-app.use("/api/tickets", ticketRoutes);
-app.use("/api/technicians", technicianRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
+app.use("/api/tickets" ,ticketRouter);
 
 app.use(errorHandler);
 
