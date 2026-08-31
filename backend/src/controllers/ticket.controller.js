@@ -44,7 +44,7 @@ const deleteTicketById = async (req, res) => {
     throw apiError(404 , "Ticket not found");
   } 
 
-  if(result.notDeletable){ 
+  if(result.nonDeletable){ 
     throw apiError(403 ,'Ticket cannot be deleted as work has been initiated on it')
   } 
 
