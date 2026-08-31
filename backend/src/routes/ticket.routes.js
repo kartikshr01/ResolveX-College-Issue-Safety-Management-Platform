@@ -44,13 +44,12 @@ router.patch(
   asyncHandler(ticketController.updateTicket),
 );
 
-//Route : update image in ticket 
+//Route : update image in ticket
 router.patch(
   "/:id/image",
   authMiddleware,
   upload.single("image"),
   asyncHandler(ticketController.updateTicketImage),
 );
-
 
 module.exports = router;

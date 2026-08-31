@@ -2,38 +2,53 @@ const Department = require("../models/Department.model");
 const Ticket = require("../models/Ticket.model");
 const apiError = require("../utils/apiError");
 const uploadImage = require("../utils/uploadImage");
+const assignmentService = require("./assignment.service");
 const deleteImage = require("../utils/deleteImage");
-
-const notificationService = require("../services/notification.service");
-const activityService = require("../services/activity.service");
+const notificationService = require("./notification.service");
+const activityService = require("./activity.service");
 const User = require("../models/user.model");
 
-//Service : create ticket
+// Service: Create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
+  // Check department
   const department = await Department.findById(ticketData.departmentId);
+
   if (!department) {
-    throw apiError(404, "Department not found ");
+    throw apiError(404, "Department not found");
   }
 
   if (!department.active) {
     throw apiError(403, "Department is inactive");
   }
 
+  // Image variables
   let imageUrl = null;
+  let imagePublicId = null;
+
+  // Upload image if provided
   if (imageFile) {
     const result = await uploadImage(imageFile.buffer);
+
     imageUrl = result.secure_url;
     imagePublicId = result.public_id;
   }
 
+  // 1. Create ticket
   const ticket = await Ticket.create({
     ...ticketData,
-    imageUrl,
     userId,
+    imageUrl,
+    imagePublicId,
     status: "OPEN",
   });
 
-  // Notify ticket creator
+  // 2. Automatically assign technician
+  await assignmentService.assignTechnician(
+    ticket._id,
+    ticket.departmentId
+  );
+
+  // 3. Notify ticket creator
   await notificationService.createNotification({
     userId: ticket.userId,
     ticketId: ticket._id,
@@ -41,10 +56,12 @@ const createTicket = async (userId, ticketData, imageFile) => {
     message: `Your ticket "${ticket.title}" has been created successfully.`,
   });
 
-  // Find admin
-  const admin = await User.findOne({ role: "ADMIN" });
+  // 4. Find admin
+  const admin = await User.findOne({
+    role: "ADMIN",
+  });
 
-  // Notify admin
+  // 5. Notify admin
   if (admin) {
     await notificationService.createNotification({
       userId: admin._id,
@@ -54,7 +71,7 @@ const createTicket = async (userId, ticketData, imageFile) => {
     });
   }
 
-  // Create activity
+  // 6. Create activity
   await activityService.createActivity({
     ticketId: ticket._id,
     actorId: ticket.userId,
@@ -62,33 +79,48 @@ const createTicket = async (userId, ticketData, imageFile) => {
     message: `You created ticket "${ticket.title}".`,
   });
 
-  return ticket;
+  // 7. Fetch updated ticket after technician assignment
+  const updatedTicket = await Ticket.findById(ticket._id)
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  return updatedTicket;
 };
 
-// Service : get my tickets
+
+// Service: Get my tickets
 const getMyTickets = async (userId) => {
   const tickets = await Ticket.find({ userId })
     .sort({ createdAt: -1 })
-    .populate("departmentId", "name");
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
 
-  if (!tickets) {
-    throw apiError(404, "No tickets found ");
+  if (!tickets || tickets.length === 0) {
+    throw apiError(404, "No tickets found");
   }
 
   return tickets;
 };
 
-// Service : get ticket by id
+
+// Service: Get ticket by ID
 const getTicketById = async (ticketId, userId) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
     userId,
-  }).populate("departmentId", "name");
+  })
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
 
   return ticket;
 };
 
-// Service :  delete ticket
+
+// Service: Delete ticket
 const deleteTicketById = async (ticketId, userId) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -98,12 +130,19 @@ const deleteTicketById = async (ticketId, userId) => {
   if (!ticket) {
     throw apiError(404, "Ticket not found");
   }
+
   if (ticket.status !== "OPEN") {
     return {
       nonDeletable: true,
       ticket,
     };
   }
+
+  // Delete Cloudinary image if it exists
+  if (ticket.imagePublicId) {
+    await deleteImage(ticket.imagePublicId);
+  }
+
   await Ticket.deleteOne({
     _id: ticketId,
     userId,
@@ -115,7 +154,8 @@ const deleteTicketById = async (ticketId, userId) => {
   };
 };
 
-// Service : update ticket
+
+// Service: Update ticket
 const updateTicketById = async (ticketId, userId, updateData) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -127,11 +167,17 @@ const updateTicketById = async (ticketId, userId, updateData) => {
   }
 
   if (ticket.status !== "OPEN") {
-    throw apiError(403, "Ticket can only be updated while it is OPEN");
+    throw apiError(
+      403,
+      "Ticket can only be updated while it is OPEN"
+    );
   }
 
+  // Check department if department is being changed
   if (updateData.departmentId) {
-    const department = await Department.findById(updateData.departmentId);
+    const department = await Department.findById(
+      updateData.departmentId
+    );
 
     if (!department) {
       throw apiError(404, "Department not found");
@@ -149,8 +195,13 @@ const updateTicketById = async (ticketId, userId, updateData) => {
   return ticket;
 };
 
-// Service : update image
-const updateTicketImage = async (ticketId, userId, imageFile) => {
+
+// Service: Update ticket image
+const updateTicketImage = async (
+  ticketId,
+  userId,
+  imageFile
+) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
     userId,
@@ -161,14 +212,19 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
   }
 
   if (ticket.status !== "OPEN") {
-    throw apiError(403, "Ticket image can only be updated while it is OPEN");
+    throw apiError(
+      403,
+      "Ticket image can only be updated while it is OPEN"
+    );
   }
 
   if (!imageFile) {
     throw apiError(400, "Image is required");
   }
+
   const oldImagePublicId = ticket.imagePublicId;
 
+  // Upload new image
   const result = await uploadImage(imageFile.buffer);
 
   ticket.imageUrl = result.secure_url;
@@ -176,12 +232,14 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
 
   await ticket.save();
 
+  // Delete old image
   if (oldImagePublicId) {
     await deleteImage(oldImagePublicId);
   }
 
   return ticket;
 };
+
 
 module.exports = {
   createTicket,

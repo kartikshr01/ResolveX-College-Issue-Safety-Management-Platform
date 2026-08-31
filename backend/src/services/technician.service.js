@@ -1,7 +1,8 @@
 const Technician = require("../models/Technician.model");
 
 const createTechnician = async (data) => {
-  return await Technician.create(data);
+  const technician = await Technician.create(data);
+  return technician;
 };
 
 const getTechnicians = async () => {
