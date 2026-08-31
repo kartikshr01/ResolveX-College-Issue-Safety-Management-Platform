@@ -68,4 +68,21 @@ const changePassword = async(userId, data) => {
     }; 
 } 
 
-module.exports = { getMyProfile, updateMyProfile, changePassword };
+  const user = await User.findByIdAndUpdate(
+    userId,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+    .select("-passwordHash")
+    .populate("departmentId", "name description");
+
+  return user;
+};
+
+module.exports = {
+  getMyProfile,
+  updateMyProfile,
+};

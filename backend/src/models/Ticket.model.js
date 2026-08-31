@@ -65,6 +65,4 @@ const ticketSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-const Ticket = mongoose.model("ticket", ticketSchema);
-module.exports = Ticket ;
+module.exports = mongoose.model("Ticket", ticketSchema);

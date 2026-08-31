@@ -16,13 +16,12 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// API Routes
-app.use("/api/auth", authRouter);
-app.use("/api/users", userRouter);
-app.use("/api/tickets", ticketRouter);
 app.use("/api/activity", activityRoutes);
 app.use("/api/issues", safetyRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/tickets" ,ticketRouter);
 
 // Error Handling Middleware (MUST be last)
 app.use(errorHandler);
