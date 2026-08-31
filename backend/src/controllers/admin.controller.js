@@ -1,57 +1,82 @@
-const authService = require("../services/auth.service");
-const apiResponse = require("../utils/apiResponse");
+const asyncHandler = require("../utils/asyncHandler");
+const ApiResponse = require("../utils/apiResponse");
+const ApiError = require("../utils/apiError");
+
+const adminService = require("../services/admin.service");
 
 const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../utils/token");
+  createTechnicianSchema,
+  updateTechnicianSchema,
+} = require("../validators/admin.validator");
 
-const register = async (req, res) => {
-  const user = await authService.register(req.body);
+// Get system statistics
+const getStatistics = asyncHandler(async (req, res) => {
+  const stats = await adminService.getSystemStatistics();
 
-  return apiResponse(
-    res,
-    201,
-    "User registered successfully",
-    user,
-  );
-};
-
-const login = async (req, res) => {
-  const user = await authService.login(req.body);
-
-  const accessToken = generateAccessToken(user);
-  const refreshToken = generateRefreshToken(user);
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 15 * 60 * 1000,
-  });
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-  return apiResponse(
+  return ApiResponse(
     res,
     200,
-    "User logged in successfully",
-    {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      department: user.department,
-    },
+    "Statistics fetched successfully",
+    stats
   );
-};
+});
+
+// Get all technicians
+const getTechnicians = asyncHandler(async (req, res) => {
+  const technicians = await adminService.getAllTechnicians();
+
+  return ApiResponse(
+    res,
+    200,
+    "Technicians fetched successfully",
+    technicians
+  );
+});
+
+// Create new technician
+const createTechnician = asyncHandler(async (req, res) => {
+  const { error, value } = createTechnicianSchema.validate(req.body);
+
+  if (error) {
+    throw new ApiError(400, error.details[0].message);
+  }
+
+  const newTechnician = await adminService.createTechnician(value);
+
+  return ApiResponse(
+    res,
+    201,
+    "Technician created successfully",
+    newTechnician
+  );
+});
+
+// Update technician / Convert student to technician
+const updateTechnician = asyncHandler(async (req, res) => {
+  const { error, value } = updateTechnicianSchema.validate(req.body);
+   console.log("PATCH BODY:", req.body);
+  console.log("VALIDATED VALUE:", value);
+
+  if (error) {
+    throw new ApiError(400, error.details[0].message);
+  }
+
+  const updatedTechnician = await adminService.updateTechnician(
+    req.params.id,
+    value
+  );
+
+  return ApiResponse(
+    res,
+    200,
+    "Technician updated successfully",
+    updatedTechnician
+  );
+});
 
 module.exports = {
-  register,
-  login,
+  getStatistics,
+  getTechnicians,
+  createTechnician,
+  updateTechnician,
 };
