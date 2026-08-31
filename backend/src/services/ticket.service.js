@@ -6,7 +6,7 @@ const deleteImage = require("../utils/deleteImage");
 
 const notificationService = require("../services/notification.service");
 const activityService = require("../services/activity.service");
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 
 //Service : create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
