@@ -14,11 +14,12 @@ const createTicket = async (req, res) => {
 
 //Controller - get my tickets
 const getMyTickets = async (req, res) => {
+  console.log(req.user.name);
+
   const tickets = await ticketService.getMyTickets(req.user._id);
 
   return apiResponse(res, 200, "Tickets fetched successfully", tickets);
 };
-
 
 //Controller -  get ticket by id
 const getTicketById = async (req, res) => {
@@ -37,20 +38,36 @@ const getTicketById = async (req, res) => {
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
+// Controller - Get All Ticket( for admin only )
+const getAllTickets = async (req, res) => {
+  const tickets = await ticketService.getAllTickets();
+
+  if (Array.isArray(tickets) && tickets.length === 0) {
+    return apiResponse(res , 200, "No tickets found." , null );
+  }
+
+  return apiResponse(res, 200, "All tickets fetched successfully", tickets);
+};
+
 // Controller - delete ticket by id
 const deleteTicketById = async (req, res) => {
-  const result = await ticketService.deleteTicketById(req.params.ticketId,req.user._id); 
-  
-  if(!result){ 
-    throw apiError(404 , "Ticket not found");
-  } 
+  const result = await ticketService.deleteTicketById(
+    req.params.ticketId,
+    req.user._id,
+  );
 
-  if(result.nonDeletable){ 
-    throw apiError(403 ,'Ticket cannot be deleted as work has been initiated on it')
-  } 
+  if (!result) {
+    throw apiError(404, "Ticket not found");
+  }
 
-  return apiResponse(res,200,"Ticket deleted successfully" , null);
+  if (result.nonDeletable) {
+    throw apiError(
+      403,
+      "Ticket cannot be deleted as work has been initiated on it",
+    );
+  }
 
+  return apiResponse(res, 200, "Ticket deleted successfully", null);
 };
 
 //Controller : update ticket
@@ -63,7 +80,6 @@ const updateTicket = async (req, res) => {
 
   return apiResponse(res, 200, "Ticket updated successfully", ticket);
 };
-
 
 //Controller : image update in ticket
 const updateTicketImage = async (req, res) => {
@@ -83,4 +99,5 @@ module.exports = {
   deleteTicketById,
   updateTicket,
   updateTicketImage,
+  getAllTickets,
 };
