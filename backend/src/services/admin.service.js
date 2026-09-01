@@ -7,98 +7,94 @@ const bcrypt = require("bcryptjs");
 
 // Get system statistics
 const getSystemStatistics = async () => {
-  const [
-    statusStats,
-    departmentStats,
-    priorityStats,
-    technicianWorkloadStats,
-  ] = await Promise.all([
-    // Ticket count by status
-    Ticket.aggregate([
-      {
-        $group: {
-          _id: "$status",
-          count: {
-            $sum: 1,
+  const [statusStats, departmentStats, priorityStats, technicianWorkloadStats] =
+    await Promise.all([
+      // Ticket count by status
+      Ticket.aggregate([
+        {
+          $group: {
+            _id: "$status",
+            count: {
+              $sum: 1,
+            },
           },
         },
-      },
-      {
-        $sort: {
-          _id: 1,
-        },
-      },
-    ]),
-
-    // Ticket count by department
-    Ticket.aggregate([
-      {
-        $group: {
-          _id: "$departmentId",
-          count: {
-            $sum: 1,
+        {
+          $sort: {
+            _id: 1,
           },
         },
-      },
-      {
-        $lookup: {
-          from: "departments",
-          localField: "_id",
-          foreignField: "_id",
-          as: "department",
-        },
-      },
-      {
-        $unwind: "$department",
-      },
-      {
-        $project: {
-          _id: 0,
-          departmentId: "$department._id",
-          departmentName: "$department.name",
-          count: 1,
-        },
-      },
-      {
-        $sort: {
-          departmentName: 1,
-        },
-      },
-    ]),
+      ]),
 
-    // Ticket count by priority
-    Ticket.aggregate([
-      {
-        $group: {
-          _id: "$priority",
-          count: {
-            $sum: 1,
+      // Ticket count by department
+      Ticket.aggregate([
+        {
+          $group: {
+            _id: "$departmentId",
+            count: {
+              $sum: 1,
+            },
           },
         },
-      },
-      {
-        $sort: {
-          _id: 1,
+        {
+          $lookup: {
+            from: "departments",
+            localField: "_id",
+            foreignField: "_id",
+            as: "department",
+          },
         },
-      },
-    ]),
+        {
+          $unwind: "$department",
+        },
+        {
+          $project: {
+            _id: 0,
+            departmentId: "$department._id",
+            departmentName: "$department.name",
+            count: 1,
+          },
+        },
+        {
+          $sort: {
+            departmentName: 1,
+          },
+        },
+      ]),
 
-    // Technician workload statistics
-    Technician.find(
-      {},
-      {
-        name: 1,
-        email: 1,
-        departmentId: 1,
-        availability: 1,
-        status: 1,
-        currentWorkload: 1,
-      }
-    )
-      .populate("departmentId", "name")
-      .sort({ currentWorkload: -1 })
-      .lean(),
-  ]);
+      // Ticket count by priority
+      Ticket.aggregate([
+        {
+          $group: {
+            _id: "$priority",
+            count: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $sort: {
+            _id: 1,
+          },
+        },
+      ]),
+
+      // Technician workload statistics
+      Technician.find(
+        {},
+        {
+          name: 1,
+          email: 1,
+          departmentId: 1,
+          availability: 1,
+          status: 1,
+          currentWorkload: 1,
+        },
+      )
+        .populate("departmentId", "name")
+        .sort({ currentWorkload: -1 })
+        .lean(),
+    ]);
 
   return {
     statusBreakdown: statusStats,
@@ -118,14 +114,7 @@ const getAllTechnicians = async () => {
 
 // Create new technician
 const createTechnician = async (techData) => {
-  const {
-    name,
-    email,
-    password,
-    phone,
-    departmentId,
-    skills,
-  } = techData;
+  const { name, email, password, phone, departmentId, skills } = techData;
 
   // Check department
   const department = await Department.findById(departmentId);
@@ -138,10 +127,7 @@ const createTechnician = async (techData) => {
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    throw new ApiError(
-      400,
-      "User with this email already exists"
-    );
+    throw new ApiError(400, "User with this email already exists");
   }
 
   // Hash password
@@ -193,15 +179,13 @@ const updateTechnician = async (userId, updateData) => {
   if (user.role !== "STUDENT" && user.role !== "TECHNICIAN") {
     throw new ApiError(
       400,
-      "Only student users can be converted to technician or existing technicians can be updated"
+      "Only student users can be converted to technician or existing technicians can be updated",
     );
   }
 
   // Validate department if provided
   if (updateData.departmentId !== undefined) {
-    const department = await Department.findById(
-      updateData.departmentId
-    );
+    const department = await Department.findById(updateData.departmentId);
 
     if (!department) {
       throw new ApiError(404, "Department not found");
@@ -213,14 +197,14 @@ const updateTechnician = async (userId, updateData) => {
     if (!updateData.departmentId) {
       throw new ApiError(
         400,
-        "Department is required when converting a student to technician"
+        "Department is required when converting a student to technician",
       );
     }
 
     if (updateData.phone === undefined) {
       throw new ApiError(
         400,
-        "Phone number is required when converting a student to technician"
+        "Phone number is required when converting a student to technician",
       );
     }
 
@@ -249,10 +233,7 @@ const updateTechnician = async (userId, updateData) => {
             ? updateData.availability
             : true,
         currentWorkload: 0,
-        status:
-          updateData.status !== undefined
-            ? updateData.status
-            : "active",
+        status: updateData.status !== undefined ? updateData.status : "active",
       });
 
       return technician;
@@ -274,10 +255,7 @@ const updateTechnician = async (userId, updateData) => {
   });
 
   if (!technician) {
-    throw new ApiError(
-      404,
-      "Technician profile not found"
-    );
+    throw new ApiError(404, "Technician profile not found");
   }
 
   // Fields Admin can update
@@ -313,11 +291,7 @@ const updateTechnician = async (userId, updateData) => {
   }
 
   if (Object.keys(userUpdate).length > 0) {
-    await User.findByIdAndUpdate(
-      technician.userId,
-      userUpdate,
-      { new: true }
-    );
+    await User.findByIdAndUpdate(technician.userId, userUpdate, { new: true });
   }
 
   return technician;
