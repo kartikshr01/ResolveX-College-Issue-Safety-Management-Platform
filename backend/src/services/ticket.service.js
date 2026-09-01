@@ -69,7 +69,7 @@ const createTicket = async (userId, ticketData, imageFile) => {
       message: `New ticket "${ticket.title}" has been created.`,
     });
   }
-
+6
   // 6. Create activity
   await activityService.createActivity({
     ticketId: ticket._id,
