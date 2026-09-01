@@ -10,8 +10,12 @@ const User = require("../models/user.model");
 
 // Service: Create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
-  // Check department
-  const department = await Department.findById(ticketData.departmentId);
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw apiError(404, "User not found");
+  }
+   const department = await Department.findById(ticketData.departmentId);
 
   if (!department) {
     throw apiError(404, "Department not found");
@@ -21,34 +25,27 @@ const createTicket = async (userId, ticketData, imageFile) => {
     throw apiError(403, "Department is inactive");
   }
 
-  // Image variables
-  let imageUrl = null;
+   let imageUrl = null;
   let imagePublicId = null;
 
-  // Upload image if provided
-  if (imageFile) {
+   if (imageFile) {
     const result = await uploadImage(imageFile.buffer);
 
     imageUrl = result.secure_url;
     imagePublicId = result.public_id;
   }
 
-  
-  assignTechnician(ticketData._id, ticketData.departmentId);
-
   const ticket = await Ticket.create({
     ...ticketData,
     userId,
+    name: user.name,
     imageUrl,
     imagePublicId,
     status: "OPEN",
   });
 
   // 2. Automatically assign technician
-  await assignmentService.assignTechnician(
-    ticket._id,
-    ticket.departmentId
-  );
+  await assignmentService.assignTechnician(ticket._id, ticket.departmentId);
 
   // 3. Notify ticket creator
   await notificationService.createNotification({
@@ -84,11 +81,11 @@ const createTicket = async (userId, ticketData, imageFile) => {
   // 7. Fetch updated ticket after technician assignment
   const updatedTicket = await Ticket.findById(ticket._id)
     .populate("departmentId", "name")
-    .populate("technicianId", "name email phone");
+    .populate("technicianId", "name email phone")
+    .populate("userId", "name email"); 
 
   return updatedTicket;
 };
-
 
 // Service: Get my tickets
 const getMyTickets = async (userId) => {
@@ -104,6 +101,16 @@ const getMyTickets = async (userId) => {
   return tickets;
 };
 
+// Service : get all tickets ( admin use only )
+const getAllTickets = async () => {
+  const tickets = await Ticket.find()
+    .populate("userId", "name , email")
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email")
+    .sort({ createdAt: -1 });
+
+  return tickets;
+};
 
 // Service: Get ticket by ID
 const getTicketById = async (ticketId, userId) => {
@@ -120,7 +127,6 @@ const getTicketById = async (ticketId, userId) => {
 
   return ticket;
 };
-
 
 // Service: Delete ticket
 const deleteTicketById = async (ticketId, userId) => {
@@ -156,7 +162,6 @@ const deleteTicketById = async (ticketId, userId) => {
   };
 };
 
-
 // Service: Update ticket
 const updateTicketById = async (ticketId, userId, updateData) => {
   const ticket = await Ticket.findOne({
@@ -169,17 +174,12 @@ const updateTicketById = async (ticketId, userId, updateData) => {
   }
 
   if (ticket.status !== "OPEN") {
-    throw apiError(
-      403,
-      "Ticket can only be updated while it is OPEN"
-    );
+    throw apiError(403, "Ticket can only be updated while it is OPEN");
   }
 
   // Check department if department is being changed
   if (updateData.departmentId) {
-    const department = await Department.findById(
-      updateData.departmentId
-    );
+    const department = await Department.findById(updateData.departmentId);
 
     if (!department) {
       throw apiError(404, "Department not found");
@@ -197,13 +197,8 @@ const updateTicketById = async (ticketId, userId, updateData) => {
   return ticket;
 };
 
-
 // Service: Update ticket image
-const updateTicketImage = async (
-  ticketId,
-  userId,
-  imageFile
-) => {
+const updateTicketImage = async (ticketId, userId, imageFile) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
     userId,
@@ -214,10 +209,7 @@ const updateTicketImage = async (
   }
 
   if (ticket.status !== "OPEN") {
-    throw apiError(
-      403,
-      "Ticket image can only be updated while it is OPEN"
-    );
+    throw apiError(403, "Ticket image can only be updated while it is OPEN");
   }
 
   if (!imageFile) {
@@ -242,7 +234,6 @@ const updateTicketImage = async (
   return ticket;
 };
 
-
 module.exports = {
   createTicket,
   getMyTickets,
@@ -250,4 +241,5 @@ module.exports = {
   deleteTicketById,
   updateTicketById,
   updateTicketImage,
+  getAllTickets,
 };
