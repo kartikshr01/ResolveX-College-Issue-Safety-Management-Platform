@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import TechnicianDashboard from "./pages/TechnicianDashboard/TechnicianDashboard";
 import TicketDetails from "./pages/TicketDetails/TicketDetails";
+import AppRoutes from "./routes/AppRoutes";
+import "./App.css";
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
           element={<TicketDetails />}
         />
       </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

@@ -3,7 +3,7 @@ const Technician = require("../models/Technician.model");
 const User = require("../models/user.model");
 const Department = require("../models/Department.model");
 const ApiError = require("../utils/apiError");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 // Get system statistics
 const getSystemStatistics = async () => {
@@ -120,7 +120,7 @@ const createTechnician = async (techData) => {
   const department = await Department.findById(departmentId);
 
   if (!department) {
-    throw new ApiError(404, "Department not found");
+    throw ApiError(404, "Department not found");
   }
 
   // Check existing user

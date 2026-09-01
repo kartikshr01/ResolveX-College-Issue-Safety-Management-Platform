@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const ticketSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -50,6 +53,7 @@ const ticketSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
     imageUrl: {
       type: String,
       trim: true,

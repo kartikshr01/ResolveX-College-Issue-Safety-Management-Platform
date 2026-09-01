@@ -1,35 +1,28 @@
 const Technician = require("../models/Technician.model");
 const Ticket = require("../models/Ticket.model");
-const activityService=require("../services/activity.service");
-const notificationService = require("../services/notification.service");
-const findBestTechnician = async (departmentId) => {
-  const technicians = await Technician.find({
-    departmentId: departmentId,
+const apiError = require("../utils/apiError");
+
+const assignTechnician = async (ticketId, departmentId) => {
+  // Find the available technician with the lowest workload
+  const technician = await Technician.findOne({
+    departmentId,
     availability: true,
     status: "active",
   }).sort({
     currentWorkload: 1,
   });
 
-  if (technicians.length === 0) {
-    return null;
-  }
-
-  return technicians[0];
-};
-
-const assignTechnician = async (ticketId, departmentId) => {
-  const technician = await findBestTechnician(departmentId);
-
+  // No technician available
   if (!technician) {
     return null;
   }
 
+  // Assign technician to ticket
   const ticket = await Ticket.findByIdAndUpdate(
     ticketId,
     {
       technicianId: technician._id,
-       status: "ASSIGNED",
+      status: "ASSIGNED",
     },
     {
       new: true,
@@ -37,33 +30,14 @@ const assignTechnician = async (ticketId, departmentId) => {
   );
 
   if (!ticket) {
-    return null;
+    throw apiError(404, "Ticket not found");
   }
 
-  await Technician.findByIdAndUpdate(
-    technician._id,
-    {
-      $inc: {
-        currentWorkload: 1,
-      },
-    },
-    
-  );
+  // Increase workload
+  technician.currentWorkload += 1;
 
-   await notificationService.createNotification({
-    userId: technician.userId,
-    ticketId: ticket._id,
-    type: "TICKET_ASSIGNED",
-    message: `A new ticket "${ticket.title}" has been assigned to you.`,
-  });
-  await activityService.createActivity({
-  ticketId: ticket._id,
-  actorId: technician.userId,
-  action: "TICKET_ASSIGNED",
-  oldStatus: "OPEN",
-  newStatus: "ASSIGNED",
-  message: `Ticket "${ticket.title}" has been assigned to you.`,
-});
+  await technician.save();
+
   return {
     ticket,
     technician,
@@ -71,6 +45,5 @@ const assignTechnician = async (ticketId, departmentId) => {
 };
 
 module.exports = {
-  findBestTechnician,
   assignTechnician,
 };

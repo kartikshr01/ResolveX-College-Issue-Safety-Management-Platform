@@ -21,6 +21,7 @@ const notificationSchema = new mongoose.Schema(
         "STATUS_UPDATED",
         "SAFETY_ALERT",
         "TICKET_RESOLVED",
+        "TICKET_CREATED",
         "GENERAL",
       ],
       required: true,
