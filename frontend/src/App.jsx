@@ -3,6 +3,8 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import TechnicianManagement from "./pages/admin/TechnicianManagement";
 import Statistics from "./pages/admin/Statistics";
+import AppRoutes from "./routes/AppRoutes";
+import "./App.css";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           element={<Navigate to="/admin" replace />}
         />
       </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

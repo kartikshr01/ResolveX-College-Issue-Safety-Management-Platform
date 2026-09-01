@@ -21,7 +21,7 @@ const departmentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Department = mongoose.model("Department", departmentSchema);

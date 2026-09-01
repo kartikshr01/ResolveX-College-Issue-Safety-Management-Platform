@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const ticketSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -50,7 +53,13 @@ const ticketSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
     imageUrl: {
+      type: String,
+      trim: true,
+      default: null,
+    },
+    imagePublicId: {
       type: String,
       trim: true,
       default: null,
@@ -65,6 +74,4 @@ const ticketSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
-
-const Ticket = mongoose.model("ticket", ticketSchema);
-module.exports = Ticket ;
+module.exports = mongoose.model("Ticket", ticketSchema);
