@@ -9,7 +9,8 @@ const getMyProfile = async (req, res) => {
   if (!user) {
     throw apiError(404, "User not found");
   }
-
+  
+  
   return apiResponse(
     res,
     200,
@@ -36,7 +37,26 @@ const updateMyProfile = async (req, res) => {
   );
 };
 
+const changePassword = async (req, res) => {
+  const user = await userService.changePassword(
+    req.user._id,
+    req.body,
+  );
+
+  if (!user) {
+    throw apiError(404, "User not found");
+  }
+
+  return apiResponse(
+    res,
+    200,
+    "Password changed successfully",
+    user,
+  );
+};
+
 module.exports = {
   getMyProfile,
   updateMyProfile,
+  changePassword
 };

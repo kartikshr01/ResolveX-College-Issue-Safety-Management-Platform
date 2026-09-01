@@ -1,9 +1,2 @@
-<<<<<<< HEAD
 .env
 node_modules/
-=======
-node_modules/
-.env
-scripts
-seeds
->>>>>>> origin/Khushi_Sharma

@@ -1,12 +1,16 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import SafetyFeed from "./components/safety/SafetyFeed";
 import SafetyDetails from "./components/safety/SafetyDetails";
 import Activity from "./components/activity/Activity";
 
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
   return (
     <BrowserRouter>
+
+      {/* Your routes */}
       <Routes>
         <Route path="/" element={<SafetyFeed />} />
 
@@ -21,12 +25,11 @@ function App() {
           path="/activity"
           element={<Activity />}
         />
-
-        <Route
-          path="*"
-          element={<Navigate to="/safety" replace />}
-        />
       </Routes>
+
+      {/* Teammate's routes */}
+      <AppRoutes />
+
     </BrowserRouter>
   );
 }

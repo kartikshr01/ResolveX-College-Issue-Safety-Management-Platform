@@ -19,6 +19,7 @@ const getMyTickets = async (req, res) => {
   return apiResponse(res, 200, "Tickets fetched successfully", tickets);
 };
 
+
 //Controller -  get ticket by id
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
@@ -44,7 +45,7 @@ const deleteTicketById = async (req, res) => {
     throw apiError(404 , "Ticket not found");
   } 
 
-  if(result.notDeletable){ 
+  if(result.nonDeletable){ 
     throw apiError(403 ,'Ticket cannot be deleted as work has been initiated on it')
   } 
 
@@ -62,6 +63,7 @@ const updateTicket = async (req, res) => {
 
   return apiResponse(res, 200, "Ticket updated successfully", ticket);
 };
+
 
 //Controller : image update in ticket
 const updateTicketImage = async (req, res) => {
