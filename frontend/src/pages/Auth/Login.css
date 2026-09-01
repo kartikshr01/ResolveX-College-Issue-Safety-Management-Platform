@@ -5,9 +5,7 @@
   background: #f3f3f5;
 }
 
-/* =========================
-   LEFT BRAND SECTION
-========================= */
+/* LEFT BRAND SECTION */
 
 .auth-brand-panel {
   position: relative;
@@ -282,9 +280,7 @@
   color: #24252a;
 }
 
-/* =========================
-   BUTTON
-========================= */
+/* BUTTON */
 
 .auth-submit-btn {
   width: 100%;
@@ -317,9 +313,7 @@
   cursor: not-allowed;
 }
 
-/* =========================
-   ERROR
-========================= */
+/* ERROR */
 
 .auth-error {
   display: flex;
@@ -347,9 +341,7 @@
   font-size: 16px;
 }
 
-/* =========================
-   SWITCH AUTH
-========================= */
+/* SWITCH AUTH */
 
 .auth-switch-text {
   margin: 24px 0 0;
@@ -373,9 +365,7 @@
   text-decoration: underline;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .auth-page {
