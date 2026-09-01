@@ -1,0 +1,43 @@
+.status-workflow {
+  margin-top: 24px;
+  padding: 24px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.status-workflow h2 {
+  margin-bottom: 20px;
+  color: #0f172a;
+  font-size: 20px;
+}
+
+.status-options {
+  display: flex;
+  gap: 12px;
+}
+
+.status-button {
+  padding: 10px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.status-assigned {
+  color: #2563eb;
+}
+
+.status-progress {
+  color: #f59e0b;
+}
+
+.status-resolved {
+  color: #16a34a;
+}
+
+.status-button:hover {
+  border-color: #2563eb;
+}
