@@ -12,9 +12,12 @@ function SafetyDetails() {
       <main className={styles.page}>
         <div className={styles.notFound}>
           <h1>Safety issue not found</h1>
-          <p>The issue details are no longer available.</p>
 
-          <button onClick={() => navigate("/safety")}>
+          <p>
+            The issue details are no longer available.
+          </p>
+
+          <button onClick={() => navigate("/")}>
             Back to Safety Feed
           </button>
         </div>
@@ -22,28 +25,26 @@ function SafetyDetails() {
     );
   }
 
-  const formatDate = (date) => {
-    if (!date) return "—";
-
-    return new Date(date).toLocaleString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    });
-  };
-
   return (
     <section className={styles.page}>
-      <button className={styles.backButton} onClick={() => navigate("/safety")}>
+      {/* Back button stays on the LEFT */}
+      <button
+        className={styles.backButton}
+        onClick={() => navigate("/")}
+      >
         ← Back to Safety Feed
       </button>
 
       <article className={styles.detailsCard}>
+        {/* =========================
+            LEFT - INFORMATION
+        ========================= */}
+
         <div className={styles.infoSection}>
           <div className={styles.header}>
-            <span className={styles.category}>{issue.category}</span>
+            <span className={styles.category}>
+              {issue.category}
+            </span>
 
             <span
               className={`${styles.priority} ${
@@ -58,36 +59,66 @@ function SafetyDetails() {
 
           <div className={styles.status}>
             <span>Status</span>
+
             <strong>{issue.status}</strong>
           </div>
 
-          <p className={styles.description}>{issue.description}</p>
+          <p className={styles.description}>
+            {issue.description}
+          </p>
 
           <div className={styles.meta}>
             <div>
               <span>Location</span>
+
               <strong>{issue.location}</strong>
             </div>
 
             <div>
               <span>Reported On</span>
-              <strong>{new Date(issue.createdAt).toLocaleString()}</strong>
+
+              <strong>
+                {new Date(
+                  issue.createdAt
+                ).toLocaleString()}
+              </strong>
             </div>
 
             <div>
               <span>Last Updated</span>
-              <strong>{new Date(issue.updatedAt).toLocaleString()}</strong>
+
+              <strong>
+                {new Date(
+                  issue.updatedAt
+                ).toLocaleString()}
+              </strong>
             </div>
           </div>
         </div>
 
-        {issue.imageUrl && (
+        {/* =========================
+            RIGHT - IMAGE
+        ========================= */}
+
+        {issue.imageUrl ? (
           <div className={styles.imageSection}>
             <img
               src={issue.imageUrl}
               alt={issue.title}
               className={styles.image}
             />
+          </div>
+        ) : (
+          <div className={styles.imageSection}>
+            <div className={styles.noImage}>
+              <div className={styles.noImageIcon}>
+                ▧
+              </div>
+
+              <span className={styles.noImageText}>
+                No image uploaded
+              </span>
+            </div>
           </div>
         )}
       </article>

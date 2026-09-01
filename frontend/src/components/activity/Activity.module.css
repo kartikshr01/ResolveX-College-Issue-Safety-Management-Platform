@@ -1,0 +1,290 @@
+.page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f5f6f1;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #777;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.header h1 {
+  margin: 0;
+  color: #202123;
+  font-size: 32px;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #858585;
+}
+
+.count {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #d7ef52;
+  color: #202123;
+  font-weight: 700;
+}
+
+/* Activity list */
+
+.list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 22px;
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(32, 33, 35, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(32, 33, 35, 0.1);
+}
+
+/* Timeline */
+
+.timeline {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 18px;
+  flex-shrink: 0;
+}
+
+.dot {
+  position: relative;
+  z-index: 2;
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #d7ef52;
+  box-shadow: 0 0 0 2px #202123;
+}
+
+.line {
+  position: absolute;
+  top: 17px;
+  bottom: -40px;
+  width: 2px;
+  background: #e5e5e5;
+}
+
+.card:last-child .line {
+  display: none;
+}
+
+/* Content */
+
+.cardContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.action {
+  color: #777;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.date {
+  color: #999;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.card h2 {
+  margin: 0;
+  color: #202123;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* Ticket details */
+
+.ticketInfo {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(120px, 1fr) auto;
+  gap: 18px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #ededed;
+}
+
+.ticketInfo div {
+  min-width: 0;
+}
+
+.ticketInfo span {
+  display: block;
+  margin-bottom: 5px;
+  color: #999;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ticketInfo strong {
+  display: block;
+  overflow: hidden;
+  color: #555;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status {
+  color: #166534 !important;
+}
+
+/* Button */
+
+.viewButton {
+  margin-top: 18px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #202123;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.viewButton:hover {
+  background: #3a3b3d;
+}
+
+/* Loading / error */
+
+.message {
+  display: flex;
+  min-height: 60vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #777;
+  text-align: center;
+}
+
+.message h2 {
+  margin: 0 0 8px;
+  color: #202123;
+}
+
+.message p {
+  margin: 0;
+}
+
+/* Empty state */
+
+.empty {
+  max-width: 600px;
+  margin: 70px auto;
+  padding: 50px 30px;
+  border: 1px solid #e5e5e5;
+  border-radius: 20px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(32, 33, 35, 0.05);
+}
+
+.emptyIcon {
+  margin-bottom: 16px;
+  font-size: 38px;
+}
+
+.empty h2 {
+  margin: 0 0 8px;
+  color: #202123;
+}
+
+.empty p {
+  margin: 0;
+  color: #777;
+}
+
+.backButton {
+  margin-top: 22px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #202123;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .page {
+    padding: 20px;
+  }
+
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .topRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ticketInfo {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .date {
+    white-space: normal;
+  }
+}

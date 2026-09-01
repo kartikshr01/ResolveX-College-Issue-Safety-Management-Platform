@@ -16,18 +16,35 @@ function SafetyCard({ issue }) {
       onClick={handleClick}
       role="button"
       tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          handleClick();
+        }
+      }}
     >
-      {issue.imageUrl && (
-        <img
-          src={issue.imageUrl}
-          alt={issue.title}
-          className={styles.image}
-        />
+      {issue.imageUrl ? (
+        <div className={styles.imageWrapper}>
+          <img
+            src={issue.imageUrl}
+            alt={issue.title}
+            className={styles.image}
+          />
+        </div>
+      ) : (
+        <div className={styles.noImage}>
+          <div className={styles.noImageIcon}>▧</div>
+
+          <span className={styles.noImageText}>
+            No image uploaded
+          </span>
+        </div>
       )}
 
       <div className={styles.content}>
         <div className={styles.topRow}>
-          <span className={styles.category}>{issue.category}</span>
+          <span className={styles.category}>
+            {issue.category}
+          </span>
 
           <span
             className={`${styles.priority} ${
@@ -40,10 +57,13 @@ function SafetyCard({ issue }) {
 
         <h2>{issue.title}</h2>
 
-        <p className={styles.description}>{issue.description}</p>
+        <p className={styles.description}>
+          {issue.description}
+        </p>
 
         <div className={styles.meta}>
           <span>📍 {issue.location}</span>
+
           <span>{issue.status}</span>
         </div>
       </div>
