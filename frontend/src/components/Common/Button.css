@@ -31,11 +31,50 @@
 
 /* Primary */
 
-.rx-button-primary {
+/* .rx-button-primary {
   background: var(--color-ink);
   color: var(--color-lime);
+} */
+ 
+.submit-ticket-button {
+  width: 100%;
+
+  background: linear-gradient(
+    135deg,
+    #1f2937,
+    #111827
+  );
+
+  color: #f8fafc;
+
+  border: 1px solid #374151;
+
+  box-shadow:
+    0 6px 18px rgba(17, 24, 39, 0.18);
 }
 
+.submit-ticket-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #111827,
+    #030712
+  );
+
+  border-color: #d4a72c;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(17, 24, 39, 0.25);
+}
+
+.submit-ticket-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-ticket-button:disabled {
+  opacity: 0.6;
+}
 /* Secondary */
 
 .rx-button-secondary {

@@ -1,8 +1,9 @@
 import { useState } from "react";
+import Button from "../../components/common/Button";
 import "./CreateTicket.css";
 
 function CreateTicket() {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     title: "",
     description: "",
     departmentId: "",
@@ -11,7 +12,9 @@ function CreateTicket() {
     priority: "",
     safetyFlag: false,
     image: null,
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -23,12 +26,17 @@ function CreateTicket() {
     setFormData((previous) => ({
       ...previous,
       [name]:
-        type === "checkbox" ? checked : type === "file" ? files[0] : value,
+        type === "checkbox"
+          ? checked
+          : type === "file"
+            ? files[0]
+            : value,
     }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     setLoading(true);
     setMessage("");
     setError("");
@@ -48,38 +56,43 @@ function CreateTicket() {
         data.append("image", formData.image);
       }
 
-      const token = localStorage.getItem("token");
+      const response = await fetch(
+        "http://localhost:3000/api/tickets",
+        {
+          method: "POST",
 
-      const response = await fetch("http://localhost:3000/api/tickets", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: data,
-      });
+          // Sends HTTP-only authentication cookies
+          credentials: "include",
+
+          // Do NOT manually set Content-Type.
+          // FormData automatically sets multipart/form-data
+          // with the required boundary.
+          body: data,
+        }
+      );
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Failed to create ticket");
+        throw new Error(
+          result.message || "Failed to create ticket"
+        );
       }
 
       setMessage("Ticket created successfully!");
 
-      setFormData({
-        title: "",
-        description: "",
-        departmentId: "",
-        category: "",
-        location: "",
-        priority: "",
-        safetyFlag: false,
-        image: null,
-      });
+      setFormData(initialFormData);
 
-      document.getElementById("ticket-image").value = "";
+      const imageInput =
+        document.getElementById("ticket-image");
+
+      if (imageInput) {
+        imageInput.value = "";
+      }
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      setError(
+        err.message || "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -87,20 +100,40 @@ function CreateTicket() {
 
   return (
     <div className="create-ticket-page">
-      {" "}
       <div className="create-ticket-card">
-        {" "}
+
+        {/* Header */}
         <div className="create-ticket-header">
-          {" "}
-          <h1>Report an Issue</h1>{" "}
+          <h1>Report an Issue</h1>
+
           <p>
-            Submit an issue and our team will assign it to the appropriate
-            technician.{" "}
-          </p>{" "}
+            Submit an issue and our team will assign it
+            to the appropriate technician.
+          </p>
         </div>
-        {message && <div className="ticket-message success">{message}</div>}
-        {error && <div className="ticket-message error">{error}</div>}
+
+        {/* Success Message */}
+        {message && (
+          <div
+            className="ticket-message success"
+            role="alert"
+          >
+            {message}
+          </div>
+        )}
+
+        {/* Error Message */}
+        {error && (
+          <div
+            className="ticket-message error"
+            role="alert"
+          >
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit}>
+
           {/* Title */}
           <div className="form-group">
             <label htmlFor="title">
@@ -170,20 +203,34 @@ function CreateTicket() {
               onChange={handleChange}
               required
             >
-              <option value="">Select a department</option>
+              <option value="">
+                Select a department
+              </option>
 
-              <option value="6a8d3cfd07eee994e9f60199">Electrical</option>
+              <option value="6a8d3cfd07eee994e9f60199">
+                Electrical
+              </option>
 
-              <option value="6a8d3cfd07eee994e9f6019a">Plumbing</option>
+              <option value="6a8d3cfd07eee994e9f6019a">
+                Plumbing
+              </option>
 
-              <option value="6a8d3cfd07eee994e9f6019b">IT Support</option>
+              <option value="6a8d3cfd07eee994e9f6019b">
+                IT Support
+              </option>
 
-              <option value="6a8d3cfd07eee994e9f6019d">Housekeeping</option>
+              <option value="6a8d3cfd07eee994e9f6019d">
+                Housekeeping
+              </option>
 
               <option value="6a8d3cfd07eee994e9f6019c">
-                General Maintainance and Infrastructure
+                General Maintenance and Infrastructure
               </option>
-              <option value="6a8d3cfd07eee994e9f6019e">Security</option>
+
+              <option value="6a8d3cfd07eee994e9f6019e">
+                Security
+              </option>
+
               <option value="6a8d3cfd07eee994e9f6019f">
                 General Maintenance
               </option>
@@ -203,14 +250,37 @@ function CreateTicket() {
               onChange={handleChange}
               required
             >
-              <option value="">Select a category</option>
-              <option value="electrical">Electrical</option>
-              <option value="plumbing">Plumbing</option>
-              <option value="it">IT</option>
-              <option value="furniture">Furniture</option>
-              <option value="cleanliness">Cleanliness</option>
-              <option value="infrastructure">Infrastructure</option>
-              <option value="other">Other</option>
+              <option value="">
+                Select a category
+              </option>
+
+              <option value="electrical">
+                Electrical
+              </option>
+
+              <option value="plumbing">
+                Plumbing
+              </option>
+
+              <option value="it">
+                IT
+              </option>
+
+              <option value="furniture">
+                Furniture
+              </option>
+
+              <option value="cleanliness">
+                Cleanliness
+              </option>
+
+              <option value="infrastructure">
+                Infrastructure
+              </option>
+
+              <option value="other">
+                Other
+              </option>
             </select>
           </div>
 
@@ -227,15 +297,29 @@ function CreateTicket() {
               onChange={handleChange}
               required
             >
-              <option value="">Select priority</option>
-              <option value="LOW">Low</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HIGH">High</option>
-              <option value="CRITICAL">Critical</option>
+              <option value="">
+                Select priority
+              </option>
+
+              <option value="LOW">
+                Low
+              </option>
+
+              <option value="MEDIUM">
+                Medium
+              </option>
+
+              <option value="HIGH">
+                High
+              </option>
+
+              <option value="CRITICAL">
+                Critical
+              </option>
             </select>
           </div>
 
-          {/* Safety */}
+          {/* Safety Flag */}
           <div className="safety-option">
             <input
               id="safetyFlag"
@@ -246,14 +330,20 @@ function CreateTicket() {
             />
 
             <label htmlFor="safetyFlag">
-              <strong>Safety issue</strong>
-              <small>Check this if the issue may create a safety risk.</small>
+              <strong>Safety Issue</strong>
+
+              <small>
+                Check this if the issue may create a
+                safety risk.
+              </small>
             </label>
           </div>
 
-          {/* Image */}
+          {/* Image Upload */}
           <div className="form-group">
-            <label htmlFor="ticket-image">Attach Image</label>
+            <label htmlFor="ticket-image">
+              Attach Image
+            </label>
 
             <input
               id="ticket-image"
@@ -264,18 +354,23 @@ function CreateTicket() {
             />
 
             <small className="file-help">
-              Upload an image showing the issue, if available.
+              Upload an image showing the issue,
+              if available.
             </small>
           </div>
 
-          {/* Submit */}
-          <button
+          {/* Submit Button */}
+          <Button
             type="submit"
+            variant="primary"
             className="submit-ticket-button"
             disabled={loading}
           >
-            {loading ? "Creating Ticket..." : "Submit Ticket"}
-          </button>
+            {loading
+              ? "Creating Ticket..."
+              : "Submit Ticket"}
+          </Button>
+
         </form>
       </div>
     </div>
