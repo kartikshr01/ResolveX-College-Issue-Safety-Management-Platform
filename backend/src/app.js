@@ -31,12 +31,10 @@ app.use(cookieParser());
 app.use("/api/activity", activityRoutes);
 app.use("/api/issues", safetyRoutes);
 app.use("/api/notifications", notificationRoutes);
-
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/admin", adminRouter);
-
 
 app.use(errorHandler);
 
