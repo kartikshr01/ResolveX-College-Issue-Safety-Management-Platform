@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams ,useLocation } from "react-router-dom";
 import axios from "axios";
 import "./TicketDetails.css";
 
-const TicketDetails = () => {
+
+const TicketDetails = () => { 
+  // const { id } = useParams();
+const location = useLocation();
+const fromAdmin = location.state?.fromAdmin;
   const { ticketId } = useParams();
   const navigate = useNavigate();
 
@@ -14,12 +18,13 @@ const TicketDetails = () => {
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/tickets/my/${ticketId}`,
-          {
-            withCredentials: true,
-          },
-        );
+        const endpoint = fromAdmin
+          ? `/api/tickets/admin/${ticketId}`
+          : `/api/tickets/my/${ticketId}`;
+
+        const response = await axios.get(`http://localhost:3000${endpoint}`, {
+          withCredentials: true,
+        });
 
         setTicket(response.data.data);
       } catch (error) {
@@ -47,7 +52,10 @@ const TicketDetails = () => {
   if (error) {
     return (
       <div className="ticket-details-container">
-        <button className="back-btn" onClick={() => navigate("/tickets/my-tickets")}>
+        <button
+          className="back-btn"
+          onClick={() => navigate("/tickets/my-tickets")}
+        >
           ← Back to My Tickets
         </button>
 

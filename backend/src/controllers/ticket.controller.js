@@ -38,6 +38,23 @@ const getTicketById = async (req, res) => {
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
+
+//Controller -  get ticket by id ( admin use only )
+const getTicketById_forAdmin = async (req, res) => {
+  const ticket = await ticketService.getTicketById_forAdmin(
+    req.params.ticketId,
+  );
+  if (!ticket) {
+    throw apiError(
+      404,
+      null,
+      `Ticket not found for Ticket Id : ${req.params.ticketId}`,
+    );
+  }
+
+  return apiResponse(res, 200, "Ticket fetched successfully", ticket);
+};
+
 // Controller - Get All Ticket( for admin only )
 const getAllTickets = async (req, res) => {
   const tickets = await ticketService.getAllTickets();
@@ -100,4 +117,5 @@ module.exports = {
   updateTicket,
   updateTicketImage,
   getAllTickets,
+  getTicketById_forAdmin
 };

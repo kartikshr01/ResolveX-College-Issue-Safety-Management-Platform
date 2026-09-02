@@ -28,9 +28,16 @@ router.get(
   "/my/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.getTicketById),
+); 
+
+//Route : Get Ticket by Id ( admin use only )
+router.get(
+  "/admin/:ticketId",
+  authMiddleware,roleMiddleware("ADMIN") , 
+  asyncHandler(ticketController.getTicketById_forAdmin),
 );
 
-// Route : Get All Ticket ( for admin only ) 
+// Route : Get All Ticket ( admin use only ) 
 router.get("/all" , authMiddleware , roleMiddleware("ADMIN") , asyncHandler(ticketController.getAllTickets))
 
 
