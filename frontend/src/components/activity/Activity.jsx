@@ -19,10 +19,15 @@ function Activity() {
 
         const data = await getMyActivity();
 
-        setActivities(Array.isArray(data) ? data : []);
+        console.log("ACTIVITY API DATA:", data);
+
+        setActivities(
+          Array.isArray(data)
+            ? data.filter((activity) => activity.ticketId)
+            : [],
+        );
       } catch (err) {
         console.error("Failed to fetch activities:", err);
-
         setError("Unable to load your activity.");
       } finally {
         setLoading(false);
@@ -44,142 +49,144 @@ function Activity() {
     });
   };
 
-  if (loading) {
-    return (
-      <main className={styles.page}>
+  return (
+    <main className={styles.page}>
+      {/* =========================
+          LOADING
+      ========================= */}
+
+      {loading && (
         <div className={styles.message}>
           <p>Loading your activity...</p>
         </div>
-      </main>
-    );
-  }
+      )}
 
-  if (error) {
-    return (
-      <main className={styles.page}>
+      {/* =========================
+          ERROR
+      ========================= */}
+
+      {!loading && error && (
         <div className={styles.message}>
           <h2>Something went wrong</h2>
           <p>{error}</p>
         </div>
-      </main>
-    );
-  }
+      )}
 
-  return (
-    <main className={styles.page}>
-      <div className={styles.header}>
-        <div>
-          <p className={styles.eyebrow}>YOUR ACTIVITY</p>
+      {/* =========================
+          CONTENT
+      ========================= */}
 
-          <h1>Activity</h1>
+      {!loading && !error && (
+        <>
+          <div className={styles.header}>
+            <div>
+              <p className={styles.eyebrow}>YOUR ACTIVITY</p>
 
-          <p className={styles.subtitle}>
-            Track the activity and updates related to your reported issues.
-          </p>
-        </div>
+              <h1>Activity</h1>
 
-        <span className={styles.count}>
-          {activities.length}{" "}
-          {activities.length === 1 ? "Activity" : "Activities"}
-        </span>
-      </div>
+              <p className={styles.subtitle}>
+                Track the activity and updates related to your reported issues.
+              </p>
+            </div>
 
-      {activities.length === 0 ? (
-        <div className={styles.empty}>
-          <div className={styles.emptyIcon}>📋</div>
+            <span className={styles.count}>
+              {activities.length}{" "}
+              {activities.length === 1 ? "Activity" : "Activities"}
+            </span>
+          </div>
 
-          <h2>No activity yet</h2>
+          {activities.length === 0 ? (
+            <div className={styles.empty}>
+              <div className={styles.emptyIcon}>📋</div>
 
-          <p>
-            Activity related to your reported issues will appear here.
-          </p>
+              <h2>No activity yet</h2>
 
-          <button
-            className={styles.backButton}
-            onClick={() => navigate("/safety")}
-          >
-            Back to Safety Feed
-          </button>
-        </div>
-      ) : (
-        <div className={styles.list}>
-          {activities.map((activity) => {
-            const ticket = activity.ticketId;
+              <p>
+                Activity related to your reported issues will appear here.
+              </p>
 
-            return (
-              <article
-                key={activity._id}
-                className={styles.card}
+              <button
+                className={styles.backButton}
+                onClick={() => navigate("/safety")}
               >
-                <div className={styles.timeline}>
-                  <div className={styles.dot}></div>
+                Back to Safety Feed
+              </button>
+            </div>
+          ) : (
+            <div className={styles.list}>
+              {activities.map((activity) => {
+                const ticket = activity.ticketId;
 
-                  <div className={styles.line}></div>
-                </div>
+                return (
+                  <article key={activity._id} className={styles.card}>
+                    <div className={styles.timeline}>
+                      <div className={styles.dot}></div>
+                      <div className={styles.line}></div>
+                    </div>
 
-                <div className={styles.cardContent}>
-                  <div className={styles.topRow}>
-                    <span className={styles.action}>
-                      {activity.action?.replaceAll("_", " ")}
-                    </span>
+                    <div className={styles.cardContent}>
+                      <div className={styles.topRow}>
+                        <span className={styles.action}>
+                          {activity.action?.replaceAll("_", " ")}
+                        </span>
 
-                    <span className={styles.date}>
-                      {formatDate(activity.createdAt)}
-                    </span>
-                  </div>
-
-                  <h2>
-                    {activity.message ||
-                      "Activity recorded for your ticket."}
-                  </h2>
-
-                  {ticket && (
-                    <div className={styles.ticketInfo}>
-                      <div>
-                        <span>Ticket</span>
-
-                        <strong>{ticket.title}</strong>
+                        <span className={styles.date}>
+                          {formatDate(activity.createdAt)}
+                        </span>
                       </div>
 
-                      {ticket.category && (
-                        <div>
-                          <span>Category</span>
+                      <h2>
+                        {activity.message ||
+                          "Activity recorded for your ticket."}
+                      </h2>
 
-                          <strong>{ticket.category}</strong>
+                      {ticket && (
+                        <div className={styles.ticketInfo}>
+                          <div>
+                            <span>Ticket</span>
+                            <strong>{ticket.title}</strong>
+                          </div>
+
+                          {ticket.category && (
+                            <div>
+                              <span>Category</span>
+                              <strong>{ticket.category}</strong>
+                            </div>
+                          )}
+
+                          {ticket.status && (
+                            <div>
+                              <span>Status</span>
+                              <strong className={styles.status}>
+                                {ticket.status}
+                              </strong>
+                            </div>
+                          )}
                         </div>
                       )}
 
-                      {ticket.status && (
-                        <div>
-                          <span>Status</span>
-
-                          <strong className={styles.status}>
-                            {ticket.status}
-                          </strong>
-                        </div>
+                      {ticket?._id && (
+                        <button
+                          className={styles.viewButton}
+                          onClick={() =>
+                            navigate(`/safety/${ticket._id}`, {
+                              state: {
+                                issue: ticket,
+                                from: "/activity",
+                              },
+                            })
+                          }
+                        >
+                          View Ticket →
+                        </button>
                       )}
                     </div>
-                  )}
-
-                  {ticket?._id && (
-                    <button
-                      className={styles.viewButton}
-                      onClick={() =>
-                        navigate(`/safety/${ticket._id}`, {
-                          state: {
-                            issue: ticket,
-                          },
-                        })
-                      }
-                    >
-                      View Ticket →
-                    </button>
-                  )}
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </>
       )}
     </main>
   );

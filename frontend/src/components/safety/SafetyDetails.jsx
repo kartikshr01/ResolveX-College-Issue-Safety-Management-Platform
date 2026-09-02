@@ -2,10 +2,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SafetyDetails.module.css";
 
 function SafetyDetails() {
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
 
-  const issue = state?.issue;
+  const issue = location.state?.issue;
+
+  // Where did the user come from?
+  // Activity sends "/activity"
+  // Safety Feed sends "/safety"
+  const from = location.state?.from || "/safety";
+
+  const handleBack = () => {
+    navigate(from);
+  };
 
   if (!issue) {
     return (
@@ -17,8 +26,8 @@ function SafetyDetails() {
             The issue details are no longer available.
           </p>
 
-          <button onClick={() => navigate("/")}>
-            Back to Safety Feed
+          <button onClick={() => navigate("/safety")}>
+            ← Back to Safety Feed
           </button>
         </div>
       </main>
@@ -27,12 +36,16 @@ function SafetyDetails() {
 
   return (
     <section className={styles.page}>
-      {/* Back button stays on the LEFT */}
+      {/* =========================
+          BACK BUTTON
+      ========================= */}
+
       <button
         className={styles.backButton}
-        onClick={() => navigate("/")}
+        onClick={handleBack}
       >
-        ← Back to Safety Feed
+        ← Back to{" "}
+        {from === "/activity" ? "Activity" : "Safety Feed"}
       </button>
 
       <article className={styles.detailsCard}>
@@ -78,9 +91,9 @@ function SafetyDetails() {
               <span>Reported On</span>
 
               <strong>
-                {new Date(
-                  issue.createdAt
-                ).toLocaleString()}
+                {issue.createdAt
+                  ? new Date(issue.createdAt).toLocaleString()
+                  : "—"}
               </strong>
             </div>
 
@@ -88,9 +101,9 @@ function SafetyDetails() {
               <span>Last Updated</span>
 
               <strong>
-                {new Date(
-                  issue.updatedAt
-                ).toLocaleString()}
+                {issue.updatedAt
+                  ? new Date(issue.updatedAt).toLocaleString()
+                  : "—"}
               </strong>
             </div>
           </div>
