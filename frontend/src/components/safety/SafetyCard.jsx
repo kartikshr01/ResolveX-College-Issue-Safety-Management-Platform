@@ -6,9 +6,15 @@ function SafetyCard({ issue }) {
 
   const handleClick = () => {
     navigate(`/safety/${issue._id}`, {
-      state: { issue },
+      state: {
+        issue,
+        from: "/safety",
+      },
     });
   };
+
+  const priorityClass =
+    styles[issue.priority?.toLowerCase()] || "";
 
   return (
     <article
@@ -16,35 +22,89 @@ function SafetyCard({ issue }) {
       onClick={handleClick}
       role="button"
       tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
     >
-      {issue.imageUrl && (
-        <img
-          src={issue.imageUrl}
-          alt={issue.title}
-          className={styles.image}
-        />
-      )}
+      {/* =================================================
+          IMAGE
+      ================================================= */}
+
+      <div className={styles.imageWrapper}>
+        {issue.imageUrl ? (
+          <img
+            src={issue.imageUrl}
+            alt={issue.title || "Safety issue"}
+            className={styles.image}
+            loading="lazy"
+          />
+        ) : (
+          <div className={styles.noImage}>
+            <span className={styles.noImageText}>
+              No image uploaded
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* =================================================
+          CONTENT
+      ================================================= */}
 
       <div className={styles.content}>
-        <div className={styles.topRow}>
-          <span className={styles.category}>{issue.category}</span>
+        {/* =================================================
+            CATEGORY + PRIORITY
+        ================================================= */}
 
-          <span
-            className={`${styles.priority} ${
-              styles[issue.priority?.toLowerCase()]
-            }`}
-          >
-            {issue.priority}
+        <div className={styles.topRow}>
+          <span className={styles.category}>
+            {issue.category || "General"}
           </span>
+
+          {issue.priority && (
+            <span
+              className={`${styles.priority} ${priorityClass}`}
+            >
+              {issue.priority}
+            </span>
+          )}
         </div>
 
-        <h2>{issue.title}</h2>
+        {/* =================================================
+            TITLE
+        ================================================= */}
 
-        <p className={styles.description}>{issue.description}</p>
+        <h2 className={styles.title}>
+          {issue.title}
+        </h2>
 
-        <div className={styles.meta}>
-          <span>📍 {issue.location}</span>
-          <span>{issue.status}</span>
+        {/* =================================================
+            DESCRIPTION
+        ================================================= */}
+
+        <p className={styles.description}>
+          {issue.description || "No description provided."}
+        </p>
+
+        {/* =================================================
+            BOTTOM
+        ================================================= */}
+
+        <div className={styles.bottomRow}>
+          <div className={styles.location}>
+            <span className={styles.locationDot}>•</span>
+
+            <span>
+              {issue.location || "Location not specified"}
+            </span>
+          </div>
+
+          <span className={styles.status}>
+            {issue.status || "Reported"}
+          </span>
         </div>
       </div>
     </article>

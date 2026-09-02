@@ -7,6 +7,7 @@ const deleteImage = require("../utils/deleteImage");
 const notificationService = require("./notification.service");
 const activityService = require("./activity.service");
 const User = require("../models/user.model");
+const Activity = require("../models/Activity.model");
 
 // Service: Create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
@@ -154,6 +155,10 @@ const deleteTicketById = async (ticketId, userId) => {
   await Ticket.deleteOne({
     _id: ticketId,
     userId,
+  });
+
+  await Activity.deleteMany({
+    ticketId: ticketId,
   });
 
   return {
