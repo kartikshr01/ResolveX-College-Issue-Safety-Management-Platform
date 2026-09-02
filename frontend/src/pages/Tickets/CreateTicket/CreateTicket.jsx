@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../../components/common/Button";
+import Button from "../../../components/common/Button";
 import "./CreateTicket.css";
 
 function CreateTicket() {

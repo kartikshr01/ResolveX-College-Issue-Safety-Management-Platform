@@ -9,7 +9,9 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
-import CreateTicket from "../pages/Tickets/CreateTicket";
+import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
+import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -24,7 +26,7 @@ const AppRoutes = () => {
 
           {/* Ticket Routes */}
           <Route path="/tickets/create" element={<CreateTicket />} />
-          {/* <Route path="/tickets/my" element={<CreateTicket />} /> */}
+          <Route path="/tickets/my-tickets" element={<MyTickets />} />   
 
           {/* Temporary routes */}
           <Route path="/issues" element={<div>Issues Page</div>} />
