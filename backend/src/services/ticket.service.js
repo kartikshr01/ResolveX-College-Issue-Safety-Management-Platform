@@ -45,8 +45,16 @@ const createTicket = async (userId, ticketData, imageFile) => {
   });
 
   // 2. Automatically assign technician
-  await assignmentService.assignTechnician(ticket._id, ticket.departmentId);
+  const assignment = await assignmentService.assignTechnician(
+  ticket._id,
+  ticket.departmentId
+);
 
+if (!assignment) {
+  ticket.status = "PENDING";
+  ticket.technicianId = null;
+  await ticket.save();
+}
   // 3. Notify ticket creator
   await notificationService.createNotification({
     userId: ticket.userId,
