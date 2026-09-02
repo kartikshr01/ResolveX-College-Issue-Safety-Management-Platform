@@ -115,7 +115,7 @@ const getAllTechnicians = async () => {
 // Create new technician
 const createTechnician = async (techData) => {
   const { name, email, password, phone, departmentId, skills } = techData;
-
+  
   // Check department
   const department = await Department.findById(departmentId);
 
