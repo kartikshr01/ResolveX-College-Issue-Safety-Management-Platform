@@ -1,49 +1,123 @@
-import { FiGrid, FiClipboard, FiUsers, FiBell, FiUser } from "react-icons/fi";
+import { NavLink } from "react-router-dom";
+import {
+  FiGrid,
+  FiFileText,
+  FiShield,
+  FiClock,
+  FiUser,
+  FiLogOut,
+} from "react-icons/fi";
 
-function Sidebar() {
+import { useAuth } from "../../context/AuthContext";
+
+const Sidebar = () => {
+  const { user, logout } = useAuth();
+
+  const getDashboardPath = () => {
+    if (user?.role === "ADMIN") return "/admin";
+
+    if (user?.role === "TECHNICIAN") {
+      return "/technician";
+    }
+
+    return "/profile";
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="logo-mark">R</div>
+      <div className="sidebar-top">
+        <NavLink
+          to={getDashboardPath()}
+          className="sidebar-logo"
+        >
+          <div className="sidebar-logo-mark">RX</div>
 
-        <div>
-          <h2>ResolveX</h2>
-          <span>Issue Management</span>
-        </div>
+          <span>ResolveX</span>
+        </NavLink>
+
+        <nav className="sidebar-nav">
+          <NavLink
+            to={getDashboardPath()}
+            className={({ isActive }) =>
+              `sidebar-link ${
+                isActive ? "active" : ""
+              }`
+            }
+          >
+            <FiGrid />
+            <span>Dashboard</span>
+          </NavLink>
+
+          <NavLink
+            to="/issues"
+            className={({ isActive }) =>
+              `sidebar-link ${
+                isActive ? "active" : ""
+              }`
+            }
+          >
+            <FiFileText />
+            <span>Issues</span>
+          </NavLink>
+
+          <NavLink
+            to="/safety"
+            className={({ isActive }) =>
+              `sidebar-link ${
+                isActive ? "active" : ""
+              }`
+            }
+          >
+            <FiShield />
+            <span>Safety</span>
+          </NavLink>
+
+          <NavLink
+            to="/activity"
+            className={({ isActive }) =>
+              `sidebar-link ${
+                isActive ? "active" : ""
+              }`
+            }
+          >
+            <FiClock />
+            <span>Activity</span>
+          </NavLink>
+        </nav>
       </div>
 
-      <nav className="sidebar-nav">
-        <p className="nav-label">MAIN</p>
-
-        <a href="#" className="nav-item active">
-          <FiGrid />
-          <span>Dashboard</span>
-        </a>
-
-        <a href="#" className="nav-item">
-          <FiClipboard />
-          <span>Tickets</span>
-        </a>
-
-        <a href="#" className="nav-item">
-          <FiUsers />
-          <span>Technicians</span>
-        </a>
-
-        <a href="#" className="nav-item">
-          <FiBell />
-          <span>Notifications</span>
-        </a>
-
-        <p className="nav-label">ACCOUNT</p>
-
-        <a href="#" className="nav-item">
+      <div className="sidebar-bottom">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `sidebar-link ${
+              isActive ? "active" : ""
+            }`
+          }
+        >
           <FiUser />
           <span>Profile</span>
-        </a>
-      </nav>
+        </NavLink>
+
+        <button
+          type="button"
+          className="sidebar-link logout-button"
+          onClick={handleLogout}
+        >
+          <FiLogOut />
+          <span>Logout</span>
+        </button>
+      </div>
     </aside>
   );
-}
+};
 
 export default Sidebar;
