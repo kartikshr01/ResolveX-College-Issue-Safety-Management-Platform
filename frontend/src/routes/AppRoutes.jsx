@@ -11,6 +11,8 @@ import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
 import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
+import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
+import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
 
 const AppRoutes = () => {
   return (
@@ -26,7 +28,10 @@ const AppRoutes = () => {
 
           {/* Ticket Routes */}
           <Route path="/tickets/create" element={<CreateTicket />} />
-          <Route path="/tickets/my-tickets" element={<MyTickets />} />   
+          <Route path="/tickets/my-tickets" element={<MyTickets />} />
+          <Route path="/tickets/:ticketId" element={<TicketDetails />} />
+          <Route path="/tickets/all-admin" element={<allTickets />} />
+          <Route path="/tickets/:ticketId/edit" element={<EditTicket />} />
 
           {/* Temporary routes */}
           <Route path="/issues" element={<div>Issues Page</div>} />

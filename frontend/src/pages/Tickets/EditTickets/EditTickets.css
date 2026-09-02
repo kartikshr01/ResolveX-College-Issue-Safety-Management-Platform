@@ -1,0 +1,273 @@
+.edit-ticket-container {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  padding: 30px;
+
+  box-sizing: border-box;
+}
+
+.edit-ticket-header {
+  margin-bottom: 30px;
+}
+
+.edit-ticket-header h1 {
+  margin: 20px 0 8px;
+
+  font-size: 30px;
+
+  color: #1f2937;
+}
+
+.edit-ticket-header p {
+  margin: 0;
+
+  color: #6b7280;
+
+  line-height: 1.6;
+}
+
+/* Back Button */
+
+.edit-back-btn {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #374151;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.edit-back-btn:hover {
+  text-decoration: underline;
+}
+
+/* Form */
+
+.edit-ticket-form {
+  padding: 30px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+/* Form Groups */
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  font-family: inherit;
+
+  box-sizing: border-box;
+
+  outline: none;
+
+  transition: border 0.2s ease;
+}
+
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 140px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #2563eb;
+}
+
+/* Two Column Row */
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+/* Safety Checkbox */
+
+.safety-checkbox {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 10px 0 25px;
+
+  padding: 14px;
+
+  border: 1px solid #fee2e2;
+
+  border-radius: 8px;
+
+  background: #fff7f7;
+}
+
+.safety-checkbox input {
+  width: 18px;
+
+  height: 18px;
+
+  cursor: pointer;
+}
+
+.safety-checkbox label {
+  font-size: 14px;
+
+  color: #991b1b;
+
+  cursor: pointer;
+}
+
+/* Actions */
+
+.edit-ticket-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.cancel-edit-btn,
+.save-ticket-btn {
+  padding: 11px 20px;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Cancel */
+
+.cancel-edit-btn {
+  border: 1px solid #d1d5db;
+
+  background: white;
+
+  color: #374151;
+}
+
+.cancel-edit-btn:hover {
+  background: #f9fafb;
+}
+
+/* Save */
+
+.save-ticket-btn {
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+}
+
+.save-ticket-btn:hover {
+  opacity: 0.9;
+}
+
+.save-ticket-btn:disabled,
+.cancel-edit-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+/* Messages */
+
+.loading-message {
+  font-size: 18px;
+
+  color: #555;
+}
+
+.error-message {
+  margin-bottom: 20px;
+
+  padding: 12px;
+
+  border-radius: 8px;
+
+  background: #fee2e2;
+
+  color: #b91c1c;
+
+  font-size: 14px;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .edit-ticket-container {
+    padding: 20px;
+  }
+
+  .edit-ticket-form {
+    padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-ticket-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-edit-btn,
+  .save-ticket-btn {
+    width: 100%;
+  }
+}
