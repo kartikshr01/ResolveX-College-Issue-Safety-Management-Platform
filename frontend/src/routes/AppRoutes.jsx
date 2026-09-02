@@ -7,40 +7,25 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
-
-
+import CreateTicket from "../pages/Tickets/CreateTicket"
 const AppRoutes = () => {
   return (
     <Routes>
-
       {/* Public Routes */}
 
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
 
-
       {/* Protected Routes */}
 
       <Route element={<ProtectedRoute />}>
-
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
-
+        <Route path="/profile" element={<Profile />} />
       </Route>
-
 
       {/* Role-Based Routes */}
 
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["ADMIN"]}
-          />
-        }
-      >
+      <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route
           path="/admin"
           element={
@@ -51,14 +36,7 @@ const AppRoutes = () => {
         />
       </Route>
 
-
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["TECHNICIAN"]}
-          />
-        }
-      >
+      <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
         <Route
           path="/technician"
           element={
@@ -69,33 +47,23 @@ const AppRoutes = () => {
         />
       </Route>
 
-
       {/* Unauthorized */}
 
-      <Route
-        path="/unauthorized"
-        element={<Unauthorized />}
-      />
-
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Default Route */}
 
-      <Route
+      {/* <Route
         path="/"
         element={<Navigate to="/login" replace />}
       />
-
+ */}
 
       {/* Unknown Routes */}
 
-      <Route
-        path="*"
-        element={<Navigate to="/" replace />}
-      />
-
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };
-
 
 export default AppRoutes;
