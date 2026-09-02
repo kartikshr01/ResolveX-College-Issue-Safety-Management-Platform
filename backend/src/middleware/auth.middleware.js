@@ -21,6 +21,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
 
   const user = await User.findById(decoded.userId || decoded._id).select("-passwordHash");
 
+  
   if (!user) {
     throw apiError(401, "User not found");
   }
