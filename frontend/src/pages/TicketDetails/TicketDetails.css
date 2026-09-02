@@ -1,77 +1,220 @@
 .ticket-details {
   min-height: 100vh;
+  background: var(--workspace-bg);
   padding: 40px;
-  background-color: #f8fafc;
 }
 
 .ticket-details-header {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 30px;
-}
-
-.ticket-id {
-  margin-bottom: 8px;
-  color: #64748b;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.ticket-details-header h1 {
-  color: #0f172a;
-  font-size: 30px;
-}
-
-.ticket-details-status {
-  padding: 8px 16px;
-  border-radius: 20px;
-  background-color: #fef3c7;
-  color: #f59e0b;
-  font-weight: 600;
-}
-
-.ticket-details-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
   gap: 24px;
 }
 
+/* Ticket ID */
+
+.ticket-id {
+  margin: 0 0 8px;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Ticket Title */
+
+.ticket-details-header h1 {
+  margin: 0;
+
+  color: var(--text-primary);
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+/* Status */
+
+.ticket-details-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 16px;
+
+  background: var(--lavender-light);
+  color: var(--text-primary);
+
+  border: 1px solid var(--lavender);
+  border-radius: 20px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.ticket-details-content {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+/* =========================
+   COMMON CARD
+========================= */
+
 .ticket-info-card,
 .ticket-description-card {
-  padding: 24px;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+  background: var(--card-bg);
+
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+
+  padding: 26px;
+
+  box-shadow: 0 2px 8px rgba(35, 36, 39, 0.04);
+
+  transition: 0.2s ease;
 }
+
+.ticket-info-card:hover,
+.ticket-description-card:hover {
+  border-color: var(--lavender);
+
+  box-shadow: 0 8px 20px rgba(35, 36, 39, 0.07);
+}
+
+/* =========================
+   CARD HEADINGS
+========================= */
 
 .ticket-info-card h2,
 .ticket-description-card h2 {
-  margin-bottom: 20px;
-  color: #0f172a;
-  font-size: 20px;
+  margin: 0 0 22px;
+
+  color: var(--text-primary);
+
+  font-size: 19px;
+  font-weight: 700;
 }
+
+/* =========================
+   INFORMATION ROW
+========================= */
 
 .ticket-info-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
-  border-bottom: 1px solid #e2e8f0;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.ticket-info-row:first-of-type {
+  padding-top: 0;
 }
 
 .ticket-info-row:last-child {
+  padding-bottom: 0;
   border-bottom: none;
 }
 
 .ticket-info-row span {
-  color: #64748b;
+  color: var(--text-secondary);
+
+  font-size: 14px;
 }
 
 .ticket-info-row strong {
-  color: #0f172a;
+  color: var(--text-primary);
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
+/* =========================
+   DESCRIPTION
+========================= */
+
 .ticket-description-card p {
-  color: #64748b;
-  line-height: 1.7;
-}   
+  margin: 0;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+  .ticket-details {
+    padding: 28px 18px;
+  }
+
+  .ticket-details-header {
+    flex-direction: column;
+    margin-bottom: 22px;
+  }
+
+  .ticket-details-header h1 {
+    font-size: 25px;
+  }
+
+  .ticket-details-content {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-info-card,
+  .ticket-description-card {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 500px) {
+  .ticket-details {
+    padding: 20px 14px;
+  }
+
+  .ticket-details-header h1 {
+    font-size: 22px;
+  }
+
+  .ticket-details-status {
+    align-self: flex-start;
+  }
+
+  .ticket-info-row {
+    gap: 20px;
+  }
+}
+.ticket-workflow {
+  max-width: 1180px;
+  margin: 26px auto 0;
+}
+
+.ticket-workflow .status-workflow {
+  width: 100%;
+}
+
+/* Mobile */
+
+@media (max-width: 850px) {
+  .ticket-workflow {
+    margin-top: 20px;
+  }
+}

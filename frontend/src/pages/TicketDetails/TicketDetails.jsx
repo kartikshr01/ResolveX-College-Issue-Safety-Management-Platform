@@ -1,8 +1,15 @@
+import { useState } from "react";
+
 import "./TicketDetails.css";
+import TicketStatusWorkflow from "../../components/TicketStatusWorkflow/TicketStatusWorkflow";
 
 function TicketDetails() {
+  const [status, setStatus] = useState("Assigned");
+
   return (
     <div className="ticket-details">
+
+      {/* Header */}
       <div className="ticket-details-header">
         <div>
           <p className="ticket-id">Ticket #FIX-001</p>
@@ -10,11 +17,14 @@ function TicketDetails() {
         </div>
 
         <span className="ticket-details-status">
-          Assigned
+          {status}
         </span>
       </div>
 
+      {/* Ticket Content */}
       <div className="ticket-details-content">
+
+        {/* Information */}
         <section className="ticket-info-card">
           <h2>Ticket Information</h2>
 
@@ -39,6 +49,7 @@ function TicketDetails() {
           </div>
         </section>
 
+        {/* Description */}
         <section className="ticket-description-card">
           <h2>Description</h2>
 
@@ -48,7 +59,17 @@ function TicketDetails() {
             the pipe and resolve the issue.
           </p>
         </section>
+
       </div>
+
+      {/* Status Workflow */}
+      <div className="ticket-workflow">
+        <TicketStatusWorkflow 
+          status={status}
+          setStatus={setStatus}
+        />
+      </div>
+
     </div>
   );
 }

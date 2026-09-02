@@ -1,20 +1,214 @@
+/* =========================
+   TECHNICIAN DASHBOARD
+========================= */
+
 .technician-dashboard {
   min-height: 100vh;
-  padding: 30px 40px;
-  background-color: #f8fafc;
+  background: var(--page-bg);
 }
 
-.technician-dashboard h1 {
-  margin-bottom: 10px;
-  color: #0f172a;
+
+/* =========================
+   MAIN
+========================= */
+
+.technician-main {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+
+  padding: 42px 48px;
 }
 
-.technician-dashboard > p {
-  color: #64748b;
+
+/* =========================
+   HEADER
+========================= */
+
+.technician-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 34px;
 }
 
-.technician-dashboard h2 {
-  margin-top: 30px;
-  margin-bottom: 15px;
-  color: #0f172a;
+
+.dashboard-label {
+  margin: 0 0 8px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+}
+
+
+.technician-header h1 {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-size: 32px;
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
+}
+
+
+.dashboard-subtitle {
+  margin: 8px 0 0;
+
+  color: var(--muted);
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   AVAILABILITY
+========================= */
+
+.availability {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  background: var(--ink);
+  color: var(--lime);
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+.availability-dot {
+  width: 7px;
+  height: 7px;
+
+  background: var(--lime);
+
+  border-radius: 50%;
+}
+
+
+/* =========================
+   ASSIGNED SECTION
+========================= */
+
+.assigned-section {
+  margin-top: 38px;
+}
+
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+
+.section-label {
+  margin: 0 0 6px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 1.3px;
+}
+
+
+.section-header h2 {
+  margin: 0;
+
+  color: var(--ink);
+
+  font-size: 21px;
+  font-weight: 800;
+}
+
+
+.section-header p:not(.section-label) {
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+
+.ticket-count {
+  padding: 7px 13px;
+
+  background: var(--category-bg);
+  color: var(--category-text);
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   TICKET LIST
+========================= */
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .technician-main {
+    padding: 32px 24px;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .technician-main {
+    padding: 26px 18px;
+  }
+
+  .technician-header {
+    flex-direction: column;
+  }
+
+  .technician-header h1 {
+    font-size: 28px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
 }

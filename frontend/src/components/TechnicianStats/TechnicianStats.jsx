@@ -1,26 +1,48 @@
 import "./TechnicianStats.css";
+
 function TechnicianStats() {
   return (
     <div className="technician-stats">
-      <div className="stat-card">
-        <h3>Assigned</h3>
-        <p>0</p>
+
+      <div className="stat-card stat-highlight">
+        <div>
+          <p>Assigned</p>
+          <h3>1</h3>
+        </div>
+
+        <span className="stat-icon">A</span>
       </div>
 
-      <div className="stat-card">
-        <h3>In Progress</h3>
-        <p>0</p>
-      </div>
 
       <div className="stat-card">
-        <h3>Resolved</h3>
-        <p>0</p>
+        <div>
+          <p>In Progress</p>
+          <h3>0</h3>
+        </div>
+
+        <span className="stat-icon">P</span>
       </div>
 
+
       <div className="stat-card">
-        <h3>Pending</h3>
-        <p>0</p>
+        <div>
+          <p>Resolved</p>
+          <h3>0</h3>
+        </div>
+
+        <span className="stat-icon">R</span>
       </div>
+
+
+      <div className="stat-card">
+        <div>
+          <p>Pending</p>
+          <h3>0</h3>
+        </div>
+
+        <span className="stat-icon">P</span>
+      </div>
+
     </div>
   );
 }

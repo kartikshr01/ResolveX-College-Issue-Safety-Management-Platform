@@ -1,43 +1,109 @@
 .status-workflow {
-  margin-top: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
   padding: 24px;
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+
+  box-shadow: 0 2px 8px rgba(35, 36, 39, 0.04);
 }
 
 .status-workflow h2 {
-  margin-bottom: 20px;
-  color: #0f172a;
-  font-size: 20px;
+  margin: 0 0 20px;
+
+  color: var(--text-primary);
+
+  font-size: 19px;
+  font-weight: 700;
 }
 
+/* =========================
+   STATUS OPTIONS
+========================= */
+
 .status-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
+/* =========================
+   STATUS BUTTON
+========================= */
+
 .status-button {
-  padding: 10px 18px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background-color: #ffffff;
-  cursor: pointer;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+
+  padding: 13px 16px;
+
+  background: var(--light-bg);
+  color: var(--text-secondary);
+
+  font-size: 14px;
   font-weight: 600;
-}
 
-.status-assigned {
-  color: #2563eb;
-}
+  cursor: pointer;
 
-.status-progress {
-  color: #f59e0b;
-}
-
-.status-resolved {
-  color: #16a34a;
+  transition: all 0.2s ease;
 }
 
 .status-button:hover {
-  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* =========================
+   ASSIGNED
+========================= */
+
+.status-assigned {
+  border-color: var(--lavender);
+  background: var(--lavender-light);
+  color: var(--text-primary);
+}
+
+.status-assigned:hover {
+  background: var(--lavender);
+}
+
+/* =========================
+   IN PROGRESS
+========================= */
+
+.status-progress {
+  border-color: var(--lime-primary);
+  background: var(--lime-light);
+  color: var(--text-primary);
+}
+
+.status-progress:hover {
+  background: var(--lime-primary);
+}
+
+/* =========================
+   RESOLVED
+========================= */
+
+.status-resolved {
+  border-color: var(--border-subtle);
+  background: var(--light-bg);
+  color: var(--text-primary);
+}
+
+.status-resolved:hover {
+  border-color: var(--lime-primary);
+  background: var(--lime-light);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 650px) {
+  .status-options {
+    grid-template-columns: 1fr;
+  }
+
+  .status-button {
+    width: 100%;
+  }
 }
