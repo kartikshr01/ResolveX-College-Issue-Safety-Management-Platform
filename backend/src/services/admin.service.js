@@ -127,7 +127,7 @@ const createTechnician = async (techData) => {
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    throw new ApiError(400, "User with this email already exists");
+    throw  ApiError(400, "User with this email already exists");
   }
 
   // Hash password
@@ -172,12 +172,12 @@ const updateTechnician = async (userId, updateData) => {
   const user = await User.findById(userId);
 
   if (!user) {
-    throw new ApiError(404, "User not found");
+    throw  ApiError(404, "User not found");
   }
 
   // Only STUDENT or TECHNICIAN can be handled here
   if (user.role !== "STUDENT" && user.role !== "TECHNICIAN") {
-    throw new ApiError(
+    throw  ApiError(
       400,
       "Only student users can be converted to technician or existing technicians can be updated",
     );
@@ -188,21 +188,21 @@ const updateTechnician = async (userId, updateData) => {
     const department = await Department.findById(updateData.departmentId);
 
     if (!department) {
-      throw new ApiError(404, "Department not found");
+      throw  ApiError(404, "Department not found");
     }
   }
 
   // Student → Technician
   if (user.role === "STUDENT") {
     if (!updateData.departmentId) {
-      throw new ApiError(
+      throw  ApiError(
         400,
         "Department is required when converting a student to technician",
       );
     }
 
     if (updateData.phone === undefined) {
-      throw new ApiError(
+      throw  ApiError(
         400,
         "Phone number is required when converting a student to technician",
       );
@@ -255,7 +255,7 @@ const updateTechnician = async (userId, updateData) => {
   });
 
   if (!technician) {
-    throw new ApiError(404, "Technician profile not found");
+    throw  ApiError(404, "Technician profile not found");
   }
 
   // Fields Admin can update
@@ -297,9 +297,16 @@ const updateTechnician = async (userId, updateData) => {
   return technician;
 };
 
+const getDepartments = async () => {
+  return await Department.find({ active: true })
+    .select("_id name")
+    .sort({ name: 1 });
+};
+
 module.exports = {
   getSystemStatistics,
   createTechnician,
   getAllTechnicians,
   updateTechnician,
+  getDepartments,
 };

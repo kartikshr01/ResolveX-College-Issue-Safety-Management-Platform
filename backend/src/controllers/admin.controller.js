@@ -38,7 +38,7 @@ const createTechnician = asyncHandler(async (req, res) => {
   const { error, value } = createTechnicianSchema.validate(req.body);
 
   if (error) {
-    throw new ApiError(400, error.details[0].message);
+    throw  ApiError(400, error.details[0].message);
   }
 
   const newTechnician = await adminService.createTechnician(value);
@@ -58,7 +58,7 @@ const updateTechnician = asyncHandler(async (req, res) => {
   console.log("VALIDATED VALUE:", value);
 
   if (error) {
-    throw new ApiError(400, error.details[0].message);
+    throw ApiError(400, error.details[0].message);
   }
 
   const updatedTechnician = await adminService.updateTechnician(
@@ -74,9 +74,21 @@ const updateTechnician = asyncHandler(async (req, res) => {
   );
 });
 
+const getDepartments = asyncHandler(async (req, res) => {
+  const departments = await adminService.getDepartments();
+
+  return ApiResponse(
+    res,
+    200,
+    "Departments fetched successfully",
+    departments
+  );
+});
+
 module.exports = {
   getStatistics,
   getTechnicians,
   createTechnician,
   updateTechnician,
+  getDepartments,
 };

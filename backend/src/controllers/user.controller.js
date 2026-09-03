@@ -55,8 +55,20 @@ const changePassword = async (req, res) => {
   );
 };
 
+const getAllUsers = async (req, res) => {
+  const users = await userService.getAllUsers();
+
+  return apiResponse(
+    res,
+    200,
+    "Users fetched successfully",
+    users
+  );
+};
+
 module.exports = {
   getMyProfile,
   updateMyProfile,
-  changePassword
+  changePassword,
+  getAllUsers
 };

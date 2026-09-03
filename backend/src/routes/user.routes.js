@@ -3,6 +3,7 @@ const express = require("express");
 const userController = require("../controllers/user.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const validate = require("../middleware/validation.middleware");
+const roleMiddleware = require("../middleware/role.middleware");
 
 const {
   updateProfileValidator,
@@ -29,6 +30,13 @@ router.patch(
   authMiddleware,
   validate(changePasswordValidator),
   userController.changePassword,
+);
+
+router.get(
+  "/",
+  authMiddleware,
+  roleMiddleware("ADMIN"),
+  userController.getAllUsers
 );
 
 module.exports = router;

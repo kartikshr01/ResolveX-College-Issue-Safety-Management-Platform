@@ -13,6 +13,8 @@ const activityRoutes = require("./routes/activity.routes");
 const errorHandler = require("../src/middleware/errorHandler");
 const adminRouter = require("../src/routes/admin.routes");
 
+
+
 const app = express();
 
 
@@ -36,6 +38,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/admin", adminRouter);
+
 
 
 app.use(errorHandler);

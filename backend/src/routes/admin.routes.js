@@ -21,4 +21,6 @@ authRouter.post("/technicians", adminController.createTechnician);
 
 authRouter.patch("/technicians/:id", adminController.updateTechnician);
 
+authRouter.get("/departments",adminController.getDepartments);
+
 module.exports = authRouter;
