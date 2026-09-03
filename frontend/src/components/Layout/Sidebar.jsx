@@ -1,27 +1,32 @@
 import { NavLink } from "react-router-dom";
-import {
-  FiGrid,
-  FiFileText,
-  FiShield,
-  FiClock,
-  FiUser,
-  FiLogOut,
-} from "react-icons/fi";
+import { FiLogOut } from "react-icons/fi";
 
 import { useAuth } from "../../context/AuthContext";
+
+import {
+  navigationConfig,
+  bottomNavigation,
+} from "./navigationConfig";
+
 
 const Sidebar = () => {
   const { user, logout } = useAuth();
 
-  const getDashboardPath = () => {
-    if (user?.role === "ADMIN") return "/admin";
+  const role = user?.role;
 
-    if (user?.role === "TECHNICIAN") {
+  const navigationItems =
+    navigationConfig[role] || [];
+
+  const getDashboardPath = () => {
+    if (role === "ADMIN") return "/admin";
+
+    if (role === "TECHNICIAN") {
       return "/technician";
     }
 
-    return "/profile";
+    return "/dashboard";
   };
+
 
   const handleLogout = async () => {
     try {
@@ -31,81 +36,81 @@ const Sidebar = () => {
     }
   };
 
+
   return (
     <aside className="sidebar">
+
       <div className="sidebar-top">
+
+        {/* Logo */}
+
         <NavLink
           to={getDashboardPath()}
           className="sidebar-logo"
         >
-          <div className="sidebar-logo-mark">RX</div>
+          <div className="sidebar-logo-mark">
+            RX
+          </div>
 
           <span>ResolveX</span>
         </NavLink>
 
+
+        {/* Role-Based Navigation */}
+
         <nav className="sidebar-nav">
-          <NavLink
-            to={getDashboardPath()}
-            className={({ isActive }) =>
-              `sidebar-link ${
-                isActive ? "active" : ""
-              }`
-            }
-          >
-            <FiGrid />
-            <span>Dashboard</span>
-          </NavLink>
 
-          <NavLink
-            to="/issues"
-            className={({ isActive }) =>
-              `sidebar-link ${
-                isActive ? "active" : ""
-              }`
-            }
-          >
-            <FiFileText />
-            <span>Issues</span>
-          </NavLink>
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
 
-          <NavLink
-            to="/safety"
-            className={({ isActive }) =>
-              `sidebar-link ${
-                isActive ? "active" : ""
-              }`
-            }
-          >
-            <FiShield />
-            <span>Safety</span>
-          </NavLink>
+            return (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `sidebar-link ${
+                    isActive ? "active" : ""
+                  }`
+                }
+              >
+                <Icon />
 
-          <NavLink
-            to="/activity"
-            className={({ isActive }) =>
-              `sidebar-link ${
-                isActive ? "active" : ""
-              }`
-            }
-          >
-            <FiClock />
-            <span>Activity</span>
-          </NavLink>
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
+
         </nav>
+
       </div>
 
+
+      {/* Bottom Navigation */}
+
       <div className="sidebar-bottom">
-        <NavLink
-          to="/profile"
-          className={({ isActive }) =>
-            `sidebar-link ${
-              isActive ? "active" : ""
-            }`
-          }
-        >
-          <FiUser />
-          <span>Profile</span>
-        </NavLink>
+
+        {bottomNavigation.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `sidebar-link ${
+                  isActive ? "active" : ""
+                }`
+              }
+            >
+              <Icon />
+
+              <span>{item.label}</span>
+            </NavLink>
+          );
+        })}
+
+
+        {/* Logout */}
 
         <button
           type="button"
@@ -113,11 +118,15 @@ const Sidebar = () => {
           onClick={handleLogout}
         >
           <FiLogOut />
+
           <span>Logout</span>
         </button>
+
       </div>
+
     </aside>
   );
 };
+
 
 export default Sidebar;
