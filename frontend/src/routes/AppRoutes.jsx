@@ -27,6 +27,7 @@ const AppRoutes = () => {
         <Route element={<AppLayout />}>
           <Route path="/profile" element={<Profile />} />
 
+<<<<<<< Updated upstream
           {/* Ticket Routes */}
           <Route path="/tickets/create" element={<CreateTicket />} />
           <Route path="/tickets/my-tickets" element={<MyTickets />} />
@@ -40,13 +41,58 @@ const AppRoutes = () => {
           <Route path="/safety" element={<div>Safety Page</div>} />
 
           <Route path="/activity" element={<div>Activity Page</div>} />
+=======
+          {/* Ticket/Issue Reporting */}
+          <Route
+            path="/report-issue"
+            element={<PlaceholderPage title="Report an Issue" />}
+          />
+          <Route
+            path="/safety"
+            element={<PlaceholderPage title="Safety Reports" />}
+          />
+
+          {/* Main Ticket Feature Routes  */}
+          <Route path="/tickets/create" element={<CreateTicket />} />
+          <Route path="/tickets/my-tickets" element={<MyTickets />} />
+          <Route path="/tickets/:ticketId" element={<TicketDetails />} />
+          <Route
+            path="/tickets/admin/all"
+            element={<AllTickets_Admin_Only />}
+          />
+          <Route path="/tickets/:ticketId/edit" element={<EditTicket />} /> 
+
+>>>>>>> Stashed changes
         </Route>
       </Route>
 
       {/* Admin Routes */}
       <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route element={<AppLayout />}>
+<<<<<<< Updated upstream
           <Route path="/admin" element={<h1>Admin Dashboard</h1>} />
+=======
+          <Route
+            path="/admin"
+            element={<PlaceholderPage title="Admin Dashboard" />}
+          />
+          <Route
+            path="/admin/issues"
+            element={<PlaceholderPage title="All Issues" />}
+          />
+          <Route
+            path="/admin/technicians"
+            element={<PlaceholderPage title="Technician Management" />}
+          />
+          <Route
+            path="/admin/departments"
+            element={<PlaceholderPage title="Department Management" />}
+          />
+          <Route
+            path="/admin/analytics"
+            element={<PlaceholderPage title="Analytics" />}
+          />
+>>>>>>> Stashed changes
         </Route>
       </Route>
 
