@@ -3,62 +3,69 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
 
+// Public pages
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+
+// Common pages
 import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
+// Admin pages
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import TechnicianManagement from "../pages/admin/TechnicianManagement";
+import Statistics from "../pages/admin/Statistics";
+import AdminActivity from "../pages/admin/ActivityAdmin";
+import AdminTicketDetails from "../pages/admin/AdminTicketDetails";
 
 const AppRoutes = () => {
   return (
     <Routes>
-
-      {/* Public Routes */}
+      {/* =========================
+          PUBLIC ROUTES
+      ========================== */}
 
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
 
-
-      {/* Protected Routes */}
+      {/* =========================
+          PROTECTED ROUTES
+      ========================== */}
 
       <Route element={<ProtectedRoute />}>
-
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
-
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
+      {/* =========================
+          ADMIN ROUTES
+      ========================== */}
 
-      {/* Role-Based Routes */}
+      <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
+        {/* Admin Dashboard */}
+        <Route path="/admin" element={<AdminDashboard />} />
 
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["ADMIN"]}
-          />
-        }
-      >
+        {/* Technician Management */}
+        <Route path="/admin/technicians" element={<TechnicianManagement />} />
+
+        {/* Statistics */}
+        <Route path="/admin/statistics" element={<Statistics />} />
+
+        {/* All Admin Activities */}
+        <Route path="/admin/activity" element={<AdminActivity />} />
+
+        {/* Activity → Ticket Details */}
         <Route
-          path="/admin"
-          element={
-            <div>
-              <h1>Admin Dashboard</h1>
-            </div>
-          }
+          path="/admin/activity/ticket/:ticketId"
+          element={<AdminTicketDetails />}
         />
       </Route>
 
+      {/* =========================
+          TECHNICIAN ROUTES
+      ========================== */}
 
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["TECHNICIAN"]}
-          />
-        }
-      >
+      <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
         <Route
           path="/technician"
           element={
@@ -69,33 +76,25 @@ const AppRoutes = () => {
         />
       </Route>
 
+      {/* =========================
+          UNAUTHORIZED
+      ========================== */}
 
-      {/* Unauthorized */}
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
-      <Route
-        path="/unauthorized"
-        element={<Unauthorized />}
-      />
+      {/* =========================
+          DEFAULT ROUTE
+      ========================== */}
 
+      <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Default Route */}
+      {/* =========================
+          UNKNOWN ROUTES
+      ========================== */}
 
-      <Route
-        path="/"
-        element={<Navigate to="/login" replace />}
-      />
-
-
-      {/* Unknown Routes */}
-
-      <Route
-        path="*"
-        element={<Navigate to="/" replace />}
-      />
-
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
-
 
 export default AppRoutes;
