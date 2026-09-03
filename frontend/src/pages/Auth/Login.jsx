@@ -40,11 +40,11 @@ const Login = () => {
 
       case "STUDENT":
       case "FACULTY":
-        navigate("/profile", { replace: true });
+        navigate("/dashboard", { replace: true });
         break;
 
       default:
-        navigate("/profile", { replace: true });
+        navigate("/dashboard", { replace: true });
     }
   };
 
