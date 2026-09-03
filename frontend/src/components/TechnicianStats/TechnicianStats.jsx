@@ -1,49 +1,93 @@
 import "./TechnicianStats.css";
 
-function TechnicianStats() {
+function TechnicianStats({ tickets = [] }) {
+  const assignedCount = tickets.filter(
+    (ticket) => ticket.status === "ASSIGNED"
+  ).length;
+
+  const inProgressCount = tickets.filter(
+    (ticket) => ticket.status === "IN_PROGRESS"
+  ).length;
+
+  const resolvedCount = tickets.filter(
+    (ticket) => ticket.status === "RESOLVED"
+  ).length;
+
+  const pendingCount = tickets.filter(
+    (ticket) => ticket.status === "PENDING"
+  ).length;
+
   return (
-    <div className="technician-stats">
+    <section className="technician-stats">
 
-      <div className="stat-card stat-highlight">
-        <div>
-          <p>Assigned</p>
-          <h3>1</h3>
-        </div>
-
-        <span className="stat-icon">A</span>
-      </div>
-
+      {/* ASSIGNED */}
 
       <div className="stat-card">
-        <div>
-          <p>In Progress</p>
-          <h3>0</h3>
+        <div className="stat-content">
+          <p className="stat-title">Assigned</p>
+
+          <h3 className="stat-number">
+            {assignedCount}
+          </h3>
         </div>
 
-        <span className="stat-icon">P</span>
+        <div className="stat-icon">
+          A
+        </div>
       </div>
 
+
+      {/* IN PROGRESS */}
 
       <div className="stat-card">
-        <div>
-          <p>Resolved</p>
-          <h3>0</h3>
+        <div className="stat-content">
+          <p className="stat-title">In Progress</p>
+
+          <h3 className="stat-number">
+            {inProgressCount}
+          </h3>
         </div>
 
-        <span className="stat-icon">R</span>
+        <div className="stat-icon">
+          P
+        </div>
       </div>
 
+
+      {/* RESOLVED */}
 
       <div className="stat-card">
-        <div>
-          <p>Pending</p>
-          <h3>0</h3>
+        <div className="stat-content">
+          <p className="stat-title">Resolved</p>
+
+          <h3 className="stat-number">
+            {resolvedCount}
+          </h3>
         </div>
 
-        <span className="stat-icon">P</span>
+        <div className="stat-icon">
+          R
+        </div>
       </div>
 
-    </div>
+
+      {/* PENDING */}
+
+      <div className="stat-card">
+        <div className="stat-content">
+          <p className="stat-title">Pending</p>
+
+          <h3 className="stat-number">
+            {pendingCount}
+          </h3>
+        </div>
+
+        <div className="stat-icon">
+          P
+        </div>
+      </div>
+
+    </section>
   );
 }
 

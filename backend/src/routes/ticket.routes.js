@@ -22,7 +22,11 @@ router.post(
 
 //Route : get All Tickets of a User
 router.get("/my", authMiddleware, asyncHandler(ticketController.getMyTickets));
-
+router.get(
+  "/technician/assigned",
+  authMiddleware,
+  asyncHandler(ticketController.getAssignedTickets)
+);
 //Route : Get Ticket by Id
 router.get(
   "/my/:ticketId",

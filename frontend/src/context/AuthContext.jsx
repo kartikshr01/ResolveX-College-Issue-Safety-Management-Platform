@@ -47,12 +47,19 @@ export const AuthProvider = ({ children }) => {
 
 
   const login = async (credentials) => {
-    const response = await loginUser(credentials);
+  const response = await loginUser(credentials);
 
-    setUser(response.data);
+  if (response.data?.accessToken) {
+    localStorage.setItem(
+      "accessToken",
+      response.data.accessToken
+    );
+  }
 
-    return response;
-  };
+  setUser(response.data);
+
+  return response;
+};
 
 
   const logout = async () => {

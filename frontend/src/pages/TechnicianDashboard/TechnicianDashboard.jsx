@@ -1,54 +1,86 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import TechnicianStats from "../../components/TechnicianStats/TechnicianStats";
 import TechnicianTicketCard from "../../components/TechnicianTicketCard/TechnicianTicketCard";
-import TicketDetailsModal from "../../components/TicketDetailModal/TicketDetailModal";
+import TicketDetailModal from "../../components/TicketDetailModal/TicketDetailModal";
+
+import { getAssignedTickets } from "../../services/ticket.service";
 
 import "./TechnicianDashboard.css";
 
 function TechnicianDashboard() {
+  const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [status, setStatus] = useState("ASSIGNED");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [ticket, setTicket] = useState({
-    _id: "YOUR_TICKET_ID",
-    id: "FIX-001",
-    title: "Water Leakage in Block A",
-    description:
-      "There is a water leakage problem near the first-floor washroom in Block A. Please inspect the pipe and resolve the issue.",
-    category: "Plumbing",
-    priority: "High",
-    location: "Block A",
-    reportedOn: "01 Sep 2026",
-    image: null,
-    status: "ASSIGNED",
-  });
+  useEffect(() => {
+    const loadTickets = async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-  const handleOpenTicket = () => {
+        const response = await getAssignedTickets();
+
+        console.log("ASSIGNED TICKETS:", response);
+
+        setTickets(response.data || []);
+      } catch (error) {
+        console.error("TICKET FETCH ERROR:", error);
+
+        setError(
+          error.response?.data?.message ||
+            error.message ||
+            "Failed to fetch assigned tickets"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTickets();
+  }, []);
+
+  const handleOpenTicket = (ticket) => {
     setSelectedTicket(ticket);
+    setStatus(ticket.status);
   };
 
   const handleCloseModal = () => {
     setSelectedTicket(null);
   };
 
-  const handleStatusChange = (newStatus) => {
-    setTicket((previousTicket) => ({
-      ...previousTicket,
-      status: newStatus,
-    }));
+  const handleStatusChanged = (newStatus) => {
+    setStatus(newStatus);
 
-    setSelectedTicket((previousTicket) => ({
-      ...previousTicket,
-      status: newStatus,
-    }));
+    setTickets((previousTickets) =>
+      previousTickets.map((ticket) =>
+        ticket._id === selectedTicket?._id
+          ? {
+              ...ticket,
+              status: newStatus,
+            }
+          : ticket
+      )
+    );
+
+    setSelectedTicket((previousTicket) =>
+      previousTicket
+        ? {
+            ...previousTicket,
+            status: newStatus,
+          }
+        : null
+    );
   };
 
   return (
     <div className="technician-dashboard">
-
       <main className="technician-main">
 
-        {/* PAGE HEADER */}
+        {/* HEADER */}
+
         <header className="technician-header">
           <div>
             <p className="dashboard-label">
@@ -60,7 +92,8 @@ function TechnicianDashboard() {
             </h1>
 
             <p className="dashboard-subtitle">
-              Manage your assigned issues and keep track of their progress.
+              Manage your assigned issues and keep track
+              of their progress.
             </p>
           </div>
 
@@ -70,14 +103,17 @@ function TechnicianDashboard() {
           </div>
         </header>
 
-        {/* STATISTICS */}
-        <TechnicianStats />
+
+        {/* STATS */}
+
+        <TechnicianStats tickets={tickets} />
+
 
         {/* ASSIGNED TICKETS */}
+
         <section className="assigned-section">
 
           <div className="section-header">
-
             <div>
               <p className="section-label">
                 WORK QUEUE
@@ -87,41 +123,84 @@ function TechnicianDashboard() {
                 Assigned Tickets
               </h2>
 
-              <p>
+              <p className="section-description">
                 Issues currently assigned to you.
               </p>
             </div>
 
             <span className="ticket-count">
-              1 Ticket
+              {tickets.length}{" "}
+              {tickets.length === 1
+                ? "Ticket"
+                : "Tickets"}
             </span>
-
           </div>
 
-          {/* Ticket */}
-          <div className="ticket-list">
 
-            <TechnicianTicketCard
-              ticket={ticket}
-              onClick={handleOpenTicket}
-            />
+          {/* LOADING */}
 
-          </div>
+          {loading && (
+            <div className="ticket-list-message">
+              <p>Loading tickets...</p>
+            </div>
+          )}
+
+
+          {/* ERROR */}
+
+          {!loading && error && (
+            <div className="ticket-list-message error-message">
+              <p>{error}</p>
+            </div>
+          )}
+
+
+          {/* EMPTY */}
+
+          {!loading &&
+            !error &&
+            tickets.length === 0 && (
+              <div className="ticket-list-message">
+                <p>No tickets assigned.</p>
+              </div>
+            )}
+
+
+          {/* TICKETS */}
+
+          {!loading &&
+            !error &&
+            tickets.length > 0 && (
+              <div className="ticket-list">
+
+                {tickets.map((ticket) => (
+                  <TechnicianTicketCard
+                    key={ticket._id}
+                    ticket={ticket}
+                    onClick={() =>
+                      handleOpenTicket(ticket)
+                    }
+                  />
+                ))}
+
+              </div>
+            )}
 
         </section>
 
       </main>
 
+
       {/* TICKET MODAL */}
+
       {selectedTicket && (
-        <TicketDetailsModal
+        <TicketDetailModal
           ticket={selectedTicket}
-          status={selectedTicket.status}
-          setStatus={handleStatusChange}
+          status={status}
+          setStatus={handleStatusChanged}
           onClose={handleCloseModal}
         />
       )}
-
     </div>
   );
 }

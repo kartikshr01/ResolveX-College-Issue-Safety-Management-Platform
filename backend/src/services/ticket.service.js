@@ -8,6 +8,7 @@ const notificationService = require("./notification.service");
 const activityService = require("./activity.service");
 const User = require("../models/user.model");
 const Activity = require("../models/Activity.model");
+const Technician = require("../models/Technician.model");
 
 // Service: Create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
@@ -109,7 +110,26 @@ const getMyTickets = async (userId) => {
 
   return tickets;
 };
+// Service: Get assigned tickets for technician
+const getAssignedTickets = async (userId) => {
+  const technician = await Technician.findOne({
+    userId: userId,
+  });
 
+  if (!technician) {
+    throw apiError(404, "Technician profile not found");
+  }
+
+  const tickets = await Ticket.find({
+    technicianId: technician._id,
+  })
+    .sort({ createdAt: -1 })
+    .populate("userId", "name email")
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  return tickets;
+};
 // Service : get all tickets ( admin use only )
 const getAllTickets = async () => {
   const tickets = await Ticket.find()
@@ -295,9 +315,7 @@ module.exports = {
   updateTicketById,
   updateTicketImage,
   getAllTickets,
-<<<<<<< HEAD
-  updateTicketStatus
-=======
+  updateTicketStatus,
   getTicketById_forAdmin,
->>>>>>> e6a0e76234c878cb4cc280edcf5b041ae390a1d9
+  getAssignedTickets
 };

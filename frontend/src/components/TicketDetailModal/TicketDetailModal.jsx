@@ -1,66 +1,54 @@
 import "./TicketDetailModal.css";
-import api from "../../api/axios";
 
-function TicketDetailsModal({
+function TicketDetailModal({
   ticket,
   status,
   setStatus,
   onClose,
+  onTicketUpdated,
 }) {
   if (!ticket) return null;
 
-  // =========================
-  // UPDATE STATUS
-  // =========================
-
   const handleStatusUpdate = async (newStatus) => {
     try {
-      const response = await api.patch(
-        `/tickets/${ticket._id}/status`,
+      const response = await fetch(
+        `http://localhost:3000/api/tickets/${ticket._id}/status`,
         {
-          status: newStatus,
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            status: newStatus,
+          }),
         }
       );
 
-      console.log(
-        "Status updated successfully:",
-        response.data
-      );
+      const data = await response.json();
 
-      // Update dashboard + modal
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to update status"
+        );
+      }
+
+      // Update modal status
       setStatus(newStatus);
 
+      // Update dashboard ticket
+      if (onTicketUpdated) {
+        onTicketUpdated({
+          ...ticket,
+          status: newStatus,
+        });
+      }
+
+      console.log("Status updated successfully:", data);
     } catch (error) {
-      console.error(
-        "Status update error:",
-        error.response?.data || error.message
-      );
-
-      alert(
-        error.response?.data?.message ||
-        "Failed to update ticket status"
-      );
+      console.error("Status update error:", error);
+      alert(error.message);
     }
-  };
-
-  // =========================
-  // DISPLAY STATUS
-  // =========================
-
-  const getStatusLabel = () => {
-    if (status === "ASSIGNED") {
-      return "Assigned";
-    }
-
-    if (status === "IN_PROGRESS") {
-      return "In Progress";
-    }
-
-    if (status === "RESOLVED") {
-      return "Resolved";
-    }
-
-    return status;
   };
 
   return (
@@ -68,30 +56,22 @@ function TicketDetailsModal({
       className="ticket-modal-overlay"
       onClick={onClose}
     >
-
       <div
         className="ticket-modal"
         onClick={(event) =>
           event.stopPropagation()
         }
       >
-
-        {/* =========================
-            HEADER
-        ========================= */}
-
+        {/* HEADER */}
         <div className="ticket-modal-header">
-
           <div>
-
             <p>
-              TICKET #{ticket.id}
+              TICKET #{ticket._id}
             </p>
 
             <h2>
               {ticket.title}
             </h2>
-
           </div>
 
           <button
@@ -100,34 +80,20 @@ function TicketDetailsModal({
           >
             ×
           </button>
-
         </div>
 
-
-        {/* =========================
-            IMAGE
-        ========================= */}
-
-        {ticket.image && (
-
+        {/* IMAGE */}
+        {ticket.imageUrl && (
           <div className="modal-image">
-
             <img
-              src={ticket.image}
+              src={ticket.imageUrl}
               alt={ticket.title}
             />
-
           </div>
-
         )}
 
-
-        {/* =========================
-            TAGS
-        ========================= */}
-
+        {/* TAGS */}
         <div className="modal-tags">
-
           <span className="modal-category">
             {ticket.category}
           </span>
@@ -137,52 +103,37 @@ function TicketDetailsModal({
           </span>
 
           <span className="modal-status">
-            {getStatusLabel()}
+            {status}
           </span>
-
         </div>
 
-
-        {/* =========================
-            INFORMATION
-        ========================= */}
-
+        {/* INFO */}
         <div className="modal-info">
-
           <div>
-
-            <span>
-              Location
-            </span>
+            <span>Location</span>
 
             <strong>
               {ticket.location}
             </strong>
-
           </div>
-
 
           <div>
-
-            <span>
-              Reported On
-            </span>
+            <span>Reported On</span>
 
             <strong>
-              {ticket.reportedOn}
+              {new Date(
+                ticket.createdAt
+              ).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
             </strong>
-
           </div>
-
         </div>
 
-
-        {/* =========================
-            DESCRIPTION
-        ========================= */}
-
+        {/* DESCRIPTION */}
         <div className="modal-description">
-
           <h3>
             Description
           </h3>
@@ -190,24 +141,15 @@ function TicketDetailsModal({
           <p>
             {ticket.description}
           </p>
-
         </div>
 
-
-        {/* =========================
-            STATUS WORKFLOW
-        ========================= */}
-
+        {/* WORKFLOW */}
         <div className="modal-workflow">
-
           <h3>
             Update Status
           </h3>
 
-
           <div className="modal-status-buttons">
-
-            {/* ASSIGNED */}
 
             <button
               className={
@@ -222,9 +164,6 @@ function TicketDetailsModal({
               Assigned
             </button>
 
-
-            {/* IN PROGRESS */}
-
             <button
               className={
                 status === "IN_PROGRESS"
@@ -237,9 +176,6 @@ function TicketDetailsModal({
             >
               In Progress
             </button>
-
-
-            {/* RESOLVED */}
 
             <button
               className={
@@ -255,13 +191,10 @@ function TicketDetailsModal({
             </button>
 
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-export default TicketDetailsModal;
+export default TicketDetailModal;

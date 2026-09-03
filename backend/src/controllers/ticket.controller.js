@@ -122,6 +122,19 @@ const updateTicketStatus = async (req, res) => {
     ticket,
   );
 };
+// Controller : get assigned tickets for technician
+const getAssignedTickets = async (req, res) => {
+  const tickets = await ticketService.getAssignedTickets(
+    req.user._id
+  );
+
+  return apiResponse(
+    res,
+    200,
+    "Assigned tickets fetched successfully",
+    tickets
+  );
+};
 
 module.exports = {
   createTicket,
@@ -131,5 +144,7 @@ module.exports = {
   updateTicket,
   updateTicketImage,
   getAllTickets,
-  getTicketById_forAdmin
+  getTicketById_forAdmin,
+  updateTicketStatus,
+  getAssignedTickets
 };

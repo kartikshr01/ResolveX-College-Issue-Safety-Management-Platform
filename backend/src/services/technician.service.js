@@ -1,22 +1,19 @@
 const Technician = require("../models/Technician.model");
+const Ticket = require("../models/Ticket.model");
 
-// CREATE TECHNICIAN
 const createTechnician = async (data) => {
   const technician = await Technician.create(data);
   return technician;
 };
 
-// GET ALL TECHNICIANS
 const getTechnicians = async () => {
   return await Technician.find();
 };
 
-// GET TECHNICIAN BY ID
 const getTechnicianById = async (id) => {
   return await Technician.findById(id);
 };
 
-// UPDATE TECHNICIAN
 const updateTechnician = async (id, data) => {
   return await Technician.findByIdAndUpdate(
     id,
@@ -28,12 +25,10 @@ const updateTechnician = async (id, data) => {
   );
 };
 
-// DELETE TECHNICIAN
 const deleteTechnician = async (id) => {
   return await Technician.findByIdAndDelete(id);
 };
 
-// UPDATE AVAILABILITY
 const updateAvailability = async (id, availability) => {
   const technician = await Technician.findByIdAndUpdate(
     id,
@@ -48,7 +43,6 @@ const updateAvailability = async (id, availability) => {
     return null;
   }
 
-  // Technician became available
   if (availability === true) {
     const assignmentService = require("./assignment.service");
 
@@ -60,7 +54,6 @@ const updateAvailability = async (id, availability) => {
   return technician;
 };
 
-// INCREMENT WORKLOAD
 const incrementWorkload = async (technicianId) => {
   return await Technician.findByIdAndUpdate(
     technicianId,
@@ -69,13 +62,22 @@ const incrementWorkload = async (technicianId) => {
   );
 };
 
-// DECREMENT WORKLOAD
 const decrementWorkload = async (technicianId) => {
   return await Technician.findByIdAndUpdate(
     technicianId,
     { $inc: { currentWorkload: -1 } },
     { new: true }
   );
+};
+
+// GET ASSIGNED TICKETS
+const getAssignedTickets = async (technicianId) => {
+  return await Ticket.find({
+    technicianId: technicianId,
+  })
+    .populate("userId", "name email")
+    .populate("departmentId", "name")
+    .sort({ createdAt: -1 });
 };
 
 module.exports = {
@@ -87,4 +89,5 @@ module.exports = {
   updateAvailability,
   incrementWorkload,
   decrementWorkload,
+  getAssignedTickets,
 };

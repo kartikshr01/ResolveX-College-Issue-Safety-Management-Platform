@@ -1,92 +1,97 @@
-/* =========================
-   STATS
-========================= */
+/* ================================
+   TECHNICIAN STATS
+================================ */
 
 .technician-stats {
+  width: 100%;
+  margin-top: 32px;
+
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
 
-  grid-template-columns: repeat(4, 1fr);
-
-  gap: 16px;
+  box-sizing: border-box;
 }
 
 
-/* =========================
-   CARD
-========================= */
+/* ================================
+   STAT CARD
+================================ */
 
 .stat-card {
+  min-width: 0;
+  height: 125px;
+
+  padding: 22px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  min-height: 125px;
+  background: #111111;
+  color: #ffffff;
 
-  padding: 22px;
-
-  background: var(--card-bg);
-
-  border: 1px solid var(--border);
-
+  border: 1px solid #111111;
   border-radius: 18px;
 
-  transition: transform 0.2s ease;
-}
+  box-sizing: border-box;
 
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.2s ease;
+}
 
 .stat-card:hover {
   transform: translateY(-2px);
+
+  background: #111111;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
 }
 
 
-/* =========================
-   HIGHLIGHT CARD
-========================= */
+/* ================================
+   STAT CONTENT
+================================ */
 
-.stat-card.stat-highlight {
-  background: var(--ink);
-  border-color: var(--ink);
-
-  color: white;
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 
-.stat-card p {
-  margin: 0 0 10px;
+.stat-title {
+  margin: 0 0 12px;
 
-  color: var(--muted);
+  color: #ffffff;
 
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 
-.stat-highlight p {
-  color: var(--lime);
-}
-
-
-.stat-card h3 {
+.stat-number {
   margin: 0;
 
-  color: var(--ink);
+  color: #ffffff;
 
   font-size: 30px;
-  font-weight: 800;
+  line-height: 1;
+
+  font-weight: 700;
 }
 
 
-.stat-highlight h3 {
-  color: var(--lime);
-}
-
-
-/* =========================
+/* ================================
    ICON
-========================= */
+================================ */
 
 .stat-icon {
   width: 38px;
   height: 38px;
+
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -94,37 +99,38 @@
 
   border-radius: 50%;
 
-  background: var(--category-bg);
-  color: var(--category-text);
+  background: #c7f32f;
+
+  color: #111111;
 
   font-size: 12px;
   font-weight: 800;
 }
 
 
-.stat-highlight .stat-icon {
-  background: var(--lime);
-  color: var(--ink);
-}
-
-
-/* =========================
+/* ================================
    RESPONSIVE
-========================= */
+================================ */
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
 
   .technician-stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
 }
 
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
 
   .technician-stats {
     grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .stat-card {
+    height: 110px;
   }
 
 }
