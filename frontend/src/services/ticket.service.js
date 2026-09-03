@@ -5,7 +5,13 @@ export const getAssignedTickets = async () => {
 
   return response.data;
 };
+export const getTechnicianHistory = async () => {
+  const response = await api.get(
+    "/tickets/technician/history"
+  );
 
+  return response.data;
+};
 
 export const getTicketById = async (ticketId) => {
   const response = await api.get(`/tickets/${ticketId}`);

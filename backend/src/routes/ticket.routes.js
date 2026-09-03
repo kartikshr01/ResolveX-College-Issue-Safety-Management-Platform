@@ -27,6 +27,11 @@ router.get(
   authMiddleware,
   asyncHandler(ticketController.getAssignedTickets)
 );
+router.get(
+  "/technician/history",
+  authMiddleware,
+  asyncHandler(ticketController.getTechnicianHistory)
+);
 //Route : Get Ticket by Id
 router.get(
   "/my/:ticketId",

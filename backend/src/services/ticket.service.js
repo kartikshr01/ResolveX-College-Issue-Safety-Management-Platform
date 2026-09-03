@@ -130,6 +130,27 @@ const getAssignedTickets = async (userId) => {
 
   return tickets;
 };
+// Service: Get resolved tickets for technician
+const getTechnicianHistory = async (userId) => {
+  const technician = await Technician.findOne({
+    userId: userId,
+  });
+
+  if (!technician) {
+    throw apiError(404, "Technician profile not found");
+  }
+
+  const tickets = await Ticket.find({
+    technicianId: technician._id,
+    status: "RESOLVED",
+  })
+    .sort({ updatedAt: -1 })
+    .populate("userId", "name email")
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  return tickets;
+};
 // Service : get all tickets ( admin use only )
 const getAllTickets = async () => {
   const tickets = await Ticket.find()
@@ -317,5 +338,6 @@ module.exports = {
   getAllTickets,
   updateTicketStatus,
   getTicketById_forAdmin,
-  getAssignedTickets
+  getAssignedTickets,
+  getTechnicianHistory
 };
