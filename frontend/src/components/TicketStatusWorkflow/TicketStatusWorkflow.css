@@ -1,109 +1,292 @@
-.status-workflow {
-  background: var(--card-bg);
-  border: 1px solid var(--border-subtle);
-  border-radius: 18px;
-  padding: 24px;
+/* =====================================================
+   STATUS WORKFLOW
+===================================================== */
 
-  box-shadow: 0 2px 8px rgba(35, 36, 39, 0.04);
+.status-workflow {
+  width: 100%;
+  box-sizing: border-box;
 }
+
+
+/* =====================================================
+   TITLE
+===================================================== */
 
 .status-workflow h2 {
-  margin: 0 0 20px;
+  margin: 0 0 18px;
 
-  color: var(--text-primary);
+  color: #111111;
 
-  font-size: 19px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 800;
+
+  letter-spacing: -0.2px;
 }
 
-/* =========================
+
+/* =====================================================
    STATUS OPTIONS
-========================= */
+===================================================== */
 
 .status-options {
+  width: 100%;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+
   gap: 12px;
 }
 
-/* =========================
-   STATUS BUTTON
-========================= */
+
+/* =====================================================
+   COMMON BUTTON
+===================================================== */
 
 .status-button {
-  border: 1px solid var(--border-subtle);
+  position: relative;
+
+  min-height: 52px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e3e3e3;
   border-radius: 12px;
 
-  padding: 13px 16px;
+  background: #f8f8f6;
 
-  background: var(--light-bg);
-  color: var(--text-secondary);
+  color: #555555;
 
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 800;
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.status-button:hover {
+
+/* =====================================================
+   HOVER
+===================================================== */
+
+.status-button:hover:not(:disabled) {
+  border-color: #cfcfcf;
+
+  background: #ffffff;
+
+  color: #111111;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =====================================================
+   ACTIVE BUTTON
+===================================================== */
+
+.status-button.active {
+  border-color: #111111;
+
+  background: #111111;
+
+  color: #c7f32f;
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =====================================================
+   ACTIVE HOVER
+===================================================== */
+
+.status-button.active:hover:not(:disabled) {
+  border-color: #111111;
+
+  background: #111111;
+
+  color: #c7f32f;
+
   transform: translateY(-1px);
 }
 
-/* =========================
+
+/* =====================================================
    ASSIGNED
-========================= */
+===================================================== */
 
-.status-assigned {
-  border-color: var(--lavender);
-  background: var(--lavender-light);
-  color: var(--text-primary);
+.status-button.status-assigned:not(.active):hover {
+  border-color: #111111;
+
+  color: #111111;
 }
 
-.status-assigned:hover {
-  background: var(--lavender);
-}
 
-/* =========================
+/* =====================================================
    IN PROGRESS
-========================= */
+===================================================== */
 
-.status-progress {
-  border-color: var(--lime-primary);
-  background: var(--lime-light);
-  color: var(--text-primary);
+.status-button.status-progress:not(.active):hover {
+  border-color: #e5c56b;
+
+  background: #fff9e9;
+
+  color: #8a6500;
 }
 
-.status-progress:hover {
-  background: var(--lime-primary);
-}
 
-/* =========================
+/* =====================================================
    RESOLVED
-========================= */
+===================================================== */
 
-.status-resolved {
-  border-color: var(--border-subtle);
-  background: var(--light-bg);
-  color: var(--text-primary);
+.status-button.status-resolved:not(.active):hover {
+  border-color: #9ac887;
+
+  background: #f0faeb;
+
+  color: #3e7d29;
 }
 
-.status-resolved:hover {
-  border-color: var(--lime-primary);
-  background: var(--lime-light);
+
+/* =====================================================
+   DISABLED
+===================================================== */
+
+.status-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+
+  box-shadow: none;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+
+/* =====================================================
+   CURRENT STATUS
+===================================================== */
+
+.current-status {
+  margin-top: 16px;
+
+  padding: 13px 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  border: 1px solid #e7e7e7;
+
+  border-radius: 12px;
+
+  background: #f7f8f4;
+
+  color: #777777;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =====================================================
+   CURRENT STATUS VALUE
+===================================================== */
+
+.current-status span {
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #111111;
+
+  color: #c7f32f;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.status-workflow p {
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   UPDATING
+===================================================== */
+
+.status-workflow p[style*="666"] {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
 
 @media (max-width: 650px) {
+
   .status-options {
     grid-template-columns: 1fr;
   }
 
   .status-button {
-    width: 100%;
+    min-height: 48px;
   }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+
+  .status-workflow h2 {
+    font-size: 16px;
+
+    margin-bottom: 14px;
+  }
+
+  .status-button {
+    min-height: 46px;
+
+    font-size: 11px;
+  }
+
+  .current-status {
+    padding: 11px 12px;
+
+    font-size: 10px;
+  }
+
+  .current-status span {
+    font-size: 9px;
+
+    padding: 5px 8px;
+  }
+
 }

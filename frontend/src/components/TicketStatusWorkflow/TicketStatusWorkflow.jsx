@@ -4,157 +4,83 @@ import "./TicketStatusWorkflow.css";
 
 import { updateTicketStatus } from "../../services/ticket.service";
 
-
-function TicketStatusWorkflow({
-  ticketId,
-  status,
-  setStatus,
-}) {
-
+function TicketStatusWorkflow({ ticketId, status, setStatus }) {
   const [updating, setUpdating] = useState(false);
+
   const [error, setError] = useState("");
 
-
   const handleStatusChange = async (newStatus) => {
-
-    // Same status hai to API call mat karo
     if (newStatus === status) {
       return;
     }
 
     try {
-
       setUpdating(true);
       setError("");
 
-      // Backend ko status bhejna
-      const response = await updateTicketStatus(
-        ticketId,
-        newStatus
-      );
+      const response = await updateTicketStatus(ticketId, newStatus);
 
-      console.log(
-        "Status updated successfully:",
-        response
-      );
+      console.log("STATUS UPDATED:", response);
 
-      // Backend successful hone ke baad hi UI update
-      setStatus(newStatus);
+      const updatedTicket = response?.data || response;
 
-    } catch (error) {
-
-      console.error(
-        "Status update failed:",
-        error
-      );
+      setStatus(updatedTicket?.status || newStatus);
+    } catch (err) {
+      console.error("Status update failed:", err);
 
       setError(
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to update ticket status"
+        err?.response?.data?.message ||
+          err?.message ||
+          "Failed to update ticket status",
       );
-
     } finally {
-
       setUpdating(false);
-
     }
   };
 
-
   return (
     <div className="status-workflow">
-
-      <h2>
-        Update Ticket Status
-      </h2>
-
+      <h2>Update Ticket Status</h2>
 
       <div className="status-options">
-
-        {/* =========================
-            ASSIGNED
-        ========================= */}
-
         <button
           type="button"
           className={`status-button status-assigned ${
-            status === "ASSIGNED" ||
-            status === "Assigned"
-              ? "active"
-              : ""
+            status === "ASSIGNED" ? "active" : ""
           }`}
-          onClick={() =>
-            handleStatusChange("ASSIGNED")
-          }
+          onClick={() => handleStatusChange("ASSIGNED")}
           disabled={updating}
         >
           Assigned
         </button>
 
-
-        {/* =========================
-            IN PROGRESS
-        ========================= */}
-
         <button
           type="button"
           className={`status-button status-progress ${
-            status === "IN_PROGRESS" ||
-            status === "In Progress"
-              ? "active"
-              : ""
+            status === "IN_PROGRESS" ? "active" : ""
           }`}
-          onClick={() =>
-            handleStatusChange("IN_PROGRESS")
-          }
+          onClick={() => handleStatusChange("IN_PROGRESS")}
           disabled={updating}
         >
           In Progress
         </button>
 
-
-        {/* =========================
-            RESOLVED
-        ========================= */}
-
         <button
           type="button"
           className={`status-button status-resolved ${
-            status === "RESOLVED" ||
-            status === "Resolved"
-              ? "active"
-              : ""
+            status === "RESOLVED" ? "active" : ""
           }`}
-          onClick={() =>
-            handleStatusChange("RESOLVED")
-          }
+          onClick={() => handleStatusChange("RESOLVED")}
           disabled={updating}
         >
           Resolved
         </button>
-
       </div>
-
-
-      {/* =========================
-          CURRENT STATUS
-      ========================= */}
 
       <div className="current-status">
-
         Current Status:
-
-        <span>
-          {status}
-        </span>
-
+        <span>{status}</span>
       </div>
-
-
-      {/* =========================
-          ERROR
-      ========================= */}
 
       {error && (
         <p
@@ -168,11 +94,6 @@ function TicketStatusWorkflow({
         </p>
       )}
 
-
-      {/* =========================
-          UPDATING
-      ========================= */}
-
       {updating && (
         <p
           style={{
@@ -184,10 +105,8 @@ function TicketStatusWorkflow({
           Updating status...
         </p>
       )}
-
     </div>
   );
 }
-
 
 export default TicketStatusWorkflow;

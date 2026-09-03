@@ -151,6 +151,29 @@ const getTechnicianHistory = async (userId) => {
 
   return tickets;
 };
+const getTicketByIdForTechnician = async (ticketId, userId) => {
+  const technician = await Technician.findOne({
+    userId,
+  });
+
+  if (!technician) {
+    throw apiError(404, "Technician profile not found");
+  }
+
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+    technicianId: technician._id,
+  })
+    .populate("userId", "name email")
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found or not assigned to you");
+  }
+
+  return ticket;
+};
 // Service : get all tickets ( admin use only )
 const getAllTickets = async () => {
   const tickets = await Ticket.find()
@@ -339,5 +362,6 @@ module.exports = {
   updateTicketStatus,
   getTicketById_forAdmin,
   getAssignedTickets,
-  getTechnicianHistory
+  getTechnicianHistory,
+  getTicketByIdForTechnician
 };

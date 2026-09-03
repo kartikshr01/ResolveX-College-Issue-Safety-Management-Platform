@@ -2,17 +2,24 @@ const ticketService = require("../services/ticket.service");
 const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 
-//Controller - create ticket
+// ======================================================
+// CREATE TICKET
+// ======================================================
+
 const createTicket = async (req, res) => {
   const ticket = await ticketService.createTicket(
     req.user._id,
     req.body,
     req.file,
   );
-  return apiResponse(res, 201, "Ticket created successfully ", ticket);
+
+  return apiResponse(res, 201, "Ticket created successfully", ticket);
 };
 
-//Controller - get my tickets
+// ======================================================
+// GET MY TICKETS
+// ======================================================
+
 const getMyTickets = async (req, res) => {
   console.log(req.user.name);
 
@@ -21,52 +28,81 @@ const getMyTickets = async (req, res) => {
   return apiResponse(res, 200, "Tickets fetched successfully", tickets);
 };
 
-//Controller -  get ticket by id
+// ======================================================
+// GET TICKET BY ID - USER
+// ======================================================
+
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
     req.params.ticketId,
     req.user._id,
   );
+
   if (!ticket) {
     throw apiError(
       404,
-      null,
-      `Ticket not found for Ticket Id : ${req.params.ticketId}`,
+      `Ticket not found for Ticket Id: ${req.params.ticketId}`,
     );
   }
 
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
+// ======================================================
+// GET TICKET BY ID - TECHNICIAN
+// ======================================================
 
-//Controller -  get ticket by id ( admin use only )
+const getTechnicianTicketById = async (req, res) => {
+  const ticket = await ticketService.getTicketByIdForTechnician(
+    req.params.ticketId,
+    req.user._id,
+  );
+
+  return apiResponse(
+    res,
+    200,
+    "Technician ticket fetched successfully",
+    ticket,
+  );
+};
+
+// ======================================================
+// GET TICKET BY ID - ADMIN
+// ======================================================
+
 const getTicketById_forAdmin = async (req, res) => {
   const ticket = await ticketService.getTicketById_forAdmin(
     req.params.ticketId,
   );
+
   if (!ticket) {
     throw apiError(
       404,
-      null,
-      `Ticket not found for Ticket Id : ${req.params.ticketId}`,
+      `Ticket not found for Ticket Id: ${req.params.ticketId}`,
     );
   }
 
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
-// Controller - Get All Ticket( for admin only )
+// ======================================================
+// GET ALL TICKETS - ADMIN
+// ======================================================
+
 const getAllTickets = async (req, res) => {
   const tickets = await ticketService.getAllTickets();
 
   if (Array.isArray(tickets) && tickets.length === 0) {
-    return apiResponse(res , 200, "No tickets found." , null );
+    return apiResponse(res, 200, "No tickets found.", null);
   }
 
   return apiResponse(res, 200, "All tickets fetched successfully", tickets);
 };
 
-// Controller - delete ticket by id
+// ======================================================
+// DELETE TICKET
+// ======================================================
+
 const deleteTicketById = async (req, res) => {
   const result = await ticketService.deleteTicketById(
     req.params.ticketId,
@@ -87,7 +123,10 @@ const deleteTicketById = async (req, res) => {
   return apiResponse(res, 200, "Ticket deleted successfully", null);
 };
 
-//Controller : update ticket
+// ======================================================
+// UPDATE TICKET
+// ======================================================
+
 const updateTicket = async (req, res) => {
   const ticket = await ticketService.updateTicketById(
     req.params.id,
@@ -98,7 +137,10 @@ const updateTicket = async (req, res) => {
   return apiResponse(res, 200, "Ticket updated successfully", ticket);
 };
 
-//Controller : image update in ticket
+// ======================================================
+// UPDATE TICKET IMAGE
+// ======================================================
+
 const updateTicketImage = async (req, res) => {
   const ticket = await ticketService.updateTicketImage(
     req.params.id,
@@ -108,44 +150,47 @@ const updateTicketImage = async (req, res) => {
 
   return apiResponse(res, 200, "Ticket image updated successfully", ticket);
 };
-// Controller : update ticket status by technician
+
+// ======================================================
+// UPDATE TICKET STATUS - TECHNICIAN
+// ======================================================
+
 const updateTicketStatus = async (req, res) => {
   const ticket = await ticketService.updateTicketStatus(
     req.params.ticketId,
     req.body.status,
   );
 
-  return apiResponse(
-    res,
-    200,
-    "Ticket status updated successfully",
-    ticket,
-  );
+  return apiResponse(res, 200, "Ticket status updated successfully", ticket);
 };
-// Controller : get assigned tickets for technician
+
+// ======================================================
+// GET ASSIGNED TICKETS - TECHNICIAN
+// ======================================================
+
 const getAssignedTickets = async (req, res) => {
-  const tickets = await ticketService.getAssignedTickets(
-    req.user._id
-  );
+  const tickets = await ticketService.getAssignedTickets(req.user._id);
 
   return apiResponse(
     res,
     200,
     "Assigned tickets fetched successfully",
-    tickets
+    tickets,
   );
 };
-// Controller: Get resolved tickets for technician
+
+// ======================================================
+// GET TECHNICIAN HISTORY
+// ======================================================
+
 const getTechnicianHistory = async (req, res) => {
-  const tickets = await ticketService.getTechnicianHistory(
-    req.user._id
-  );
+  const tickets = await ticketService.getTechnicianHistory(req.user._id);
 
   return apiResponse(
     res,
     200,
     "Technician history fetched successfully",
-    tickets
+    tickets,
   );
 };
 
@@ -153,12 +198,14 @@ module.exports = {
   createTicket,
   getMyTickets,
   getTicketById,
+  getTechnicianTicketById,
+  getTicketById_forAdmin,
+  getAllTickets,
   deleteTicketById,
   updateTicket,
   updateTicketImage,
-  getAllTickets,
-  getTicketById_forAdmin,
   updateTicketStatus,
   getAssignedTickets,
-  getTechnicianHistory
+  getTechnicianHistory,
 };
+    
