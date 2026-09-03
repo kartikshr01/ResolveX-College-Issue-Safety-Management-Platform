@@ -1,11 +1,19 @@
+/* =========================
+   TICKET DETAILS PAGE
+========================= */
+
 .ticket-details-container {
   width: 100%;
   min-height: 100vh;
+
   padding: 30px;
+
   box-sizing: border-box;
 }
 
-/* Back Button */
+/* =========================
+   BACK BUTTON
+========================= */
 
 .back-btn {
   border: none;
@@ -20,13 +28,18 @@
   cursor: pointer;
 
   color: #374151;
+
+  transition: color 0.2s ease;
 }
 
 .back-btn:hover {
+  color: #2563eb;
   text-decoration: underline;
 }
 
-/* Header */
+/* =========================
+   HEADER
+========================= */
 
 .ticket-details-header {
   margin-bottom: 30px;
@@ -48,9 +61,13 @@
   font-size: 32px;
 
   line-height: 1.3;
+
+  color: #111827;
 }
 
-/* Badges */
+/* =========================
+   BADGES
+========================= */
 
 .header-badges {
   display: flex;
@@ -78,7 +95,9 @@
   font-weight: 700;
 }
 
-/* Status */
+/* =========================
+   STATUS BADGES
+========================= */
 
 .status-badge.open {
   background: #e0f2fe;
@@ -105,7 +124,9 @@
   color: #374151;
 }
 
-/* Priority */
+/* =========================
+   PRIORITY BADGES
+========================= */
 
 .priority-badge.low {
   background: #dcfce7;
@@ -127,14 +148,135 @@
   color: #b91c1c;
 }
 
-/* Safety */
+/* =========================
+   SAFETY BADGE
+========================= */
 
 .safety-badge {
   background: #fee2e2;
   color: #b91c1c;
 }
 
-/* Layout */
+/* =========================
+   TICKET ACTION BUTTONS
+========================= */
+
+.ticket-action-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+  flex-wrap: wrap;
+}
+
+/* Common Button Styles */
+
+.edit-ticket-btn,
+.delete-ticket-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 42px;
+
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+  white-space: nowrap;
+}
+
+/* Edit Button */
+
+.edit-ticket-btn {
+  background: #2563eb;
+
+  color: #ffffff;
+}
+
+.edit-ticket-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}
+
+.edit-ticket-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Delete Button */
+
+.delete-ticket-btn {
+  background: #dc2626;
+
+  color: #ffffff;
+}
+
+.delete-ticket-btn:hover:not(:disabled) {
+  background: #b91c1c;
+
+  transform: translateY(-1px);
+}
+
+.delete-ticket-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Disabled Buttons */
+
+.edit-ticket-btn:disabled,
+.delete-ticket-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =========================
+   DELETE ERROR MESSAGE
+========================= */
+
+.delete-error-message {
+  margin-top: 15px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
 
 .ticket-details-content {
   display: grid;
@@ -155,12 +297,14 @@
   gap: 25px;
 }
 
-/* Cards */
+/* =========================
+   DETAILS CARDS
+========================= */
 
 .details-card {
   padding: 24px;
 
-  background: white;
+  background: #ffffff;
 
   border: 1px solid #e5e7eb;
 
@@ -173,9 +317,13 @@
   margin: 0 0 18px;
 
   font-size: 18px;
+
+  color: #111827;
 }
 
-/* Description */
+/* =========================
+   DESCRIPTION
+========================= */
 
 .full-description {
   margin: 0;
@@ -185,9 +333,13 @@
   line-height: 1.8;
 
   white-space: pre-wrap;
+
+  word-break: break-word;
 }
 
-/* Image */
+/* =========================
+   TICKET IMAGE
+========================= */
 
 .ticket-image {
   display: block;
@@ -203,7 +355,9 @@
   border: 1px solid #e5e7eb;
 }
 
-/* Details List */
+/* =========================
+   DETAILS LIST
+========================= */
 
 .details-list {
   display: flex;
@@ -247,12 +401,22 @@
   word-break: break-word;
 }
 
-/* Technician */
+/* =========================
+   TECHNICIAN INFORMATION
+========================= */
 
 .technician-info p {
   margin: 8px 0;
 
   color: #555;
+}
+
+.technician-info p:first-child {
+  margin-top: 0;
+}
+
+.technician-info p:last-child {
+  margin-bottom: 0;
 }
 
 .not-assigned {
@@ -263,13 +427,190 @@
   font-size: 14px;
 }
 
-/* Loading */
+/* =========================
+   IMAGE UPDATE SECTION
+========================= */
+
+.image-update-section {
+  margin-top: 20px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid #e5e7eb;
+}
+
+.image-update-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-weight: 600;
+
+  font-size: 15px;
+
+  color: #374151;
+}
+
+.image-update-section input[type="file"] {
+  display: block;
+
+  width: 100%;
+
+  margin-bottom: 15px;
+
+  padding: 10px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+}
+
+/* =========================
+   IMAGE PREVIEW
+========================= */
+
+.image-preview-container {
+  margin-top: 15px;
+
+  margin-bottom: 15px;
+}
+
+.image-preview-container p {
+  margin-bottom: 8px;
+
+  font-weight: 600;
+}
+
+.preview-image {
+  display: block;
+
+  width: 100%;
+
+  max-height: 300px;
+
+  object-fit: contain;
+
+  border-radius: 8px;
+
+  border: 1px solid #e5e7eb;
+}
+
+/* =========================
+   UPDATE IMAGE BUTTON
+========================= */
+
+.update-image-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 42px;
+
+  margin-top: 10px;
+
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.update-image-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+}
+
+.update-image-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.update-image-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* =========================
+   IMAGE SUCCESS MESSAGE
+========================= */
+
+.image-success-message {
+  margin-top: 12px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #bbf7d0;
+
+  border-radius: 8px;
+
+  background: #f0fdf4;
+
+  color: #166534;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+/* =========================
+   IMAGE ERROR MESSAGE
+========================= */
+
+.image-error-message {
+  margin-top: 12px;
+
+  padding: 10px 12px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  font-size: 14px;
+
+  font-weight: 500;
+}
+
+/* =========================
+   LOADING
+========================= */
 
 .loading-message {
   font-size: 18px;
+
+  color: #374151;
 }
 
-/* Error */
+/* =========================
+   GENERAL ERROR
+========================= */
 
 .error-message {
   color: #dc2626;
@@ -277,7 +618,9 @@
   font-weight: 600;
 }
 
-/* Responsive */
+/* =========================
+   TABLET RESPONSIVE
+========================= */
 
 @media (max-width: 900px) {
   .ticket-details-content {
@@ -296,9 +639,44 @@
   }
 }
 
-@media (max-width: 600px) {
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
   .ticket-details-container {
     padding: 20px;
+  }
+
+  .ticket-action-buttons {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .edit-ticket-btn,
+  .delete-ticket-btn {
+    width: 100%;
+  }
+
+  .update-image-btn {
+    width: 100%;
+  }
+
+  .image-update-section {
+    margin-top: 15px;
+
+    padding-top: 15px;
+  }
+
+  .preview-image {
+    max-height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-details-container {
+    padding: 16px;
   }
 
   .ticket-details-header h1 {
@@ -321,134 +699,7 @@
 
   .ticket-sidebar {
     display: flex;
-  }
-}
-.edit-ticket-btn {
-  margin-top: 18px;
 
-  padding: 10px 18px;
-
-  border: none;
-
-  border-radius: 8px;
-
-  background: #2563eb;
-
-  color: white;
-
-  font-size: 14px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-.edit-ticket-btn:hover {
-  opacity: 0.9;
-}
-
-/* =========================
-   IMAGE UPDATE SECTION
-========================= */
-
-.image-update-section {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.image-update-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.image-update-section input[type="file"] {
-  display: block;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* Preview Section */
-
-.image-preview-container {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.image-preview-container p {
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-/* Preview Image */
-
-.preview-image {
-  margin-top: 5px;
-  max-height: 300px;
-  object-fit: contain;
-}
-
-/* Update Image Button */
-
-.update-image-btn {
-  margin-top: 10px;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.update-image-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-.update-image-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* Success Message */
-
-.image-success-message {
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-/* Error Message */
-
-.image-error-message {
-  margin-top: 12px;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-/* Mobile */
-
-@media (max-width: 768px) {
-  .image-update-section {
-    margin-top: 15px;
-    padding-top: 15px;
-  }
-
-  .update-image-btn {
-    width: 100%;
-  }
-
-  .preview-image {
-    max-height: 250px;
+    flex-direction: column;
   }
 }
