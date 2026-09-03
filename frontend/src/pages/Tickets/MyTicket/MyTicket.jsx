@@ -95,17 +95,13 @@ const MyTickets = () => {
               </div>
 
               {/* Description */}
-              <p className="ticket-description">
-                {ticket.description}
-              </p>
+              <p className="ticket-description">{ticket.description}</p>
 
               {/* Ticket Information */}
               <div className="ticket-info">
                 <div className="info-row">
                   <span className="info-label">Department</span>
-                  <span>
-                    {ticket.departmentId?.name || "Not available"}
-                  </span>
+                  <span>{ticket.departmentId?.name || "Not available"}</span>
                 </div>
 
                 <div className="info-row">
@@ -133,20 +129,19 @@ const MyTickets = () => {
               <div className="ticket-footer">
                 <span className="created-date">
                   Created{" "}
-                  {new Date(ticket.createdAt).toLocaleDateString(
-                    "en-IN",
-                    {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    },
-                  )}
+                  {new Date(ticket.createdAt).toLocaleDateString("en-IN", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </span>
 
                 <button
                   className="view-details-btn"
                   onClick={() =>
-                    navigate(`/tickets/${ticket._id}`)
+                    navigate(`/tickets/${ticket._id}`, {
+                      state: { fromAdmin: false },
+                    })
                   }
                 >
                   View Details →

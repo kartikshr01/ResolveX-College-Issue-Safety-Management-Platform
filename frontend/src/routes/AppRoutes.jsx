@@ -16,6 +16,7 @@ import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
 import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
 import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
 import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
+import AllTickets_Admin_Only from "../pages/Tickets/AllTickets-Admin_Only/AllTickets-Admin_Only";
 
 import UserDashboard from "../pages/Dashboard/UserDashboard";
 
@@ -54,6 +55,7 @@ const AppRoutes = () => {
           <Route path="/tickets/create" element={<CreateTicket />} />
           <Route path="/tickets/my-tickets" element={<MyTickets />} />
           <Route path="/tickets/:ticketId" element={<TicketDetails />} />
+          <Route path="/tickets/all-admin" element={<allTickets />} />
           <Route path="/tickets/:ticketId/edit" element={<EditTicket />} />
         </Route>
       </Route>

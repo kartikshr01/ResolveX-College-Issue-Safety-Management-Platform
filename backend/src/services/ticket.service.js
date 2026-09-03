@@ -129,6 +129,21 @@ const getTicketById = async (ticketId, userId) => {
   return ticket;
 };
 
+// Service :  Get ticket by ID ( admin use only )
+const getTicketById_forAdmin = async (ticketId) => {
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+  })
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  return ticket;
+}; 
+
 // Service: Delete ticket
 const deleteTicketById = async (ticketId, userId) => {
   const ticket = await Ticket.findOne({
@@ -247,4 +262,5 @@ module.exports = {
   updateTicketById,
   updateTicketImage,
   getAllTickets,
+  getTicketById_forAdmin,
 };

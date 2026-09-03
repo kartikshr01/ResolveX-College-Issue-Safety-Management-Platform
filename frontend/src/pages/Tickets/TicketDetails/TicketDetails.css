@@ -346,3 +346,109 @@
 .edit-ticket-btn:hover {
   opacity: 0.9;
 }
+
+/* =========================
+   IMAGE UPDATE SECTION
+========================= */
+
+.image-update-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.image-update-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.image-update-section input[type="file"] {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Preview Section */
+
+.image-preview-container {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.image-preview-container p {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Preview Image */
+
+.preview-image {
+  margin-top: 5px;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+/* Update Image Button */
+
+.update-image-btn {
+  margin-top: 10px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.update-image-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.update-image-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Success Message */
+
+.image-success-message {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Error Message */
+
+.image-error-message {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .image-update-section {
+    margin-top: 15px;
+    padding-top: 15px;
+  }
+
+  .update-image-btn {
+    width: 100%;
+  }
+
+  .preview-image {
+    max-height: 250px;
+  }
+}

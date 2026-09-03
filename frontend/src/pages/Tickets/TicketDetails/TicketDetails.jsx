@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import "./TicketDetails.css";
 
 const TicketDetails = () => {
+  // const { id } = useParams();
+  const location = useLocation();
+  const fromAdmin = location.state?.fromAdmin;
   const { ticketId } = useParams();
   const navigate = useNavigate();
 
   const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageUpdating, setImageUpdating] = useState(false);
+  const [imageMessage, setImageMessage] = useState("");
+  const [imageError, setImageError] = useState("");
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/tickets/my/${ticketId}`,
-          {
-            withCredentials: true,
-          },
-        );
+        const endpoint = fromAdmin
+          ? `/api/tickets/admin/${ticketId}`
+          : `/api/tickets/my/${ticketId}`;
+
+        const response = await axios.get(`http://localhost:3000${endpoint}`, {
+          withCredentials: true,
+        });
 
         setTicket(response.data.data);
       } catch (error) {
@@ -34,7 +43,7 @@ const TicketDetails = () => {
     };
 
     fetchTicketDetails();
-  }, [ticketId]);
+  }, [ticketId, fromAdmin]);
 
   if (loading) {
     return (
@@ -47,7 +56,10 @@ const TicketDetails = () => {
   if (error) {
     return (
       <div className="ticket-details-container">
-        <button className="back-btn" onClick={() => navigate("/tickets/my-tickets")}>
+        <button
+          className="back-btn"
+          onClick={() => navigate("/tickets/my-tickets")}
+        >
           ← Back to My Tickets
         </button>
 
@@ -63,12 +75,68 @@ const TicketDetails = () => {
       </div>
     );
   }
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
 
+    if (!file) return;
+
+    setSelectedImage(file);
+    setImagePreview(URL.createObjectURL(file));
+
+    setImageMessage("");
+    setImageError("");
+  };
+
+  const handleImageUpdate = async () => {
+    if (!selectedImage) {
+      setImageError("Please select an image first.");
+      return;
+    }
+
+    try {
+      setImageUpdating(true);
+      setImageError("");
+      setImageMessage("");
+
+      const formData = new FormData();
+
+      formData.append("image", selectedImage);
+
+      const response = await axios.patch(
+        `http://localhost:3000/api/tickets/${ticket._id}/image`,
+        formData,
+        {
+          withCredentials: true,
+        },
+      );
+
+      // Update ticket state immediately
+      setTicket(response.data.data);
+
+      setImageMessage("Image updated successfully!");
+
+      setSelectedImage(null);
+      setImagePreview(null);
+
+      // Clear file input
+      const fileInput = document.getElementById("update-ticket-image");
+
+      if (fileInput) {
+        fileInput.value = "";
+      }
+    } catch (error) {
+      console.error("Error updating image:", error);
+
+      setImageError(error.response?.data?.message || "Failed to update image.");
+    } finally {
+      setImageUpdating(false);
+    }
+  };
   return (
     <div className="ticket-details-container">
       {/* Back Button */}
 
-      <button className="back-btn" onClick={() => navigate("/my-tickets")}>
+      <button className="back-btn" onClick={() => navigate("/tickets/my-tickets")}>
         ← Back to My Tickets
       </button>
 
@@ -97,7 +165,7 @@ const TicketDetails = () => {
               <span className="safety-badge">⚠ Safety Issue</span>
             )}
           </div>
-          {ticket.status === "OPEN" && (
+          {ticket.status === "OPEN" && !fromAdmin && (
             <button
               className="edit-ticket-btn"
               onClick={() => navigate(`/tickets/${ticket._id}/edit`)}
@@ -124,17 +192,84 @@ const TicketDetails = () => {
 
           {/* Image */}
 
-          {ticket.imageUrl && (
-            <div className="details-card">
-              <h2>Issue Image</h2>
+          {/* Image */}
 
+          <div className="details-card">
+            <h2>Issue Image</h2>
+
+            {/* Existing Image */}
+
+            {ticket.imageUrl ? (
               <img
                 src={ticket.imageUrl}
                 alt={ticket.title}
                 className="ticket-image"
               />
-            </div>
-          )}
+            ) : (
+              <p className="not-assigned">No image attached to this ticket.</p>
+            )}
+
+            {/* Only ticket owner can update while OPEN */}
+
+            {ticket.status === "OPEN" && !fromAdmin && (
+              <div className="image-update-section">
+                <label
+                  htmlFor="update-ticket-image"
+                  className="image-update-label"
+                >
+                  {ticket.imageUrl ? "Change Issue Image" : "Add Issue Image"}
+                </label>
+
+                <input
+                  id="update-ticket-image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+
+                {/* Preview New Image */}
+
+                {imagePreview && (
+                  <div className="image-preview-container">
+                    <p>New Image Preview:</p>
+
+                    <img
+                      src={imagePreview}
+                      alt="New ticket preview"
+                      className="ticket-image preview-image"
+                    />
+                  </div>
+                )}
+
+                {/* Success */}
+
+                {imageMessage && (
+                  <p className="image-success-message">{imageMessage}</p>
+                )}
+
+                {/* Error */}
+
+                {imageError && (
+                  <p className="image-error-message">{imageError}</p>
+                )}
+
+                {/* Update Button */}
+
+                <button
+                  type="button"
+                  className="update-image-btn"
+                  onClick={handleImageUpdate}
+                  disabled={imageUpdating}
+                >
+                  {imageUpdating
+                    ? "Updating Image..."
+                    : ticket.imageUrl
+                      ? "Update Image"
+                      : "Upload Image"}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right Section */}
