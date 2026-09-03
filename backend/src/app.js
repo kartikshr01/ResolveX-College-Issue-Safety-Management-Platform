@@ -31,12 +31,14 @@ app.use("/api/technicians", technicianRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/issues", safetyRoutes);
 app.use("/api/notifications", notificationRoutes);
-
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/admin", adminRouter);
+<<<<<<< HEAD
 app.use("/api/assignments", assignmentRoutes);
+=======
+>>>>>>> e6a0e76234c878cb4cc280edcf5b041ae390a1d9
 
 app.use(errorHandler);
 

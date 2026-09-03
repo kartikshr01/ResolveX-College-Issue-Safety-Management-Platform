@@ -26,7 +26,19 @@ const getTicketActivities = asyncHandler(async (req, res) => {
   );
 });
 
+const getAllActivities = asyncHandler(async (req, res) => {
+  const activities = await activityService.getAllActivities();
+
+  return apiResponse(
+    res,
+    200,
+    "All activities fetched successfully",
+    activities,
+  );
+});
+
 module.exports = {
   getMyActivities,
   getTicketActivities,
+  getAllActivities
 };

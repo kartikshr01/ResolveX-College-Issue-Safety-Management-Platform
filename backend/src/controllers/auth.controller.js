@@ -6,20 +6,12 @@ const User = require("../models/user.model");
 const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 
-const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../utils/token");
+const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 
 const register = async (req, res) => {
   const user = await authService.register(req.body);
 
-  return apiResponse(
-    res,
-    201,
-    "User registered successfully",
-    user,
-  );
+  return apiResponse(res, 201, "User registered successfully", user);
 };
 
 const login = async (req, res) => {
@@ -40,18 +32,13 @@ const login = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  return apiResponse(
-    res,
-    200,
-    "User logged in successfully",
-    {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      departmentId: user.departmentId,
-    },
-  );
+  return apiResponse(res, 200, "User logged in successfully", {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    departmentId: user.departmentId,
+  });
 };
 
 const refresh = async (req, res) => {
@@ -64,10 +51,7 @@ const refresh = async (req, res) => {
   let decoded;
 
   try {
-    decoded = jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET,
-    );
+    decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
   } catch (error) {
     throw apiError(401, "Invalid or expired refresh token");
   }
@@ -91,22 +75,14 @@ const refresh = async (req, res) => {
     maxAge: 15 * 60 * 1000,
   });
 
-  return apiResponse(
-    res,
-    200,
-    "Access token refreshed",
-  );
+  return apiResponse(res, 200, "Access token refreshed");
 };
 
 const logout = async (req, res) => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
 
-  return apiResponse(
-    res,
-    200,
-    "User logged out successfully",
-  );
+  return apiResponse(res, 200, "User logged out successfully");
 };
 
 module.exports = {

@@ -7,6 +7,7 @@ const deleteImage = require("../utils/deleteImage");
 const notificationService = require("./notification.service");
 const activityService = require("./activity.service");
 const User = require("../models/user.model");
+const Activity = require("../models/Activity.model");
 
 // Service: Create ticket
 const createTicket = async (userId, ticketData, imageFile) => {
@@ -15,7 +16,7 @@ const createTicket = async (userId, ticketData, imageFile) => {
   if (!user) {
     throw apiError(404, "User not found");
   }
-   const department = await Department.findById(ticketData.departmentId);
+  const department = await Department.findById(ticketData.departmentId);
 
   if (!department) {
     throw apiError(404, "Department not found");
@@ -25,10 +26,10 @@ const createTicket = async (userId, ticketData, imageFile) => {
     throw apiError(403, "Department is inactive");
   }
 
-   let imageUrl = null;
+  let imageUrl = null;
   let imagePublicId = null;
 
-   if (imageFile) {
+  if (imageFile) {
     const result = await uploadImage(imageFile.buffer);
 
     imageUrl = result.secure_url;
@@ -90,7 +91,7 @@ if (!assignment) {
   const updatedTicket = await Ticket.findById(ticket._id)
     .populate("departmentId", "name")
     .populate("technicianId", "name email phone")
-    .populate("userId", "name email"); 
+    .populate("userId", "name email");
 
   return updatedTicket;
 };
@@ -136,6 +137,21 @@ const getTicketById = async (ticketId, userId) => {
   return ticket;
 };
 
+// Service :  Get ticket by ID ( admin use only )
+const getTicketById_forAdmin = async (ticketId) => {
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+  })
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone");
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  return ticket;
+}; 
+
 // Service: Delete ticket
 const deleteTicketById = async (ticketId, userId) => {
   const ticket = await Ticket.findOne({
@@ -162,6 +178,10 @@ const deleteTicketById = async (ticketId, userId) => {
   await Ticket.deleteOne({
     _id: ticketId,
     userId,
+  });
+
+  await Activity.deleteMany({
+    ticketId: ticketId,
   });
 
   return {
@@ -275,5 +295,9 @@ module.exports = {
   updateTicketById,
   updateTicketImage,
   getAllTickets,
+<<<<<<< HEAD
   updateTicketStatus
+=======
+  getTicketById_forAdmin,
+>>>>>>> e6a0e76234c878cb4cc280edcf5b041ae390a1d9
 };
