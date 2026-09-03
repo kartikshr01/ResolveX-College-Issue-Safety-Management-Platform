@@ -1,7 +1,9 @@
+import "./TicketDetails.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./TicketDetails.css";
+import DeleteTicketModal from "../../../components/Common/DeleteTicketModal";
+import Loading from "../../../components/Common/Loading";
 
 const TicketDetails = () => {
   // const { id } = useParams();
@@ -18,6 +20,9 @@ const TicketDetails = () => {
   const [imageUpdating, setImageUpdating] = useState(false);
   const [imageMessage, setImageMessage] = useState("");
   const [imageError, setImageError] = useState("");
+  // const [deleting, setDeleting] = useState(false);
+  // const [deleteError, setDeleteError] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
@@ -50,7 +55,7 @@ const TicketDetails = () => {
   if (loading) {
     return (
       <div className="ticket-details-container">
-        <p className="loading-message">Loading ticket details...</p>
+        <Loading message="Loading ticket details..." />
       </div>
     );
   }
@@ -136,32 +141,28 @@ const TicketDetails = () => {
   };
 
   const handleDeleteTicket = async () => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this ticket? This action cannot be undone.",
-    );
-
-    if (!confirmed) return;
-
     try {
       setDeleting(true);
       setDeleteError("");
 
-      await axios.delete(`http://localhost:3000/api/tickets/my/${ticket._id}`, {
+      await axios.delete(`http://localhost:3000/api/tickets/my/${ticketId}`, {
         withCredentials: true,
       });
 
-      navigate("/my-tickets");
+      navigate("/tickets/my-tickets");
     } catch (error) {
       console.error("Error deleting ticket:", error);
 
       setDeleteError(
-        error.response?.data?.message || "Failed to delete ticket.",
+        error.response?.data?.message ||
+          "Failed to delete ticket. Please try again.",
       );
+
+      setShowDeleteModal(false);
     } finally {
       setDeleting(false);
     }
   };
-
   return (
     <div className="ticket-details-container">
       {/* Back Button */}
@@ -211,7 +212,7 @@ const TicketDetails = () => {
 
               <button
                 className="delete-ticket-btn"
-                onClick={handleDeleteTicket}
+                onClick={() => setShowDeleteModal(true)}
                 disabled={deleting}
               >
                 {deleting ? "Deleting..." : "🗑️ Delete Ticket"}
@@ -411,6 +412,13 @@ const TicketDetails = () => {
           </div>
         </div>
       </div>
+      <DeleteTicketModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteTicket}
+        loading={deleting}
+        ticketTitle={ticket.title}
+      />
     </div>
   );
 };

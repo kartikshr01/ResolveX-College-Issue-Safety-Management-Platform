@@ -1,7 +1,8 @@
+import "../MyTicket/MyTicket.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../MyTicket/MyTicket.css";
+import Loading from "../../../components/Common/Loading";
 
 const AllTickets_Admin_Only = () => {
   const [tickets, setTickets] = useState([]);
@@ -16,35 +17,46 @@ const AllTickets_Admin_Only = () => {
   const [safetyFilter, setSafetyFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
 
+  const [refreshing, setRefreshing] = useState(false);
+
   const navigate = useNavigate();
 
   // =========================
   // FETCH ALL TICKETS
   // =========================
 
-  useEffect(() => {
-    const fetchAllTickets = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/api/tickets/all",
-          {
-            withCredentials: true,
-          },
-        );
-
-        setTickets(response.data.data || []);
-      } catch (error) {
-        console.error("Error fetching tickets:", error);
-
-        setError(
-          error.response?.data?.message ||
-            "Failed to fetch tickets. Please try again.",
-        );
-      } finally {
-        setLoading(false);
+  const fetchAllTickets = async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
+        setLoading(true);
       }
-    };
 
+      setError("");
+
+      const response = await axios.get(
+        "http://localhost:3000/api/tickets/all",
+        {
+          withCredentials: true,
+        },
+      );
+
+      setTickets(response.data.data);
+    } catch (error) {
+      console.error("Error fetching tickets:", error);
+
+      setError(
+        error.response?.data?.message ||
+          "Failed to fetch tickets. Please try again.",
+      );
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
     fetchAllTickets();
   }, []);
 
@@ -54,9 +66,7 @@ const AllTickets_Admin_Only = () => {
 
   const departments = [
     ...new Set(
-      tickets
-        .map((ticket) => ticket.departmentId?.name)
-        .filter(Boolean),
+      tickets.map((ticket) => ticket.departmentId?.name).filter(Boolean),
     ),
   ].sort();
 
@@ -76,12 +86,10 @@ const AllTickets_Admin_Only = () => {
         ticket._id?.toLowerCase().includes(searchText);
 
       const matchesStatus =
-        statusFilter === "" ||
-        ticket.status === statusFilter;
+        statusFilter === "" || ticket.status === statusFilter;
 
       const matchesPriority =
-        priorityFilter === "" ||
-        ticket.priority === priorityFilter;
+        priorityFilter === "" || ticket.priority === priorityFilter;
 
       const matchesDepartment =
         departmentFilter === "" ||
@@ -136,7 +144,7 @@ const AllTickets_Admin_Only = () => {
   if (loading) {
     return (
       <div className="my-tickets-container">
-        <h2>Loading tickets...</h2>
+        <Loading message="Loading all tickets..." />
       </div>
     );
   }
@@ -155,7 +163,6 @@ const AllTickets_Admin_Only = () => {
 
   return (
     <div className="my-tickets-container">
-
       {/* ================= HEADER ================= */}
 
       <div className="my-tickets-header">
@@ -170,11 +177,24 @@ const AllTickets_Admin_Only = () => {
         </div>
       </div>
 
+      <div className="tickets-header-actions">
+        <button
+          className="refresh-tickets-btn"
+          onClick={() => fetchAllTickets(true)}
+          disabled={refreshing}
+        >
+          {refreshing ? "Refreshing..." : "↻ Refresh"}
+        </button>
+
+        <div className="ticket-count">
+          {tickets.length} {tickets.length === 1 ? "Ticket" : "Tickets"}
+        </div>
+      </div>
+      
       {/* ================= FILTER SECTION ================= */}
 
       {tickets.length > 0 && (
         <div className="ticket-filters">
-
           {/* Search */}
 
           <div className="search-wrapper">
@@ -182,9 +202,7 @@ const AllTickets_Admin_Only = () => {
               type="text"
               placeholder="Search by title, location, category or Ticket ID..."
               value={searchQuery}
-              onChange={(event) =>
-                setSearchQuery(event.target.value)
-              }
+              onChange={(event) => setSearchQuery(event.target.value)}
               className="ticket-search-input"
             />
           </div>
@@ -193,9 +211,7 @@ const AllTickets_Admin_Only = () => {
 
           <select
             value={statusFilter}
-            onChange={(event) =>
-              setStatusFilter(event.target.value)
-            }
+            onChange={(event) => setStatusFilter(event.target.value)}
           >
             <option value="">All Statuses</option>
 
@@ -203,9 +219,7 @@ const AllTickets_Admin_Only = () => {
 
             <option value="ASSIGNED">Assigned</option>
 
-            <option value="IN_PROGRESS">
-              In Progress
-            </option>
+            <option value="IN_PROGRESS">In Progress</option>
 
             <option value="RESOLVED">Resolved</option>
 
@@ -216,9 +230,7 @@ const AllTickets_Admin_Only = () => {
 
           <select
             value={priorityFilter}
-            onChange={(event) =>
-              setPriorityFilter(event.target.value)
-            }
+            onChange={(event) => setPriorityFilter(event.target.value)}
           >
             <option value="">All Priorities</option>
 
@@ -235,19 +247,12 @@ const AllTickets_Admin_Only = () => {
 
           <select
             value={departmentFilter}
-            onChange={(event) =>
-              setDepartmentFilter(event.target.value)
-            }
+            onChange={(event) => setDepartmentFilter(event.target.value)}
           >
-            <option value="">
-              All Departments
-            </option>
+            <option value="">All Departments</option>
 
             {departments.map((department) => (
-              <option
-                key={department}
-                value={department}
-              >
+              <option key={department} value={department}>
                 {department}
               </option>
             ))}
@@ -257,102 +262,65 @@ const AllTickets_Admin_Only = () => {
 
           <select
             value={safetyFilter}
-            onChange={(event) =>
-              setSafetyFilter(event.target.value)
-            }
+            onChange={(event) => setSafetyFilter(event.target.value)}
           >
-            <option value="">
-              All Tickets
-            </option>
+            <option value="">All Tickets</option>
 
-            <option value="true">
-              Safety Issues Only
-            </option>
+            <option value="true">Safety Issues Only</option>
 
-            <option value="false">
-              Non-Safety Issues
-            </option>
+            <option value="false">Non-Safety Issues</option>
           </select>
 
           {/* Sort */}
 
           <select
             value={sortOrder}
-            onChange={(event) =>
-              setSortOrder(event.target.value)
-            }
+            onChange={(event) => setSortOrder(event.target.value)}
           >
-            <option value="newest">
-              Newest First
-            </option>
+            <option value="newest">Newest First</option>
 
-            <option value="oldest">
-              Oldest First
-            </option>
+            <option value="oldest">Oldest First</option>
           </select>
 
           {/* Clear Filters */}
 
           {hasActiveFilters && (
-            <button
-              className="clear-filters-btn"
-              onClick={handleClearFilters}
-            >
+            <button className="clear-filters-btn" onClick={handleClearFilters}>
               Clear Filters
             </button>
           )}
-
         </div>
       )}
 
       {/* ================= EMPTY STATE ================= */}
 
       {tickets.length === 0 ? (
-
         <div className="empty-state">
           <h2>No tickets found</h2>
 
-          <p>
-            No tickets have been submitted yet.
-          </p>
+          <p>No tickets have been submitted yet.</p>
         </div>
-
       ) : filteredTickets.length === 0 ? (
-
         /* ================= NO FILTER RESULTS ================= */
 
         <div className="empty-state">
           <h2>No matching tickets found</h2>
 
-          <p>
-            Try changing your search or filters.
-          </p>
+          <p>Try changing your search or filters.</p>
 
-          <button
-            className="clear-filters-btn"
-            onClick={handleClearFilters}
-          >
+          <button className="clear-filters-btn" onClick={handleClearFilters}>
             Clear Filters
           </button>
         </div>
-
       ) : (
-
         /* ================= TICKETS GRID ================= */
 
         <div className="tickets-grid">
-
           {filteredTickets.map((ticket) => (
-
-            <div
-              className="ticket-card"
-              key={ticket._id}
-            >
-
+            <div className="ticket-card" key={ticket._id}>
               {/* Header */}
 
               <div className="ticket-header">
-
                 <h3>{ticket.title}</h3>
 
                 <span
@@ -362,46 +330,33 @@ const AllTickets_Admin_Only = () => {
                 >
                   {ticket.status?.replace("_", " ")}
                 </span>
-
               </div>
 
               {/* Safety Indicator */}
 
               {ticket.safetyFlag && (
-                <div className="ticket-safety-indicator">
-                  ⚠ Safety Issue
-                </div>
+                <div className="ticket-safety-indicator">⚠ Safety Issue</div>
               )}
 
               {/* Description */}
 
-              <p className="ticket-description">
-                {ticket.description}
-              </p>
+              <p className="ticket-description">{ticket.description}</p>
 
               {/* Ticket Information */}
 
               <div className="ticket-info">
-
                 {/* Department */}
 
                 <div className="info-row">
-                  <span className="info-label">
-                    Department
-                  </span>
+                  <span className="info-label">Department</span>
 
-                  <span>
-                    {ticket.departmentId?.name ||
-                      "Not available"}
-                  </span>
+                  <span>{ticket.departmentId?.name || "Not available"}</span>
                 </div>
 
                 {/* Priority */}
 
                 <div className="info-row">
-                  <span className="info-label">
-                    Priority
-                  </span>
+                  <span className="info-label">Priority</span>
 
                   <span
                     className={`priority-badge ${ticket.priority?.toLowerCase()}`}
@@ -413,78 +368,53 @@ const AllTickets_Admin_Only = () => {
                 {/* Location */}
 
                 <div className="info-row">
-                  <span className="info-label">
-                    Location
-                  </span>
+                  <span className="info-label">Location</span>
 
-                  <span>
-                    {ticket.location}
-                  </span>
+                  <span>{ticket.location}</span>
                 </div>
 
                 {/* Category */}
 
                 <div className="info-row">
-                  <span className="info-label">
-                    Category
-                  </span>
+                  <span className="info-label">Category</span>
 
-                  <span>
-                    {ticket.category}
-                  </span>
+                  <span>{ticket.category}</span>
                 </div>
-
               </div>
 
               {/* Footer */}
 
               <div className="ticket-footer">
-
                 <span className="created-date">
                   Created{" "}
-
                   {ticket.createdAt
-                    ? new Date(
-                        ticket.createdAt,
-                      ).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        },
-                      )
+                    ? new Date(ticket.createdAt).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      })
                     : "Not available"}
                 </span>
 
                 <button
                   className="view-details-btn"
                   onClick={() => {
-                    navigate(
-                      `/tickets/${ticket._id}`,
-                      {
-                        state: {
-                          fromAdmin: true,
-                        },
+                    navigate(`/tickets/${ticket._id}`, {
+                      state: {
+                        fromAdmin: true,
                       },
-                    );
+                    });
                   }}
                 >
                   View Details →
                 </button>
-
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       )}
-
     </div>
   );
 };
 
-export default AllTickets_Admin_Only; 
+export default AllTickets_Admin_Only;
