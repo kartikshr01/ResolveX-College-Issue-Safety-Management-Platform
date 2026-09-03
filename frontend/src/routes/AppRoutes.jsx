@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
@@ -8,31 +8,25 @@ import Register from "../pages/Auth/Register";
 import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
-
-      {/* Public Routes */}
+      {/* Public Auth Routes */}
 
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
 
-
       {/* Protected Routes */}
 
       <Route element={<ProtectedRoute />}>
-
         <Route
           path="/profile"
           element={<Profile />}
         />
-
       </Route>
 
-
-      {/* Role-Based Routes */}
+      {/* Admin Routes */}
 
       <Route
         element={
@@ -51,6 +45,7 @@ const AppRoutes = () => {
         />
       </Route>
 
+      {/* Technician Routes */}
 
       <Route
         element={
@@ -69,33 +64,14 @@ const AppRoutes = () => {
         />
       </Route>
 
-
       {/* Unauthorized */}
 
       <Route
         path="/unauthorized"
         element={<Unauthorized />}
       />
-
-
-      {/* Default Route */}
-
-      <Route
-        path="/"
-        element={<Navigate to="/login" replace />}
-      />
-
-
-      {/* Unknown Routes */}
-
-      <Route
-        path="*"
-        element={<Navigate to="/" replace />}
-      />
-
     </Routes>
   );
 };
-
 
 export default AppRoutes;
