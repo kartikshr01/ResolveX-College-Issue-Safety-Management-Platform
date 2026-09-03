@@ -9,24 +9,34 @@ const createTicket = async (req, res) => {
     req.body,
     req.file,
   );
-  return apiResponse(res, 201, "Ticket created successfully ", ticket);
+
+  return apiResponse(
+    res,
+    201,
+    "Ticket created successfully ",
+    ticket,
+  );
 };
 
 //Controller - get my tickets
 const getMyTickets = async (req, res) => {
-  console.log(req.user.name);
+  const tickets = await ticketService.getMyTickets(req.user);
 
-  const tickets = await ticketService.getMyTickets(req.user._id);
-
-  return apiResponse(res, 200, "Tickets fetched successfully", tickets);
+  return apiResponse(
+    res,
+    200,
+    "Tickets fetched successfully",
+    tickets,
+  );
 };
 
-//Controller -  get ticket by id
+//Controller - get ticket by id
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
     req.params.ticketId,
-    req.user._id,
+    req.user,
   );
+
   if (!ticket) {
     throw apiError(
       404,
@@ -35,18 +45,12 @@ const getTicketById = async (req, res) => {
     );
   }
 
-  return apiResponse(res, 200, "Ticket fetched successfully", ticket);
-};
-
-// Controller - Get All Ticket( for admin only )
-const getAllTickets = async (req, res) => {
-  const tickets = await ticketService.getAllTickets();
-
-  if (Array.isArray(tickets) && tickets.length === 0) {
-    return apiResponse(res , 200, "No tickets found." , null );
-  }
-
-  return apiResponse(res, 200, "All tickets fetched successfully", tickets);
+  return apiResponse(
+    res,
+    200,
+    "Ticket fetched successfully",
+    ticket,
+  );
 };
 
 // Controller - delete ticket by id
@@ -67,7 +71,12 @@ const deleteTicketById = async (req, res) => {
     );
   }
 
-  return apiResponse(res, 200, "Ticket deleted successfully", null);
+  return apiResponse(
+    res,
+    200,
+    "Ticket deleted successfully",
+    null,
+  );
 };
 
 //Controller : update ticket
@@ -78,7 +87,12 @@ const updateTicket = async (req, res) => {
     req.body,
   );
 
-  return apiResponse(res, 200, "Ticket updated successfully", ticket);
+  return apiResponse(
+    res,
+    200,
+    "Ticket updated successfully",
+    ticket,
+  );
 };
 
 //Controller : image update in ticket
@@ -89,7 +103,28 @@ const updateTicketImage = async (req, res) => {
     req.file,
   );
 
-  return apiResponse(res, 200, "Ticket image updated successfully", ticket);
+  return apiResponse(
+    res,
+    200,
+    "Ticket image updated successfully",
+    ticket,
+  );
+};
+
+// Controller - get ticket from notification
+const getTicketForNotification = async (req, res) => {
+  const ticket =
+    await ticketService.getTicketForNotification(
+      req.params.ticketId,
+      req.user,
+    );
+
+  return apiResponse(
+    res,
+    200,
+    "Ticket fetched successfully",
+    ticket,
+  );
 };
 
 module.exports = {
@@ -99,5 +134,5 @@ module.exports = {
   deleteTicketById,
   updateTicket,
   updateTicketImage,
-  getAllTickets,
+  getTicketForNotification,
 };

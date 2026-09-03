@@ -9,9 +9,8 @@ const {
 } = require("../validators/ticket.validator");
 const ticketController = require("../controllers/ticket.controller");
 const upload = require("../middleware/upload.middleware");
-const roleMiddleware = require("../middleware/role.middleware");
 
-//Route : Create Ticket
+//Route : create ticket
 router.post(
   "/",
   authMiddleware,
@@ -20,28 +19,24 @@ router.post(
   asyncHandler(ticketController.createTicket),
 );
 
-//Route : get All Tickets of a User
+//Route : get All User Tickets
 router.get("/my", authMiddleware, asyncHandler(ticketController.getMyTickets));
 
-//Route : Get Ticket by Id
+//Route : get ticket by id
 router.get(
   "/my/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.getTicketById),
 );
 
-// Route : Get All Ticket ( for admin only ) 
-router.get("/all" , authMiddleware , roleMiddleware("ADMIN") , asyncHandler(ticketController.getAllTickets))
-
-
-//Route : Delete Ticket 
+//Route : delete ticket
 router.delete(
   "/my/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.deleteTicketById),
 );
 
-//Route : Update Ticket
+//Route : update ticket
 router.patch(
   "/:id",
   authMiddleware,
@@ -49,12 +44,18 @@ router.patch(
   asyncHandler(ticketController.updateTicket),
 );
 
-//Route : Update Image in Ticket 
+//Route : update image in ticket
 router.patch(
   "/:id/image",
   authMiddleware,
   upload.single("image"),
   asyncHandler(ticketController.updateTicketImage),
+);
+
+router.get(
+  "/notification/:ticketId",
+  authMiddleware,
+  asyncHandler(ticketController.getTicketForNotification),
 );
 
 module.exports = router;

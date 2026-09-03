@@ -1,345 +1,419 @@
-.container {
-  min-height: 100vh;
-  padding: clamp(20px, 3vw, 40px);
-  background: #f5f6f1;
-}
-
-.header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: #68727d;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-.header h1 {
-  margin: 0;
-  color: #202123;
-  font-size: clamp(28px, 3vw, 38px);
-  line-height: 1.1;
-}
-
-.subtitle {
-  margin: 10px 0 0;
-  color: #7b8794;
-  font-size: 15px;
-}
-
-.count {
-  flex-shrink: 0;
-  padding: 11px 18px;
-  border-radius: 12px;
-  background: #d7ef52;
-  color: #202123;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-/* Feed */
-
-.feed {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* CARD */
+/* =========================================================
+   SAFETY CARD
+========================================================= */
 
 .card {
-  display: grid;
-  grid-template-columns: 180px minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
 
-  min-height: 180px;
-
-  overflow: hidden;
-  cursor: pointer;
-
-  border: 1px solid #e2e4e1;
-  border-radius: 18px;
   background: #ffffff;
 
-  box-shadow:
-    0 4px 12px rgba(32, 33, 35, 0.04),
-    0 12px 30px rgba(32, 33, 35, 0.04);
+  border: 1px solid #e0e0e2;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 1px 3px rgba(20, 20, 20, 0.035);
 
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
 
-  border-color: #d8dbd7;
+  border-color: #cbdc82;
 
-  box-shadow:
-    0 8px 20px rgba(32, 33, 35, 0.07),
-    0 18px 40px rgba(32, 33, 35, 0.06);
+  box-shadow: 0 7px 18px rgba(20, 20, 20, 0.07);
 }
 
-/* IMAGE */
+.card:focus-visible {
+  outline: 2px solid #c8f227;
+
+  outline-offset: 3px;
+}
+
+
+/* =========================================================
+   IMAGE AREA
+========================================================= */
+
+.imageWrapper {
+  width: 100%;
+
+  aspect-ratio: 16 / 10;
+
+  background: #eeeeef;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*
+  Cover keeps both portrait and landscape images
+  proportional and prevents stretching/pixel distortion.
+
+  The image may crop slightly at the edges if its ratio
+  is very different from the card ratio.
+*/
 
 .image {
   width: 100%;
   height: 100%;
-  min-height: 180px;
 
   display: block;
 
   object-fit: cover;
+
   object-position: center;
 
-  background: #e9ebe7;
+  background: #eeeeef;
 }
 
-/* CONTENT */
 
-.content {
-  min-width: 0;
-  padding: 24px 26px;
+/* =========================================================
+   NO IMAGE
+========================================================= */
+
+.noImage {
+  width: 100%;
+  height: 100%;
 
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: #eeeeef;
 }
 
-/* TOP ROW */
+.noImageText {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 32px;
+
+  padding: 0 13px;
+
+  background: #ffffff;
+
+  border: 1px solid #dddddf;
+
+  border-radius: 7px;
+
+  color: #77777c;
+
+  font-size: 11px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.content {
+  padding: 17px 18px 16px;
+}
+
+
+/* =========================================================
+   CATEGORY + PRIORITY
+========================================================= */
 
 .topRow {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 20px;
 
-  margin-bottom: 14px;
+  gap: 10px;
+
+  margin-bottom: 12px;
 }
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
 
 .category {
-  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
 
-  color: #68727d;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  max-width: 68%;
+
+  min-height: 25px;
+
+  padding: 0 9px;
+
+  background: #ebe7fb;
+
+  color: #5547a8;
+
+  border-radius: 6px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.45px;
+
   text-transform: uppercase;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
 }
 
-/* PRIORITY */
+
+/* =========================================================
+   PRIORITY
+========================================================= */
 
 .priority {
   flex-shrink: 0;
 
-  padding: 6px 11px;
-  border-radius: 999px;
-
-  background: #eee;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.low {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.medium {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.high {
-  background: #fed7aa;
-  color: #c2410c;
-}
-
-.critical {
-  background: #fecaca;
-  color: #b91c1c;
-}
-
-/* TITLE */
-
-.content h2 {
-  max-width: 850px;
-
-  margin: 0 0 8px;
-
-  color: #17191c;
-  font-size: clamp(18px, 1.5vw, 21px);
-  font-weight: 600;
-  line-height: 1.35;
-}
-
-/* DESCRIPTION */
-
-.description {
-  max-width: 900px;
-
-  margin: 0;
-
-  color: #727b85;
-  font-size: 14px;
-  line-height: 1.6;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* META */
-
-.meta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
 
-  margin-top: auto;
-  padding-top: 16px;
+  min-height: 25px;
 
-  border-top: 1px solid #eceeeb;
+  padding: 0 9px;
 
-  color: #68727d;
-  font-size: 13px;
-}
+  border-radius: 6px;
 
-.meta span {
-  min-width: 0;
-}
+  font-size: 9px;
 
-.meta span:first-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: 800;
+
+  text-transform: uppercase;
+
   white-space: nowrap;
 }
 
-/* TABLET */
 
-@media (max-width: 900px) {
-  .container {
-    padding: 24px;
-  }
+/* HIGH */
 
-  .card {
-    grid-template-columns: 160px minmax(0, 1fr);
-    min-height: 170px;
-  }
+.high {
+  background: #ffd9d9;
 
-  .image {
-    min-height: 170px;
-  }
-
-  .content {
-    padding: 20px;
-  }
+  color: #c84444;
 }
 
-/* MOBILE */
 
-@media (max-width: 640px) {
-  .container {
-    padding: 18px 16px;
-  }
+/* MEDIUM */
 
-  .header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
+.medium {
+  background: #fff0c8;
 
-  .count {
-    align-self: flex-start;
-  }
+  color: #987100;
+}
 
-  .card {
-    grid-template-columns: 110px minmax(0, 1fr);
-    min-height: 150px;
 
-    border-radius: 15px;
-  }
+/* LOW */
 
-  .image {
-    min-height: 150px;
+.low {
+  background: #e7f4b3;
+
+  color: #637b00;
+}
+
+
+/* CRITICAL */
+
+.critical {
+  background: #191919;
+
+  color: #c8f227;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.title {
+  margin: 0 0 8px;
+
+  color: #171717;
+
+  font-size: 17px;
+
+  line-height: 1.3;
+
+  font-weight: 800;
+
+  letter-spacing: -0.3px;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.description {
+  margin: 0;
+
+  min-height: 56px;
+
+  color: #85858a;
+
+  font-size: 12px;
+
+  line-height: 1.55;
+
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 3;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   BOTTOM ROW
+========================================================= */
+
+.bottomRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top: 1px solid #e8e8e9;
+}
+
+
+/* =========================================================
+   LOCATION
+========================================================= */
+
+.location {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  color: #77777d;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+.location span:last-child {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.locationDot {
+  flex-shrink: 0;
+
+  color: #ef4f83;
+
+  font-size: 18px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 27px;
+
+  padding: 0 10px;
+
+  background: #191919;
+
+  color: #c8f227;
+
+  border-radius: 7px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.2px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .imageWrapper {
+    aspect-ratio: 16 / 10;
   }
 
   .content {
     padding: 16px;
   }
 
-  .topRow {
-    margin-bottom: 9px;
-    gap: 8px;
-  }
-
-  .category {
-    font-size: 10px;
-  }
-
-  .priority {
-    padding: 5px 8px;
-    font-size: 9px;
-  }
-
-  .content h2 {
-    margin-bottom: 6px;
+  .title {
     font-size: 16px;
-  }
-
-  .description {
-    font-size: 12px;
-    line-height: 1.45;
-
-    -webkit-line-clamp: 2;
-  }
-
-  .meta {
-    margin-top: 12px;
-    padding-top: 10px;
-    font-size: 11px;
   }
 }
 
-/* VERY SMALL PHONES */
 
-@media (max-width: 420px) {
-  .container {
-    padding: 14px 12px;
-  }
+/* =========================================================
+   MOBILE
+========================================================= */
 
-  .card {
-    grid-template-columns: 90px minmax(0, 1fr);
-    min-height: 135px;
-  }
-
-  .image {
-    min-height: 135px;
+@media (max-width: 700px) {
+  .imageWrapper {
+    aspect-ratio: 16 / 10;
   }
 
   .content {
-    padding: 13px;
+    padding: 16px;
   }
 
-  .content h2 {
-    font-size: 14px;
+  .title {
+    font-size: 17px;
   }
 
   .description {
-    font-size: 11px;
-  }
-
-  .meta {
-    font-size: 10px;
+    min-height: auto;
   }
 }

@@ -56,8 +56,25 @@ const markNotificationAsRead = async (notificationId, userId) => {
   return notification;
 };
 
+const markAllNotificationsAsRead = async (userId) => {
+  await Notification.updateMany(
+    {
+      userId,
+      read: false,
+    },
+    {
+      $set: {
+        read: true,
+      },
+    },
+  );
+
+  return true;
+};
+
 module.exports = {
   createNotification,
   getMyNotifications,
   markNotificationAsRead,
+  markAllNotificationsAsRead
 };
