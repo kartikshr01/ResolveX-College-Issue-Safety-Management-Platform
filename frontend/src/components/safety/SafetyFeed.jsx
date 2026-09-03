@@ -15,29 +15,7 @@ function SafetyFeed() {
         setError("");
 
         const data = await getPublicSafetyIssues();
-
-        // =========================
-        // PRIORITY ORDER
-        // Critical → High → Medium → Low
-        // =========================
-        const priorityOrder = {
-          critical: 1,
-          high: 2,
-          medium: 3,
-          low: 4,
-        };
-
-        const sortedIssues = [...data].sort((a, b) => {
-          const priorityA =
-            priorityOrder[a.priority?.toLowerCase()] || 99;
-
-          const priorityB =
-            priorityOrder[b.priority?.toLowerCase()] || 99;
-
-          return priorityA - priorityB;
-        });
-
-        setIssues(sortedIssues);
+        setIssues(data);
       } catch (err) {
         console.error("Failed to fetch safety issues:", err);
         setError("Unable to load safety issues.");

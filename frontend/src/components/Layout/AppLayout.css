@@ -1,0 +1,267 @@
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  background: var(--workspace-bg);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 16px;
+  background: var(--dark-charcoal);
+  color: white;
+  z-index: 100;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 42px;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.sidebar-logo-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  background: var(--lime-primary);
+  color: var(--dark-charcoal);
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #a9a9a4;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.sidebar-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+.sidebar-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.sidebar-link.active {
+  background: rgba(201, 233, 75, 0.12);
+  color: var(--lime-primary);
+}
+
+.logout-button {
+  font: inherit;
+}
+
+.logout-button:hover {
+  color: var(--lime-primary);
+}
+
+
+/* =========================
+   MAIN AREA
+========================= */
+
+.app-main {
+  width: 100%;
+  min-height: 100vh;
+  margin-left: 260px;
+}
+
+.app-content {
+  padding: 32px;
+  min-height: calc(100vh - 80px);
+  background: var(--workspace-bg);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.app-header {
+  position: relative;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: var(--dark-charcoal);
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-label {
+  color: #a9a9a4;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon-button {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  background: transparent;
+  color: white;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+.header-icon-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.header-icon-button:hover {
+  color: var(--lime-primary);
+  border-color: var(--lime-primary);
+}
+
+
+/* =========================
+   NOTIFICATION BADGE
+========================= */
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  background: #ef4444;
+  color: white;
+  border: 2px solid var(--dark-charcoal);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  z-index: 2;
+}
+
+
+/* =========================
+   HEADER USER
+========================= */
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--lime-primary);
+  color: var(--dark-charcoal);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.header-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header-user-info strong {
+  font-size: 13px;
+  color: white;
+}
+
+.header-user-info span {
+  color: #a9a9a4;
+  font-size: 11px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .app-main {
+    margin-left: 220px;
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+
+  .app-main {
+    margin-left: 0;
+  }
+
+  .app-content {
+    padding: 20px;
+  }
+
+  .app-header {
+    padding: 0 20px;
+  }
+
+  .header-user-info {
+    display: none;
+  }
+}
