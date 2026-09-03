@@ -3,7 +3,7 @@ import {
   getMyNotifications,
   markNotificationAsRead,
   markAllNotificationsAsRead,
-} from "../../services/notificationService";
+} from "../../services/notification.service";
 import NotificationItem from "./NotificationItem";
 import TicketDetailsModal from "./TicketDetailsModal";
 import styles from "./NotificationPanel.module.css";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiBell } from "react-icons/fi";
-import { getMyNotifications } from "../../services/notificationService";
+import { getMyNotifications } from "../../services/notification.service";
 import { useAuth } from "../../context/AuthContext";
 import NotificationPanel from "../notification/NotificationPanel";
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./Activity.module.css";
-import { getMyActivity } from "../../services/activityService";
+import { getMyActivity } from "../../services/activity.service";
 
 function Activity() {
   const navigate = useNavigate();

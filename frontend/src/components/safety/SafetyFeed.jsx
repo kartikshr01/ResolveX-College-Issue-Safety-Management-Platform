@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPublicSafetyIssues } from "../../services/safetyService";
+import { getPublicSafetyIssues } from "../../services/safety.service";
 import SafetyCard from "./SafetyCard";
 import styles from "./SafetyFeed.module.css";
 
