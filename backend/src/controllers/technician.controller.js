@@ -1,11 +1,16 @@
 const technicianService = require("../services/technician.service");
+
 const asyncHandler = require("../utils/asyncHandler");
+
 const apiResponse = require("../utils/apiResponse");
+
 const apiError = require("../utils/apiError");
 
 // CREATE TECHNICIAN
 const createTechnician = asyncHandler(async (req, res) => {
-  const technician = await technicianService.createTechnician(req.body);
+  const technician = await technicianService.createTechnician(
+    req.body
+  );
 
   return apiResponse(
     res,
@@ -31,7 +36,8 @@ const getTechnicians = asyncHandler(async (req, res) => {
 const getTechnicianById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const technician = await technicianService.getTechnicianById(id);
+  const technician =
+    await technicianService.getTechnicianById(id);
 
   if (!technician) {
     throw apiError(404, "Technician not found");
@@ -45,14 +51,37 @@ const getTechnicianById = asyncHandler(async (req, res) => {
   );
 });
 
+// GET ASSIGNED TICKETS
+const getAssignedTickets = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const technician =
+    await technicianService.getTechnicianById(id);
+
+  if (!technician) {
+    throw apiError(404, "Technician not found");
+  }
+
+  const tickets =
+    await technicianService.getAssignedTickets(id);
+
+  return apiResponse(
+    res,
+    200,
+    "Assigned tickets fetched successfully",
+    tickets
+  );
+});
+
 // UPDATE TECHNICIAN
 const updateTechnician = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const technician = await technicianService.updateTechnician(
-    id,
-    req.body
-  );
+  const technician =
+    await technicianService.updateTechnician(
+      id,
+      req.body
+    );
 
   if (!technician) {
     throw apiError(404, "Technician not found");
@@ -70,7 +99,8 @@ const updateTechnician = asyncHandler(async (req, res) => {
 const deleteTechnician = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const technician = await technicianService.deleteTechnician(id);
+  const technician =
+    await technicianService.deleteTechnician(id);
 
   if (!technician) {
     throw apiError(404, "Technician not found");
@@ -79,23 +109,28 @@ const deleteTechnician = asyncHandler(async (req, res) => {
   return apiResponse(
     res,
     200,
-    "Technician deleted successfully",
+    "Technician deleted successfully"
   );
 });
 
 // UPDATE AVAILABILITY
 const updateAvailability = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
   const { availability } = req.body;
 
   if (typeof availability !== "boolean") {
-    throw apiError(400, "Availability must be true or false");
+    throw apiError(
+      400,
+      "Availability must be true or false"
+    );
   }
 
-  const technician = await technicianService.updateAvailability(
-    id,
-    availability
-  );
+  const technician =
+    await technicianService.updateAvailability(
+      id,
+      availability
+    );
 
   if (!technician) {
     throw apiError(404, "Technician not found");
@@ -113,6 +148,7 @@ module.exports = {
   createTechnician,
   getTechnicians,
   getTechnicianById,
+  getAssignedTickets,
   updateTechnician,
   deleteTechnician,
   updateAvailability,

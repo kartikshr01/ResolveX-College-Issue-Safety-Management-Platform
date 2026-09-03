@@ -3,7 +3,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 require("dotenv").config();
-
+const technicianRoutes = require("./routes/technician.routes");
 const authRouter = require("../src/routes/auth.routes");
 const userRouter = require("../src/routes/user.routes");
 const ticketRouter = require("./routes/ticket.routes");
@@ -12,9 +12,7 @@ const notificationRoutes = require("./routes/notification.routes");
 const activityRoutes = require("./routes/activity.routes");
 const errorHandler = require("../src/middleware/errorHandler");
 const adminRouter = require("../src/routes/admin.routes");
-
-
-
+const assignmentRoutes = require("./routes/assignment.route");
 const app = express();
 
 
@@ -29,7 +27,7 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-
+app.use("/api/technicians", technicianRoutes);
 app.use("/api/activity", activityRoutes);
 app.use("/api/issues", safetyRoutes);
 app.use("/api/notifications", notificationRoutes);
@@ -37,6 +35,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/assignments", assignmentRoutes);
 
 app.use(errorHandler);
 

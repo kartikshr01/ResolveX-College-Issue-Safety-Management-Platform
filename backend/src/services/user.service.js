@@ -43,14 +43,6 @@ const getAllUsers = async () => {
   return users;
 };
 
-const getAllUsers = async () => {
-  const users = await User.find()
-    .select("-passwordHash")
-    .populate("departmentId", "name description")
-    .sort({ createdAt: -1 });
-
-  return users;
-};
 
 const changePassword = async (userId, passwordData) => {
   const { currentPassword, newPassword } = passwordData;

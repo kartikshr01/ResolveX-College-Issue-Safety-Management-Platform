@@ -1,14 +1,21 @@
 const express = require("express");
+
 const router = express.Router();
+
 const authMiddleware = require("../middleware/auth.middleware");
 const asyncHandler = require("../utils/asyncHandler");
 const validate = require("../middleware/validation.middleware");
+
 const {
   createTicketValidator,
   updateTicketValidator,
 } = require("../validators/ticket.validator");
+
 const ticketController = require("../controllers/ticket.controller");
+
 const upload = require("../middleware/upload.middleware");
+const roleMiddleware = require("../middleware/role.middleware");
+
 
 //Route : create ticket
 router.post(
@@ -27,20 +34,65 @@ router.get(
   "/my/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.getTicketById),
-); 
+);
 
-//Route : Get Ticket by Id ( admin use only )
+
+// ======================================================
+// TECHNICIAN - ASSIGNED TICKETS
+// ======================================================
+
+router.get(
+  "/technician/assigned",
+  authMiddleware,
+  asyncHandler(ticketController.getAssignedTickets),
+);
+
+// ======================================================
+// TECHNICIAN - HISTORY
+// ======================================================
+
+router.get(
+  "/technician/history",
+  authMiddleware,
+  asyncHandler(ticketController.getTechnicianHistory),
+);
+
+// ======================================================
+// TECHNICIAN - SINGLE TICKET
+// ======================================================
+
+router.get(
+  "/technician/:ticketId",
+  authMiddleware,
+  asyncHandler(ticketController.getTechnicianTicketById),
+);
+
+// ======================================================
+// ADMIN - SINGLE TICKET
+// ======================================================
+
 router.get(
   "/admin/:ticketId",
-  authMiddleware,roleMiddleware("ADMIN") , 
+  authMiddleware,
+  roleMiddleware("ADMIN"),
   asyncHandler(ticketController.getTicketById_forAdmin),
 );
 
-// Route : Get All Ticket ( admin use only ) 
-router.get("/all" , authMiddleware , roleMiddleware("ADMIN") , asyncHandler(ticketController.getAllTickets))
+// ======================================================
+// ADMIN - ALL TICKETS
+// ======================================================
 
+router.get(
+  "/all",
+  authMiddleware,
+  roleMiddleware("ADMIN"),
+  asyncHandler(ticketController.getAllTickets),
+);
 
-//Route : Delete Ticket 
+// ======================================================
+// USER - DELETE TICKET
+// ======================================================
+
 router.delete(
   "/my/:ticketId",
   authMiddleware,
@@ -55,7 +107,23 @@ router.patch(
   asyncHandler(ticketController.updateTicket),
 );
 
-//Route : update image in ticket
+// ======================================================
+// TECHNICIAN - UPDATE STATUS
+// ======================================================
+
+
+router.patch(
+  "/:ticketId/status",
+  authMiddleware,
+  roleMiddleware("TECHNICIAN"),
+  asyncHandler(ticketController.updateTicketStatus),
+);
+ 
+
+// ======================================================
+// USER - UPDATE IMAGE
+// ======================================================
+
 router.patch(
   "/:id/image",
   authMiddleware,

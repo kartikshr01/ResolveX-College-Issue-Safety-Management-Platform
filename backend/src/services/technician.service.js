@@ -1,4 +1,5 @@
 const Technician = require("../models/Technician.model");
+const Ticket = require("../models/Ticket.model");
 
 const createTechnician = async (data) => {
   const technician = await Technician.create(data);
@@ -29,7 +30,7 @@ const deleteTechnician = async (id) => {
 };
 
 const updateAvailability = async (id, availability) => {
-  return await Technician.findByIdAndUpdate(
+  const technician = await Technician.findByIdAndUpdate(
     id,
     { availability },
     {
@@ -37,7 +38,22 @@ const updateAvailability = async (id, availability) => {
       runValidators: true,
     }
   );
+
+  if (!technician) {
+    return null;
+  }
+
+  if (availability === true) {
+    const assignmentService = require("./assignment.service");
+
+    await assignmentService.assignPendingTicketsToTechnician(
+      technician._id
+    );
+  }
+
+  return technician;
 };
+
 const incrementWorkload = async (technicianId) => {
   return await Technician.findByIdAndUpdate(
     technicianId,
@@ -54,6 +70,16 @@ const decrementWorkload = async (technicianId) => {
   );
 };
 
+// GET ASSIGNED TICKETS
+const getAssignedTickets = async (technicianId) => {
+  return await Ticket.find({
+    technicianId: technicianId,
+  })
+    .populate("userId", "name email")
+    .populate("departmentId", "name")
+    .sort({ createdAt: -1 });
+};
+
 module.exports = {
   createTechnician,
   getTechnicians,
@@ -62,6 +88,6 @@ module.exports = {
   deleteTechnician,
   updateAvailability,
   incrementWorkload,
-  decrementWorkload
- 
+  decrementWorkload,
+  getAssignedTickets,
 };

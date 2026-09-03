@@ -1,6 +1,8 @@
 const Joi = require("joi");
 
 const technicianSchema = Joi.object({
+  userId: Joi.string().required(),
+
   name: Joi.string().required(),
 
   email: Joi.string()
@@ -10,14 +12,18 @@ const technicianSchema = Joi.object({
   phone: Joi.string()
     .required(),
 
-  departmentId: Joi.string(),
+  departmentId: Joi.string()
+    .required(),
 
   skills: Joi.array()
-    .items(Joi.string()),
+    .items(Joi.string())
+    .default([]),
 
-  availability: Joi.boolean(),
+  availability: Joi.boolean()
+    .default(true),
 
   currentWorkload: Joi.number()
+    .min(0)
     .default(0),
 
   status: Joi.string()
