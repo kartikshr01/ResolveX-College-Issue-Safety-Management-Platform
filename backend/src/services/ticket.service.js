@@ -204,7 +204,32 @@ const updateTicketById = async (ticketId, userId, updateData) => {
 
   return ticket;
 };
+const updateTicketStatus = async (ticketId, status) => {
+  const allowedStatuses = [
+    "ASSIGNED",
+    "IN_PROGRESS",
+    "RESOLVED",
+  ];
 
+  if (!allowedStatuses.includes(status)) {
+    throw apiError(400, "Invalid ticket status");
+  }
+
+  const ticket = await Ticket.findById(ticketId);
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  ticket.status = status;
+
+  await ticket.save();
+
+  return await Ticket.findById(ticketId)
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone")
+    .populate("userId", "name email");
+};
 // Service: Update ticket image
 const updateTicketImage = async (ticketId, userId, imageFile) => {
   const ticket = await Ticket.findOne({
@@ -250,4 +275,5 @@ module.exports = {
   updateTicketById,
   updateTicketImage,
   getAllTickets,
+  updateTicketStatus
 };

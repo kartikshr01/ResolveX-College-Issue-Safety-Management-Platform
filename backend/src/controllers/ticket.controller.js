@@ -91,6 +91,20 @@ const updateTicketImage = async (req, res) => {
 
   return apiResponse(res, 200, "Ticket image updated successfully", ticket);
 };
+// Controller : update ticket status by technician
+const updateTicketStatus = async (req, res) => {
+  const ticket = await ticketService.updateTicketStatus(
+    req.params.ticketId,
+    req.body.status,
+  );
+
+  return apiResponse(
+    res,
+    200,
+    "Ticket status updated successfully",
+    ticket,
+  );
+};
 
 module.exports = {
   createTicket,

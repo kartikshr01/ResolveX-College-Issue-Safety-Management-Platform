@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import TechnicianStats from "../../components/TechnicianStats/TechnicianStats";
 import TechnicianTicketCard from "../../components/TechnicianTicketCard/TechnicianTicketCard";
-import TicketDetailsModal from "../../components/TicketDetailsModal/TicketDetailsModal";
+import TicketDetailsModal from "../../components/TicketDetailModal/TicketDetailModal";
 
 import "./TechnicianDashboard.css";
 
@@ -34,10 +34,7 @@ function TechnicianDashboard() {
   return (
     <div className="technician-dashboard">
 
-      {/* =========================
-          MAIN CONTENT
-      ========================= */}
-
+      
       <main className="technician-main">
 
         {/* =========================

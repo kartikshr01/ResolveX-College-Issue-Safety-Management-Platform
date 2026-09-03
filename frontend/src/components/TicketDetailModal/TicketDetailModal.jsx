@@ -1,35 +1,48 @@
-import "./TicketDetailsModal.css";
-
-function TicketDetailsModal({
-  ticket,
-  status,
-  setStatus,
-  onClose,
-}) {
+import "./TicketDetailModal.css";
+import api from "../../api/axios";
+function TicketDetailModal({ ticket, status, setStatus, onClose }) {
   if (!ticket) return null;
+
+  const handleStatusUpdate = async (newStatus) => {
+  try {
+    const response = await api.patch(
+      `/tickets/${ticket._id}/status`,
+      {
+        status: newStatus,
+      }
+    );
+
+    setStatus(newStatus);
+
+    console.log("Status updated:", response.data);
+  } catch (error) {
+    console.error(
+      "Status update error:",
+      error.response?.data || error.message
+    );
+
+    alert(
+      error.response?.data?.message ||
+      "Failed to update status"
+    );
+  }
+};
 
   return (
     <div
       className="ticket-modal-overlay"
       onClick={onClose}
     >
-
       <div
         className="ticket-modal"
         onClick={(event) => event.stopPropagation()}
       >
-
         {/* Header */}
         <div className="ticket-modal-header">
-
           <div>
-            <p>
-              TICKET #{ticket.id}
-            </p>
+            <p>TICKET #{ticket.id}</p>
 
-            <h2>
-              {ticket.title}
-            </h2>
+            <h2>{ticket.title}</h2>
           </div>
 
           <button
@@ -38,9 +51,7 @@ function TicketDetailsModal({
           >
             ×
           </button>
-
         </div>
-
 
         {/* Image */}
         {ticket.image && (
@@ -52,10 +63,8 @@ function TicketDetailsModal({
           </div>
         )}
 
-
         {/* Tags */}
         <div className="modal-tags">
-
           <span className="modal-category">
             {ticket.category}
           </span>
@@ -67,13 +76,10 @@ function TicketDetailsModal({
           <span className="modal-status">
             {status}
           </span>
-
         </div>
-
 
         {/* Information */}
         <div className="modal-info">
-
           <div>
             <span>Location</span>
             <strong>{ticket.location}</strong>
@@ -83,62 +89,59 @@ function TicketDetailsModal({
             <span>Reported On</span>
             <strong>{ticket.reportedOn}</strong>
           </div>
-
         </div>
-
 
         {/* Description */}
         <div className="modal-description">
+          <h3>Description</h3>
 
-          <h3>
-            Description
-          </h3>
-
-          <p>
-            {ticket.description}
-          </p>
-
+          <p>{ticket.description}</p>
         </div>
-
 
         {/* Status */}
         <div className="modal-workflow">
-
-          <h3>
-            Update Status
-          </h3>
+          <h3>Update Status</h3>
 
           <div className="modal-status-buttons">
 
             <button
-              className={status === "Assigned" ? "active" : ""}
-              onClick={() => setStatus("Assigned")}
+              className={
+                status === "Assigned" ? "active" : ""
+              }
+              onClick={() =>
+                handleStatusUpdate("ASSIGNED")
+              }
             >
               Assigned
             </button>
 
             <button
-              className={status === "In Progress" ? "active" : ""}
-              onClick={() => setStatus("In Progress")}
+              className={
+                status === "In Progress" ? "active" : ""
+              }
+              onClick={() =>
+                handleStatusUpdate("IN_PROGRESS")
+              }
             >
               In Progress
             </button>
 
             <button
-              className={status === "Resolved" ? "active" : ""}
-              onClick={() => setStatus("Resolved")}
+              className={
+                status === "Resolved" ? "active" : ""
+              }
+              onClick={() =>
+                handleStatusUpdate("RESOLVED")
+              }
             >
               Resolved
             </button>
 
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-export default TicketDetailsModal;
+export default TicketDetailModal;

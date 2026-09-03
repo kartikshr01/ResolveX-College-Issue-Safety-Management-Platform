@@ -49,6 +49,11 @@ router.patch(
   asyncHandler(ticketController.updateTicket),
 );
 
+router.patch(
+  "/:ticketId/status",
+  authMiddleware,
+  asyncHandler(ticketController.updateTicketStatus),
+);
 //Route : Update Image in Ticket 
 router.patch(
   "/:id/image",
