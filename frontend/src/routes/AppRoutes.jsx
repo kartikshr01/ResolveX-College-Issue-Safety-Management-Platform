@@ -16,11 +16,11 @@ import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
 import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
 import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
 import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
-import AllTickets from "../pages/Tickets/AllAdminTickets/AllTickets"; // Fix path/name if needed
+
+import UserDashboard from "../pages/Dashboard/UserDashboard";
 
 // Placeholder Component (If not imported from elsewhere)
 const PlaceholderPage = ({ title }) => <div>{title} Placeholder</div>;
-
 const AppRoutes = () => {
   return (
     <Routes>
@@ -29,16 +29,11 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
-
-
       {/* ================= ALL AUTHENTICATED USERS ================= */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
           {/* General Navigation */}
-          <Route
-            path="/dashboard"
-            element={<PlaceholderPage title="Dashboard" />}
-          />
+          <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route
             path="/activity"
@@ -63,8 +58,6 @@ const AppRoutes = () => {
         </Route>
       </Route>
 
-
-
       {/* ================= ADMIN ONLY ROUTES ================= */}
       <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route element={<AppLayout />}>
@@ -88,11 +81,9 @@ const AppRoutes = () => {
             path="/admin/analytics"
             element={<PlaceholderPage title="Analytics" />}
           />
-          <Route path="/tickets/all-admin" element={<AllTickets />} />
+          
         </Route>
       </Route>
-
-
 
       {/* ================= TECHNICIAN ONLY ROUTES ================= */}
       <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
