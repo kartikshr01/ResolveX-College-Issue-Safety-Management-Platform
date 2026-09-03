@@ -52,4 +52,10 @@ router.patch(
   asyncHandler(ticketController.updateTicketImage),
 );
 
+router.get(
+  "/notification/:ticketId",
+  authMiddleware,
+  asyncHandler(ticketController.getTicketForNotification),
+);
+
 module.exports = router;

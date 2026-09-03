@@ -76,6 +76,21 @@ const updateTicketImage = async (req, res) => {
   return apiResponse(res, 200, "Ticket image updated successfully", ticket);
 };
 
+// Controller - get ticket from notification
+const getTicketForNotification = async (req, res) => {
+  const ticket = await ticketService.getTicketForNotification(
+    req.params.ticketId,
+    req.user,
+  );
+
+  return apiResponse(
+    res,
+    200,
+    "Ticket fetched successfully",
+    ticket,
+  );
+};
+
 module.exports = {
   createTicket,
   getMyTickets,
@@ -83,4 +98,5 @@ module.exports = {
   deleteTicketById,
   updateTicket,
   updateTicketImage,
+  getTicketForNotification
 };

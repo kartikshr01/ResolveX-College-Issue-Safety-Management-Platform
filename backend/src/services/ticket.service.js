@@ -6,7 +6,7 @@ const assignmentService = require("./assignment.service");
 const deleteImage = require("../utils/deleteImage");
 const notificationService = require("./notification.service");
 const activityService = require("./activity.service");
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 const Activity = require("../models/Activity.model");
 
 // Service: Create ticket
@@ -224,6 +224,23 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
   return ticket;
 };
 
+// Service: Get ticket for notification
+const getTicketForNotification = async (ticketId, userId) => {
+  const ticket = await Ticket.findOne({
+    _id: ticketId,
+    userId,
+  })
+    .populate("departmentId", "name")
+    .populate("technicianId", "name email phone")
+    .lean();
+
+  if (!ticket) {
+    throw apiError(404, "Ticket not found");
+  }
+
+  return ticket;
+};
+
 module.exports = {
   createTicket,
   getMyTickets,
@@ -231,4 +248,5 @@ module.exports = {
   deleteTicketById,
   updateTicketById,
   updateTicketImage,
+  getTicketForNotification
 };

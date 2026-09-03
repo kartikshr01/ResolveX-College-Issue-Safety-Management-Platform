@@ -1,23 +1,33 @@
 const Technician = require("../models/Technician.model");
 const Ticket = require("../models/Ticket.model");
-const apiError = require("../utils/apiError");
+const User = require("../models/User.model");
 
-const assignTechnician = async (ticketId, departmentId) => {
-  // Find the available technician with the lowest workload
-  const technician = await Technician.findOne({
-    departmentId,
+const activityService = require("../services/activity.service");
+const notificationService = require("../services/notification.service");
+
+const findBestTechnician = async (departmentId) => {
+  const technicians = await Technician.find({
+    departmentId: departmentId,
     availability: true,
     status: "active",
   }).sort({
     currentWorkload: 1,
   });
 
-  // No technician available
+  if (technicians.length === 0) {
+    return null;
+  }
+
+  return technicians[0];
+};
+
+const assignTechnician = async (ticketId, departmentId) => {
+  const technician = await findBestTechnician(departmentId);
+
   if (!technician) {
     return null;
   }
 
-  // Assign technician to ticket
   const ticket = await Ticket.findByIdAndUpdate(
     ticketId,
     {
@@ -26,17 +36,50 @@ const assignTechnician = async (ticketId, departmentId) => {
     },
     {
       new: true,
-    }
+    },
   );
 
   if (!ticket) {
-    throw apiError(404, "Ticket not found");
+    return null;
   }
 
-  // Increase workload
-  technician.currentWorkload += 1;
+  await Technician.findByIdAndUpdate(technician._id, {
+    $inc: {
+      currentWorkload: 1,
+    },
+  });
 
-  await technician.save();
+  // Technician notification
+  await notificationService.createNotification({
+    userId: technician.userId,
+    ticketId: ticket._id,
+    type: "TICKET_ASSIGNED",
+    message: `A new ticket "${ticket.title}" has been assigned to you.`,
+  });
+
+  // Admin notification
+  const admin = await User.findOne({
+    role: "ADMIN",
+  });
+
+  if (admin) {
+    await notificationService.createNotification({
+      userId: admin._id,
+      ticketId: ticket._id,
+      type: "TICKET_ASSIGNED",
+      message: `Ticket "${ticket.title}" has been assigned to ${technician.name}.`,
+    });
+  }
+
+  // Activity
+  await activityService.createActivity({
+    ticketId: ticket._id,
+    actorId: technician.userId,
+    action: "TICKET_ASSIGNED",
+    oldStatus: "OPEN",
+    newStatus: "ASSIGNED",
+    message: `Ticket "${ticket.title}" has been assigned to you.`,
+  });
 
   return {
     ticket,
@@ -45,5 +88,6 @@ const assignTechnician = async (ticketId, departmentId) => {
 };
 
 module.exports = {
+  findBestTechnician,
   assignTechnician,
 };
