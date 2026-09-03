@@ -1,11 +1,16 @@
+import { useEffect, useState } from "react";
 import { FiBell } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
-// import { useEffect, useState } from "react";
-// import { getMyNotifications } from "../../services/notificationService";
+import { getMyNotifications } from "../../services/notificationService";
+import NotificationPanel from "../notification/NotificationPanel";
 import "./AdminNavbar.css";
 
 const AdminNavbar = () => {
   const { user } = useAuth();
+
+  // Notification state
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Get admin name from logged-in user
   const adminName =
@@ -19,6 +24,40 @@ const AdminNavbar = () => {
     .trim()
     .charAt(0)
     .toUpperCase();
+
+  // Fetch unread notification count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const data = await getMyNotifications();
+
+        const notifications = Array.isArray(data)
+          ? data
+          : [];
+
+        const unread = notifications.filter(
+          (notification) => !notification.read
+        ).length;
+
+        setUnreadCount(unread);
+      } catch (error) {
+        console.error(
+          "Failed to fetch unread notification count:",
+          error
+        );
+      }
+    };
+
+    fetchUnreadCount();
+
+    // Refresh count every 30 seconds
+    const interval = setInterval(
+      fetchUnreadCount,
+      30000
+    );
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="admin-navbar">
@@ -38,12 +77,26 @@ const AdminNavbar = () => {
           type="button"
           className="notification-btn"
           aria-label="Notifications"
+          onClick={() =>
+            setShowNotifications((prev) => !prev)
+          }
         >
           <FiBell />
 
-          {/* Notification count will be connected later */}
-          {/* <span className="notification-badge">3</span> */}
+          {unreadCount > 0 && (
+            <span className="notification-badge">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
         </button>
+
+        {/* NOTIFICATION PANEL */}
+        {showNotifications && (
+          <NotificationPanel
+            isOpen={showNotifications}
+            onClose={() => setShowNotifications(false)}
+          />
+        )}
 
         {/* ADMIN PROFILE */}
         <div className="navbar-user">

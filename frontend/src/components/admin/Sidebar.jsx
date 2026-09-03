@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+
 import {
   FiGrid,
   FiUsers,
@@ -29,42 +30,35 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-
       {/* =========================
           TOP SECTION
       ========================== */}
-      <div className="sidebar-top">
 
+      <div className="sidebar-top">
         {/* =========================
             BRAND
         ========================== */}
-        <div className="sidebar-brand">
 
-          <div className="brand-logo">
-            RX
-          </div>
+        <div className="sidebar-brand">
+          <div className="brand-logo">RX</div>
 
           <div className="brand-text">
             <h2>ResolveX</h2>
             <span>Admin Panel</span>
           </div>
-
         </div>
-
 
         {/* =========================
             NAVIGATION
         ========================== */}
+
         <nav className="sidebar-nav">
-
-          <p className="sidebar-section-title">
-            MENU
-          </p>
-
+          <p className="sidebar-section-title">MENU</p>
 
           {/* =========================
               DASHBOARD
           ========================== */}
+
           <NavLink
             to="/admin"
             end
@@ -79,10 +73,10 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </NavLink>
 
-
           {/* =========================
               TECHNICIANS
           ========================== */}
+
           <NavLink
             to="/admin/technicians"
             className={({ isActive }) =>
@@ -96,10 +90,10 @@ const Sidebar = () => {
             <span>Technicians</span>
           </NavLink>
 
-
           {/* =========================
               STATISTICS
           ========================== */}
+
           <NavLink
             to="/admin/statistics"
             className={({ isActive }) =>
@@ -113,28 +107,25 @@ const Sidebar = () => {
             <span>Statistics</span>
           </NavLink>
 
-
           {/* =========================
               DIVIDER
           ========================== */}
+
           <div className="sidebar-divider"></div>
-
         </nav>
-
       </div>
-
 
       {/* =========================
           BOTTOM SECTION
       ========================== */}
+
       <div className="sidebar-footer">
-
-
         {/* =========================
             PROFILE
         ========================== */}
+
         <NavLink
-          to="/profile"
+          to="/admin/profile"
           className={({ isActive }) =>
             `sidebar-link ${isActive ? "active" : ""}`
           }
@@ -146,10 +137,10 @@ const Sidebar = () => {
           <span>Profile</span>
         </NavLink>
 
-
         {/* =========================
             LOGOUT
         ========================== */}
+
         <button
           type="button"
           className="sidebar-logout"
@@ -159,9 +150,7 @@ const Sidebar = () => {
 
           <span>Logout</span>
         </button>
-
       </div>
-
     </aside>
   );
 };

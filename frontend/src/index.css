@@ -1,34 +1,27 @@
-@import "tailwindcss";
-
 :root {
   --dark-charcoal: #232427;
-  --dark-secondary: #2C2D31;
+  --dark-secondary: #2c2d31;
 
-  --workspace-bg: #F3F3F5;
-  --light-bg: #F7F7F8;
-  --card-bg: #FFFFFF;
+  --workspace-bg: #f3f3f5;
+  --light-bg: #f7f7f8;
+  --card-bg: #ffffff;
 
-  --text-primary: #24252A;
-  --text-secondary: #8A8B92;
-  --border-subtle: #E7E7EA;
+  --text-primary: #24252a;
+  --text-secondary: #8a8b92;
+  --border-subtle: #e7e7ea;
 
-  --lavender: #B9B1E8;
-  --lavender-light: #DDD9F5;
+  --lavender: #b9b1e8;
+  --lavender-light: #ddd9f5;
 
-  --lime-primary: #C9E94B;
-  --lime-light: #E8F5A8;
+  --lime-primary: #c9e94b;
+  --lime-light: #e8f5a8;
 }
 
+/* Global reset */
 * {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100%;
 html {
   font-family:
     Inter,
@@ -41,22 +34,6 @@ html {
 
 body {
   margin: 0;
-  background: var(--workspace-bg);
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-img {
-  max-width: 100%;
   min-width: 320px;
   min-height: 100vh;
 
@@ -70,4 +47,4 @@ input {
 
 #root {
   min-height: 100vh;
-}}
+}

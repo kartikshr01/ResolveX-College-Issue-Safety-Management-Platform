@@ -1,59 +1,90 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
 
+// Public pages
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+
+// Common pages
 import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
+
+// Admin layout
+import AdminLayout from "../components/Layout/AdminLayout/AdminLayout";
+
+// Admin pages
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import TechnicianManagement from "../pages/admin/TechnicianManagement";
+import Statistics from "../pages/admin/Statistics";
+import AdminActivity from "../pages/admin/ActivityAdmin";
+import AdminTicketDetails from "../pages/admin/AdminTicketDetails";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Auth Routes */}
+      {/* =========================
+          PUBLIC ROUTES
+      ========================== */}
 
       <Route path="/login" element={<Login />} />
-
       <Route path="/register" element={<Register />} />
 
-      {/* Protected Routes */}
+      {/* =========================
+          PROTECTED COMMON ROUTES
+      ========================== */}
 
       <Route element={<ProtectedRoute />}>
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
-      {/* Admin Routes */}
+      {/* =========================
+          ADMIN ROUTES
+      ========================== */}
 
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["ADMIN"]}
+      <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
+        <Route element={<AdminLayout />}>
+          {/* Dashboard */}
+          <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Technician Management */}
+          <Route
+            path="/admin/technicians"
+            element={<TechnicianManagement />}
           />
-        }
-      >
-        <Route
-          path="/admin"
-          element={
-            <div>
-              <h1>Admin Dashboard</h1>
-            </div>
-          }
-        />
+
+          {/* Statistics */}
+          <Route
+            path="/admin/statistics"
+            element={<Statistics />}
+          />
+
+          {/* Activity */}
+          <Route
+            path="/admin/activity"
+            element={<AdminActivity />}
+          />
+
+          {/* Activity → Ticket Details */}
+          <Route
+            path="/admin/activity/ticket/:ticketId"
+            element={<AdminTicketDetails />}
+          />
+
+          {/* Admin Profile */}
+          <Route
+            path="/admin/profile"
+            element={<Profile />}
+          />
+        </Route>
       </Route>
 
-      {/* Technician Routes */}
+      {/* =========================
+          TECHNICIAN ROUTES
+      ========================== */}
 
-      <Route
-        element={
-          <RoleProtectedRoute
-            allowedRoles={["TECHNICIAN"]}
-          />
-        }
-      >
+      <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
         <Route
           path="/technician"
           element={
@@ -64,11 +95,31 @@ const AppRoutes = () => {
         />
       </Route>
 
-      {/* Unauthorized */}
+      {/* =========================
+          UNAUTHORIZED
+      ========================== */}
 
       <Route
         path="/unauthorized"
         element={<Unauthorized />}
+      />
+
+      {/* =========================
+          DEFAULT ROUTE
+      ========================== */}
+
+      <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
+
+      {/* =========================
+          UNKNOWN ROUTES
+      ========================== */}
+
+      <Route
+        path="*"
+        element={<Navigate to="/login" replace />}
       />
     </Routes>
   );
