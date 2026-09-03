@@ -1,113 +1,300 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
 import AppLayout from "../components/Layout/AppLayout";
 
-// Auth Pages
+/* =========================
+   AUTH
+========================= */
+
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
-// User & Profile Pages
-import Profile from "../pages/Profile/Profile";
+/* =========================
+   USER / PROFILE
+========================= */
 
-// Ticket Pages
+import Profile from "../pages/Profile/Profile";
+import UserDashboard from "../pages/Dashboard/UserDashboard";
+
+/* =========================
+   TICKETS
+========================= */
+
 import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
 import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
-import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
 import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
 import AllTickets_Admin_Only from "../pages/Tickets/AllTickets-Admin_Only/AllTickets-Admin_Only";
 
-import UserDashboard from "../pages/Dashboard/UserDashboard";
+/* =========================
+   TECHNICIAN
+========================= */
 
-// Placeholder Component (If not imported from elsewhere)
-const PlaceholderPage = ({ title }) => <div>{title} Placeholder</div>;
+import TechnicianDashboard from "../pages/TechnicianDashboard/TechnicianDashboard";
+import TechnicianIssues from "../pages/TechnicianIssues/TechnicianIssues";
+import TechnicianHistory from "../pages/TechnicianHistory/TechnicianHistory";
+import TechnicianTicketDetails from "../pages/TicketDetails/TicketDetails";
+
+/* =========================
+   SAFETY
+========================= */
+
+import SafetyFeed from "../components/safety/SafetyFeed";
+import SafetyDetails from "../components/safety/SafetyDetails";
+
+/* =========================
+   ACTIVITY
+========================= */
+
+import Activity from "../components/activity/Activity";
+
+
+/* =========================
+   PLACEHOLDER
+========================= */
+
+const PlaceholderPage = ({ title }) => {
+  return <div>{title} Placeholder</div>;
+};
+
+
+/* =========================
+   APP ROUTES
+========================= */
+
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ================= PUBLIC ROUTES ================= */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {/* ================= ALL AUTHENTICATED USERS ================= */}
+      {/* ==================================================
+          PUBLIC ROUTES
+      ================================================== */}
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+
+      <Route
+        path="/register"
+        element={<Register />}
+      />
+
+      <Route
+        path="/unauthorized"
+        element={<Unauthorized />}
+      />
+
+
+      {/* ==================================================
+          AUTHENTICATED USER ROUTES
+      ================================================== */}
+
       <Route element={<ProtectedRoute />}>
+
         <Route element={<AppLayout />}>
-          {/* General Navigation */}
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/profile" element={<Profile />} />
+
+          {/* Dashboard */}
+
+          <Route
+            path="/dashboard"
+            element={<UserDashboard />}
+          />
+
+
+          {/* Profile */}
+
+          <Route
+            path="/profile"
+            element={<Profile />}
+          />
+
+
+          {/* Activity */}
+
           <Route
             path="/activity"
-            element={<PlaceholderPage title="Activity" />}
+            element={<Activity />}
           />
 
-          {/* Ticket/Issue Reporting */}
-          <Route
-            path="/report-issue"
-            element={<PlaceholderPage title="Report an Issue" />}
-          />
+
+          {/* Safety */}
+
           <Route
             path="/safety"
-            element={<PlaceholderPage title="Safety Reports" />}
+            element={<SafetyFeed />}
           />
 
-          {/* Main Ticket Feature Routes */}
-          <Route path="/tickets/create" element={<CreateTicket />} />
-          <Route path="/tickets/my-tickets" element={<MyTickets />} />
-          <Route path="/tickets/:ticketId" element={<TicketDetails />} />
-          <Route path="/tickets/all-admin" element={<allTickets />} />
-          <Route path="/tickets/:ticketId/edit" element={<EditTicket />} />
+          <Route
+            path="/safety/:id"
+            element={<SafetyDetails />}
+          />
+
+
+          {/* Report Issue */}
+
+          <Route
+            path="/report-issue"
+            element={
+              <PlaceholderPage title="Report an Issue" />
+            }
+          />
+
+
+          {/* Tickets */}
+
+          <Route
+            path="/tickets/create"
+            element={<CreateTicket />}
+          />
+
+          <Route
+            path="/tickets/my-tickets"
+            element={<MyTickets />}
+          />
+
+          <Route
+            path="/tickets/:ticketId"
+            element={
+              <PlaceholderPage title="Ticket Details" />
+            }
+          />
+
+          <Route
+            path="/tickets/:ticketId/edit"
+            element={<EditTicket />}
+          />
+
+          <Route
+            path="/tickets/all-admin"
+            element={<AllTickets_Admin_Only />}
+          />
+
         </Route>
+
       </Route>
 
-      {/* ================= ADMIN ONLY ROUTES ================= */}
-      <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
+
+      {/* ==================================================
+          ADMIN ROUTES
+      ================================================== */}
+
+      <Route
+        element={
+          <RoleProtectedRoute
+            allowedRoles={["ADMIN"]}
+          />
+        }
+      >
+
         <Route element={<AppLayout />}>
+
           <Route
             path="/admin"
-            element={<PlaceholderPage title="Admin Dashboard" />}
+            element={
+              <PlaceholderPage title="Admin Dashboard" />
+            }
           />
+
           <Route
             path="/admin/issues"
-            element={<PlaceholderPage title="All Issues" />}
+            element={
+              <PlaceholderPage title="All Issues" />
+            }
           />
+
           <Route
             path="/admin/technicians"
-            element={<PlaceholderPage title="Technician Management" />}
+            element={
+              <PlaceholderPage title="Technician Management" />
+            }
           />
+
           <Route
             path="/admin/departments"
-            element={<PlaceholderPage title="Department Management" />}
+            element={
+              <PlaceholderPage title="Department Management" />
+            }
           />
+
           <Route
             path="/admin/analytics"
-            element={<PlaceholderPage title="Analytics" />}
+            element={
+              <PlaceholderPage title="Analytics" />
+            }
           />
-          
+
         </Route>
+
       </Route>
 
-      {/* ================= TECHNICIAN ONLY ROUTES ================= */}
-      <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
+
+      {/* ==================================================
+          TECHNICIAN ROUTES
+      ================================================== */}
+
+      <Route
+        element={
+          <RoleProtectedRoute
+            allowedRoles={["TECHNICIAN"]}
+          />
+        }
+      >
+
         <Route element={<AppLayout />}>
+
+          {/* Technician Dashboard */}
+
           <Route
             path="/technician"
-            element={<PlaceholderPage title="Technician Dashboard" />}
+            element={<TechnicianDashboard />}
           />
+
+
+          {/* Assigned Issues */}
+
           <Route
             path="/technician/issues"
-            element={<PlaceholderPage title="Assigned Issues" />}
+            element={<TechnicianIssues />}
           />
+
+
+          {/* Ticket Details */}
+
+          <Route
+            path="/technician/ticket/:ticketId"
+            element={<TechnicianTicketDetails />}
+          />
+
+
+          {/* Resolution History */}
+
           <Route
             path="/technician/history"
-            element={<PlaceholderPage title="Resolution History" />}
+            element={<TechnicianHistory />}
           />
+
         </Route>
+
       </Route>
 
-      {/* ================= FALLBACK FALLTHROUGHS ================= */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+
+      {/* ==================================================
+          DEFAULT
+      ================================================== */}
+
+      <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
+
+      <Route
+        path="*"
+        element={<Navigate to="/login" replace />}
+      />
+
     </Routes>
   );
 };
