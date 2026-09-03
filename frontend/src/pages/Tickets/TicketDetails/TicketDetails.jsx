@@ -18,6 +18,8 @@ const TicketDetails = () => {
   const [imageUpdating, setImageUpdating] = useState(false);
   const [imageMessage, setImageMessage] = useState("");
   const [imageError, setImageError] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
@@ -132,11 +134,42 @@ const TicketDetails = () => {
       setImageUpdating(false);
     }
   };
+
+  const handleDeleteTicket = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this ticket? This action cannot be undone.",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setDeleting(true);
+      setDeleteError("");
+
+      await axios.delete(`http://localhost:3000/api/tickets/my/${ticket._id}`, {
+        withCredentials: true,
+      });
+
+      navigate("/my-tickets");
+    } catch (error) {
+      console.error("Error deleting ticket:", error);
+
+      setDeleteError(
+        error.response?.data?.message || "Failed to delete ticket.",
+      );
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className="ticket-details-container">
       {/* Back Button */}
 
-      <button className="back-btn" onClick={() => navigate("/tickets/my-tickets")}>
+      <button
+        className="back-btn"
+        onClick={() => navigate("/tickets/my-tickets")}
+      >
         ← Back to My Tickets
       </button>
 
@@ -165,19 +198,33 @@ const TicketDetails = () => {
               <span className="safety-badge">⚠ Safety Issue</span>
             )}
           </div>
+
           {ticket.status === "OPEN" && !fromAdmin && (
-            <button
-              className="edit-ticket-btn"
-              onClick={() => navigate(`/tickets/${ticket._id}/edit`)}
-            >
-              ✏️ Edit Ticket
-            </button>
+            <div className="ticket-action-buttons">
+              <button
+                className="edit-ticket-btn"
+                onClick={() => navigate(`/tickets/${ticket._id}/edit`)}
+                disabled={deleting}
+              >
+                ✏️ Edit Ticket
+              </button>
+
+              <button
+                className="delete-ticket-btn"
+                onClick={handleDeleteTicket}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "🗑️ Delete Ticket"}
+              </button>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Delete Error */}
+      {deleteError && <div className="delete-error-message">{deleteError}</div>}
 
+      {/* Main Content */}
       <div className="ticket-details-content">
         {/* Left Section */}
 
@@ -189,8 +236,6 @@ const TicketDetails = () => {
 
             <p className="full-description">{ticket.description}</p>
           </div>
-
-          {/* Image */}
 
           {/* Image */}
 
