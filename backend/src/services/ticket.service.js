@@ -225,13 +225,21 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
 };
 
 // Service: Get ticket for notification
-const getTicketForNotification = async (ticketId, userId) => {
-  const ticket = await Ticket.findOne({
+// Service: Get ticket for notification
+const getTicketForNotification = async (ticketId, user) => {
+  const query = {
     _id: ticketId,
-    userId,
-  })
+  };
+
+  // Normal user can only view their own ticket
+  if (user?.role !== "ADMIN") {
+    query.userId = user._id;
+  }
+
+  const ticket = await Ticket.findOne(query)
     .populate("departmentId", "name")
     .populate("technicianId", "name email phone")
+    .populate("userId", "name email")
     .lean();
 
   if (!ticket) {
