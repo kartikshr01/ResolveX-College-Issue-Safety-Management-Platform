@@ -72,7 +72,7 @@ const MyTickets = () => {
 
           <button
             className="create-ticket-btn"
-            onClick={() => navigate("/create-ticket")}
+            onClick={() => navigate("/report-issue")}
           >
             Create Ticket
           </button>

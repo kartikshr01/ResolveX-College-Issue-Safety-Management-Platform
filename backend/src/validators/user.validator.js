@@ -6,6 +6,13 @@ const updateProfileValidator = joi.object({
   email: joi.string().min(8).max(100).trim().lowercase(),
 });
 
+const changePasswordValidator = joi.object({
+  currentPassword: joi.string().min(8).required(),
+
+  newPassword: joi.string().min(8).required(),
+});
+
 module.exports = {
   updateProfileValidator,
+  changePasswordValidator,
 };

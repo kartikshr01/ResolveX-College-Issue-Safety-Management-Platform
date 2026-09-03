@@ -1,25 +1,14 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import {
-  loginUser,
-  logoutUser,
-} from "../services/auth.service";
+import { loginUser, logoutUser } from "../services/auth.service";
 
 import { getMyProfile } from "../services/user.service";
 
-
 const AuthContext = createContext(null);
-
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
 
   const checkAuth = async () => {
     try {
@@ -28,13 +17,16 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
 
       return response.data;
-    } catch {
+    } catch (error) {
+      if (error.response?.status !== 401) {
+        console.error("Auth check failed:", error);
+      }
+
       setUser(null);
 
       return null;
     }
   };
-
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -45,7 +37,6 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, []);
 
-
   const login = async (credentials) => {
     const response = await loginUser(credentials);
 
@@ -54,7 +45,6 @@ export const AuthProvider = ({ children }) => {
     return response;
   };
 
-
   const logout = async () => {
     try {
       await logoutUser();
@@ -62,7 +52,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
     }
   };
-
 
   return (
     <AuthContext.Provider
@@ -80,14 +69,11 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-
 export const useAuth = () => {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error(
-      "useAuth must be used inside AuthProvider"
-    );
+    throw new Error("useAuth must be used inside AuthProvider");
   }
 
   return context;

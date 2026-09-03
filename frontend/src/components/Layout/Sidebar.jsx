@@ -1,32 +1,13 @@
 import { NavLink } from "react-router-dom";
+
 import { FiLogOut } from "react-icons/fi";
 
 import { useAuth } from "../../context/AuthContext";
 
-import {
-  navigationConfig,
-  bottomNavigation,
-} from "./navigationConfig";
-
+import { userNavigation, bottomNavigation } from "./navigationConfig";
 
 const Sidebar = () => {
-  const { user, logout } = useAuth();
-
-  const role = user?.role;
-
-  const navigationItems =
-    navigationConfig[role] || [];
-
-  const getDashboardPath = () => {
-    if (role === "ADMIN") return "/admin";
-
-    if (role === "TECHNICIAN") {
-      return "/technician";
-    }
-
-    return "/dashboard";
-  };
-
+  const { logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -36,31 +17,23 @@ const Sidebar = () => {
     }
   };
 
-
   return (
     <aside className="sidebar">
+      {/* ================= TOP SECTION ================= */}
 
       <div className="sidebar-top">
-
         {/* Logo */}
 
-        <NavLink
-          to={getDashboardPath()}
-          className="sidebar-logo"
-        >
-          <div className="sidebar-logo-mark">
-            RX
-          </div>
+        <NavLink to="/dashboard" className="sidebar-logo">
+          <div className="sidebar-logo-mark">RX</div>
 
           <span>ResolveX</span>
         </NavLink>
 
-
-        {/* Role-Based Navigation */}
+        {/* Main Navigation */}
 
         <nav className="sidebar-nav">
-
-          {navigationItems.map((item) => {
+          {userNavigation.map((item) => {
             const Icon = item.icon;
 
             return (
@@ -68,9 +41,7 @@ const Sidebar = () => {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `sidebar-link ${
-                    isActive ? "active" : ""
-                  }`
+                  `sidebar-link ${isActive ? "active" : ""}`
                 }
               >
                 <Icon />
@@ -79,16 +50,12 @@ const Sidebar = () => {
               </NavLink>
             );
           })}
-
         </nav>
-
       </div>
 
-
-      {/* Bottom Navigation */}
+      {/* ================= BOTTOM SECTION ================= */}
 
       <div className="sidebar-bottom">
-
         {bottomNavigation.map((item) => {
           const Icon = item.icon;
 
@@ -97,9 +64,7 @@ const Sidebar = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `sidebar-link ${
-                  isActive ? "active" : ""
-                }`
+                `sidebar-link ${isActive ? "active" : ""}`
               }
             >
               <Icon />
@@ -108,7 +73,6 @@ const Sidebar = () => {
             </NavLink>
           );
         })}
-
 
         {/* Logout */}
 
@@ -121,12 +85,9 @@ const Sidebar = () => {
 
           <span>Logout</span>
         </button>
-
       </div>
-
     </aside>
   );
 };
-
 
 export default Sidebar;

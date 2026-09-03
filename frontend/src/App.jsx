@@ -12,19 +12,19 @@ function App() {
 
       {/* Your routes */}
       <Routes>
-        <Route path="/" element={<SafetyFeed />} />
+        {/* <Route path="/" element={<SafetyFeed />} />
 
         <Route path="/safety" element={<SafetyFeed />} />
 
         <Route
           path="/safety/:id"
           element={<SafetyDetails />}
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           path="/activity"
           element={<Activity />}
-        />
+        /> */}
       </Routes>
 
       {/* Teammate's routes */}

@@ -61,7 +61,7 @@ const changePassword = async (userId, passwordData) => {
     throw apiError(400, "Current password is incorrect");
   }
 
-  user.passwordHash = newPassword;
+  user.passwordHash = bcrypt.hash(newPassword,10);
 
   await user.save();
 

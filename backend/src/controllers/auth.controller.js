@@ -20,25 +20,34 @@ const login = async (req, res) => {
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
 
-  res.cookie("accessToken", accessToken, {
+  const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  };
+
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
     maxAge: 15 * 60 * 1000,
   });
 
   res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    ...cookieOptions,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  return apiResponse(res, 200, "User logged in successfully", {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    departmentId: user.departmentId,
-  });
+  return apiResponse(
+    res,
+    200,
+    "User logged in successfully",
+    {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      departmentId: user.departmentId,
+    },
+  );
 };
 
 const refresh = async (req, res) => {
