@@ -4,35 +4,26 @@ function TicketDetailModal({ ticket, status, setStatus, onClose }) {
   if (!ticket) return null;
 
   const handleStatusUpdate = async (newStatus) => {
-  try {
-    const response = await api.patch(
-      `/tickets/${ticket._id}/status`,
-      {
+    try {
+      const response = await api.patch(`/tickets/${ticket._id}/status`, {
         status: newStatus,
-      }
-    );
+      });
 
-    setStatus(newStatus);
+      setStatus(newStatus);
 
-    console.log("Status updated:", response.data);
-  } catch (error) {
-    console.error(
-      "Status update error:",
-      error.response?.data || error.message
-    );
+      console.log("Status updated:", response.data);
+    } catch (error) {
+      console.error(
+        "Status update error:",
+        error.response?.data || error.message,
+      );
 
-    alert(
-      error.response?.data?.message ||
-      "Failed to update status"
-    );
-  }
-};
+      alert(error.response?.data?.message || "Failed to update status");
+    }
+  };
 
   return (
-    <div
-      className="ticket-modal-overlay"
-      onClick={onClose}
-    >
+    <div className="ticket-modal-overlay" onClick={onClose}>
       <div
         className="ticket-modal"
         onClick={(event) => event.stopPropagation()}
@@ -45,10 +36,7 @@ function TicketDetailModal({ ticket, status, setStatus, onClose }) {
             <h2>{ticket.title}</h2>
           </div>
 
-          <button
-            className="modal-close"
-            onClick={onClose}
-          >
+          <button className="modal-close" onClick={onClose}>
             ×
           </button>
         </div>
@@ -56,26 +44,17 @@ function TicketDetailModal({ ticket, status, setStatus, onClose }) {
         {/* Image */}
         {ticket.image && (
           <div className="modal-image">
-            <img
-              src={ticket.image}
-              alt={ticket.title}
-            />
+            <img src={ticket.image} alt={ticket.title} />
           </div>
         )}
 
         {/* Tags */}
         <div className="modal-tags">
-          <span className="modal-category">
-            {ticket.category}
-          </span>
+          <span className="modal-category">{ticket.category}</span>
 
-          <span className="modal-severity">
-            {ticket.priority}
-          </span>
+          <span className="modal-severity">{ticket.priority}</span>
 
-          <span className="modal-status">
-            {status}
-          </span>
+          <span className="modal-status">{status}</span>
         </div>
 
         {/* Information */}
@@ -103,40 +82,26 @@ function TicketDetailModal({ ticket, status, setStatus, onClose }) {
           <h3>Update Status</h3>
 
           <div className="modal-status-buttons">
-
             <button
-              className={
-                status === "Assigned" ? "active" : ""
-              }
-              onClick={() =>
-                handleStatusUpdate("ASSIGNED")
-              }
+              className={status === "Assigned" ? "active" : ""}
+              onClick={() => handleStatusUpdate("ASSIGNED")}
             >
               Assigned
             </button>
 
             <button
-              className={
-                status === "In Progress" ? "active" : ""
-              }
-              onClick={() =>
-                handleStatusUpdate("IN_PROGRESS")
-              }
+              className={status === "In Progress" ? "active" : ""}
+              onClick={() => handleStatusUpdate("IN_PROGRESS")}
             >
               In Progress
             </button>
 
             <button
-              className={
-                status === "Resolved" ? "active" : ""
-              }
-              onClick={() =>
-                handleStatusUpdate("RESOLVED")
-              }
+              className={status === "Resolved" ? "active" : ""}
+              onClick={() => handleStatusUpdate("RESOLVED")}
             >
               Resolved
             </button>
-
           </div>
         </div>
       </div>
