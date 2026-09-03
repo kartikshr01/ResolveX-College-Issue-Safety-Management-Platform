@@ -1,113 +1,126 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
-import AppLayout from "../components/Layout/AppLayout";
 
-// Auth Pages
+// Public pages
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+
+// Common pages
+import Profile from "../pages/Profile/Profile";
 import Unauthorized from "../pages/Unauthorized/Unauthorized";
 
-// User & Profile Pages
-import Profile from "../pages/Profile/Profile";
+// Admin layout
+import AdminLayout from "../components/Layout/AdminLayout/AdminLayout";
 
-// Ticket Pages
-import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
-import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
-import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
-import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
-import AllTickets_Admin_Only from "../pages/Tickets/AllTickets-Admin_Only/AllTickets-Admin_Only";
+// Admin pages
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import TechnicianManagement from "../pages/admin/TechnicianManagement";
+import Statistics from "../pages/admin/Statistics";
+import AdminActivity from "../pages/admin/ActivityAdmin";
+import AdminTicketDetails from "../pages/admin/AdminTicketDetails";
 
-import UserDashboard from "../pages/Dashboard/UserDashboard";
-
-// Placeholder Component (If not imported from elsewhere)
-const PlaceholderPage = ({ title }) => <div>{title} Placeholder</div>;
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ================= PUBLIC ROUTES ================= */}
+      {/* =========================
+          PUBLIC ROUTES
+      ========================== */}
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
 
-      {/* ================= ALL AUTHENTICATED USERS ================= */}
+      {/* =========================
+          PROTECTED COMMON ROUTES
+      ========================== */}
+
       <Route element={<ProtectedRoute />}>
-        <Route element={<AppLayout />}>
-          {/* General Navigation */}
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/activity"
-            element={<PlaceholderPage title="Activity" />}
-          />
-
-          {/* Ticket/Issue Reporting */}
-          <Route
-            path="/report-issue"
-            element={<PlaceholderPage title="Report an Issue" />}
-          />
-          <Route
-            path="/safety"
-            element={<PlaceholderPage title="Safety Reports" />}
-          />
-
-          {/* Main Ticket Feature Routes */}
-          <Route path="/tickets/create" element={<CreateTicket />} />
-          <Route path="/tickets/my-tickets" element={<MyTickets />} />
-          <Route path="/tickets/:ticketId" element={<TicketDetails />} />
-          <Route path="/tickets/all-admin" element={<allTickets />} />
-          <Route path="/tickets/:ticketId/edit" element={<EditTicket />} />
-        </Route>
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
-      {/* ================= ADMIN ONLY ROUTES ================= */}
+      {/* =========================
+          ADMIN ROUTES
+      ========================== */}
+
       <Route element={<RoleProtectedRoute allowedRoles={["ADMIN"]} />}>
-        <Route element={<AppLayout />}>
-          <Route
-            path="/admin"
-            element={<PlaceholderPage title="Admin Dashboard" />}
-          />
-          <Route
-            path="/admin/issues"
-            element={<PlaceholderPage title="All Issues" />}
-          />
+        <Route element={<AdminLayout />}>
+          {/* Dashboard */}
+          <Route path="/admin" element={<AdminDashboard />} />
+
+          {/* Technician Management */}
           <Route
             path="/admin/technicians"
-            element={<PlaceholderPage title="Technician Management" />}
+            element={<TechnicianManagement />}
           />
+
+          {/* Statistics */}
           <Route
-            path="/admin/departments"
-            element={<PlaceholderPage title="Department Management" />}
+            path="/admin/statistics"
+            element={<Statistics />}
           />
+
+          {/* Activity */}
           <Route
-            path="/admin/analytics"
-            element={<PlaceholderPage title="Analytics" />}
+            path="/admin/activity"
+            element={<AdminActivity />}
           />
-          
+
+          {/* Activity → Ticket Details */}
+          <Route
+            path="/admin/activity/ticket/:ticketId"
+            element={<AdminTicketDetails />}
+          />
+
+          {/* Admin Profile */}
+          <Route
+            path="/admin/profile"
+            element={<Profile />}
+          />
         </Route>
       </Route>
 
-      {/* ================= TECHNICIAN ONLY ROUTES ================= */}
+      {/* =========================
+          TECHNICIAN ROUTES
+      ========================== */}
+
       <Route element={<RoleProtectedRoute allowedRoles={["TECHNICIAN"]} />}>
-        <Route element={<AppLayout />}>
-          <Route
-            path="/technician"
-            element={<PlaceholderPage title="Technician Dashboard" />}
-          />
-          <Route
-            path="/technician/issues"
-            element={<PlaceholderPage title="Assigned Issues" />}
-          />
-          <Route
-            path="/technician/history"
-            element={<PlaceholderPage title="Resolution History" />}
-          />
-        </Route>
+        <Route
+          path="/technician"
+          element={
+            <div>
+              <h1>Technician Dashboard</h1>
+            </div>
+          }
+        />
       </Route>
 
-      {/* ================= FALLBACK FALLTHROUGHS ================= */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      {/* =========================
+          UNAUTHORIZED
+      ========================== */}
+
+      <Route
+        path="/unauthorized"
+        element={<Unauthorized />}
+      />
+
+      {/* =========================
+          DEFAULT ROUTE
+      ========================== */}
+
+      <Route
+        path="/"
+        element={<Navigate to="/login" replace />}
+      />
+
+      {/* =========================
+          UNKNOWN ROUTES
+      ========================== */}
+
+      <Route
+        path="*"
+        element={<Navigate to="/login" replace />}
+      />
     </Routes>
   );
 };
