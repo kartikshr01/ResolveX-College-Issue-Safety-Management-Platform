@@ -9,23 +9,34 @@ const createTicket = async (req, res) => {
     req.body,
     req.file,
   );
-  return apiResponse(res, 201, "Ticket created successfully ", ticket);
+
+  return apiResponse(
+    res,
+    201,
+    "Ticket created successfully ",
+    ticket,
+  );
 };
 
 //Controller - get my tickets
 const getMyTickets = async (req, res) => {
-  const tickets = await ticketService.getMyTickets(req.user._id);
+  const tickets = await ticketService.getMyTickets(req.user);
 
-  return apiResponse(res, 200, "Tickets fetched successfully", tickets);
+  return apiResponse(
+    res,
+    200,
+    "Tickets fetched successfully",
+    tickets,
+  );
 };
 
-
-//Controller -  get ticket by id
+//Controller - get ticket by id
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
     req.params.ticketId,
-    req.user._id,
+    req.user,
   );
+
   if (!ticket) {
     throw apiError(
       404,
@@ -34,23 +45,38 @@ const getTicketById = async (req, res) => {
     );
   }
 
-  return apiResponse(res, 200, "Ticket fetched successfully", ticket);
+  return apiResponse(
+    res,
+    200,
+    "Ticket fetched successfully",
+    ticket,
+  );
 };
 
 // Controller - delete ticket by id
 const deleteTicketById = async (req, res) => {
-  const result = await ticketService.deleteTicketById(req.params.ticketId,req.user._id); 
-  
-  if(!result){ 
-    throw apiError(404 , "Ticket not found");
-  } 
+  const result = await ticketService.deleteTicketById(
+    req.params.ticketId,
+    req.user._id,
+  );
 
-  if(result.nonDeletable){ 
-    throw apiError(403 ,'Ticket cannot be deleted as work has been initiated on it')
-  } 
+  if (!result) {
+    throw apiError(404, "Ticket not found");
+  }
 
-  return apiResponse(res,200,"Ticket deleted successfully" , null);
+  if (result.nonDeletable) {
+    throw apiError(
+      403,
+      "Ticket cannot be deleted as work has been initiated on it",
+    );
+  }
 
+  return apiResponse(
+    res,
+    200,
+    "Ticket deleted successfully",
+    null,
+  );
 };
 
 //Controller : update ticket
@@ -61,9 +87,13 @@ const updateTicket = async (req, res) => {
     req.body,
   );
 
-  return apiResponse(res, 200, "Ticket updated successfully", ticket);
+  return apiResponse(
+    res,
+    200,
+    "Ticket updated successfully",
+    ticket,
+  );
 };
-
 
 //Controller : image update in ticket
 const updateTicketImage = async (req, res) => {
@@ -73,15 +103,21 @@ const updateTicketImage = async (req, res) => {
     req.file,
   );
 
-  return apiResponse(res, 200, "Ticket image updated successfully", ticket);
+  return apiResponse(
+    res,
+    200,
+    "Ticket image updated successfully",
+    ticket,
+  );
 };
 
 // Controller - get ticket from notification
 const getTicketForNotification = async (req, res) => {
-  const ticket = await ticketService.getTicketForNotification(
-    req.params.ticketId,
-    req.user,
-  );
+  const ticket =
+    await ticketService.getTicketForNotification(
+      req.params.ticketId,
+      req.user,
+    );
 
   return apiResponse(
     res,
@@ -98,5 +134,5 @@ module.exports = {
   deleteTicketById,
   updateTicket,
   updateTicketImage,
-  getTicketForNotification
+  getTicketForNotification,
 };
