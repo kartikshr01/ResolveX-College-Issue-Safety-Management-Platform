@@ -19,6 +19,9 @@ import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
 
 import UserDashboard from "../pages/Dashboard/UserDashboard";
 
+import Activity from "../components/activity/Activity";
+import SafetyFeed from "../components/safety/SafetyFeed";
+
 // Placeholder Component (If not imported from elsewhere)
 const PlaceholderPage = ({ title }) => <div>{title} Placeholder</div>;
 const AppRoutes = () => {
@@ -35,20 +38,14 @@ const AppRoutes = () => {
           {/* General Navigation */}
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/activity"
-            element={<PlaceholderPage title="Activity" />}
-          />
+          <Route path="/activity" element={<Activity />} />
 
           {/* Ticket/Issue Reporting */}
           <Route
             path="/report-issue"
             element={<PlaceholderPage title="Report an Issue" />}
           />
-          <Route
-            path="/safety"
-            element={<PlaceholderPage title="Safety Reports" />}
-          />
+          <Route path="/safety" element={<SafetyFeed />} />
 
           {/* Main Ticket Feature Routes */}
           <Route path="/tickets/create" element={<CreateTicket />} />
