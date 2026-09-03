@@ -8,9 +8,9 @@ import "./TechnicianDashboard.css";
 
 function TechnicianDashboard() {
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [status, setStatus] = useState("Assigned");
 
-  const ticket = {
+  const [ticket, setTicket] = useState({
+    _id: "YOUR_TICKET_ID",
     id: "FIX-001",
     title: "Water Leakage in Block A",
     description:
@@ -20,29 +20,36 @@ function TechnicianDashboard() {
     location: "Block A",
     reportedOn: "01 Sep 2026",
     image: null,
-  };
+    status: "ASSIGNED",
+  });
 
   const handleOpenTicket = () => {
     setSelectedTicket(ticket);
-    setStatus("Assigned");
   };
 
   const handleCloseModal = () => {
     setSelectedTicket(null);
   };
 
+  const handleStatusChange = (newStatus) => {
+    setTicket((previousTicket) => ({
+      ...previousTicket,
+      status: newStatus,
+    }));
+
+    setSelectedTicket((previousTicket) => ({
+      ...previousTicket,
+      status: newStatus,
+    }));
+  };
+
   return (
     <div className="technician-dashboard">
 
-      
       <main className="technician-main">
 
-        {/* =========================
-            PAGE HEADER
-        ========================= */}
-
+        {/* PAGE HEADER */}
         <header className="technician-header">
-
           <div>
             <p className="dashboard-label">
               TECHNICIAN
@@ -61,21 +68,12 @@ function TechnicianDashboard() {
             <span className="availability-dot"></span>
             Available
           </div>
-
         </header>
 
-
-        {/* =========================
-            STATISTICS
-        ========================= */}
-
+        {/* STATISTICS */}
         <TechnicianStats />
 
-
-        {/* =========================
-            ASSIGNED TICKETS
-        ========================= */}
-
+        {/* ASSIGNED TICKETS */}
         <section className="assigned-section">
 
           <div className="section-header">
@@ -100,7 +98,6 @@ function TechnicianDashboard() {
 
           </div>
 
-
           {/* Ticket */}
           <div className="ticket-list">
 
@@ -115,16 +112,12 @@ function TechnicianDashboard() {
 
       </main>
 
-
-      {/* =========================
-          TICKET MODAL
-      ========================= */}
-
+      {/* TICKET MODAL */}
       {selectedTicket && (
         <TicketDetailsModal
           ticket={selectedTicket}
-          status={status}
-          setStatus={setStatus}
+          status={selectedTicket.status}
+          setStatus={handleStatusChange}
           onClose={handleCloseModal}
         />
       )}
