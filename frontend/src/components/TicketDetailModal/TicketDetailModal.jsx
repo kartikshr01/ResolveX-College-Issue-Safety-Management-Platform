@@ -12,7 +12,7 @@ function TicketDetailModal({
   const handleStatusUpdate = async (newStatus) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/tickets/${ticket._id}/status`,
+        `https://resolvex-backend-01f9.onrender.com/api/tickets/${ticket._id}/status`,
         {
           method: "PATCH",
           headers: {

@@ -29,7 +29,7 @@ function EditTicket() {
         setError("");
 
         const response = await axios.get(
-          `http://localhost:3000/api/tickets/my/${ticketId}`,
+          `https://resolvex-backend-01f9.onrender.com/api/tickets/my/${ticketId}`,
           {
             withCredentials: true,
           },
@@ -96,7 +96,7 @@ function EditTicket() {
       setError("");
 
       const response = await axios.patch(
-        `http://localhost:3000/api/tickets/${ticketId}`,
+        `https://resolvex-backend-01f9.onrender.com/api/tickets/${ticketId}`,
         formData,
         {
           withCredentials: true,

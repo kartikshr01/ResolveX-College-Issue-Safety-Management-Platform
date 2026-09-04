@@ -30,7 +30,7 @@ const MyTickets = () => {
 
       setError("");
 
-      const response = await axios.get("http://localhost:3000/api/tickets/my", {
+      const response = await axios.get("https://resolvex-backend-01f9.onrender.com/api/tickets/my", {
         withCredentials: true,
       });
 
@@ -377,7 +377,7 @@ export default MyTickets;
 //     const fetchMyTickets = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:3000/api/tickets/my",
+//           "https://resolvex-backend-01f9.onrender.com/api/tickets/my",
 //           {
 //             withCredentials: true,
 //           },

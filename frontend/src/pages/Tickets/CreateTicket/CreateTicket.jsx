@@ -57,7 +57,7 @@ function CreateTicket() {
       }
 
       const response = await fetch(
-        "http://localhost:3000/api/tickets",
+        "https://resolvex-backend-01f9.onrender.com/api/tickets",
         {
           method: "POST",
 

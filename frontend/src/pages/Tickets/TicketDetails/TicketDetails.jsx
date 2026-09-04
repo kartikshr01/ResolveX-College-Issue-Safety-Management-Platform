@@ -33,7 +33,7 @@ const TicketDetails = () => {
           ? `/api/tickets/admin/${ticketId}`
           : `/api/tickets/my/${ticketId}`;
 
-        const response = await axios.get(`http://localhost:3000${endpoint}`, {
+        const response = await axios.get(`https://resolvex-backend-01f9.onrender.com/api${endpoint}`, {
           withCredentials: true,
         });
 
@@ -110,7 +110,7 @@ const TicketDetails = () => {
       formData.append("image", selectedImage);
 
       const response = await axios.patch(
-        `http://localhost:3000/api/tickets/${ticket._id}/image`,
+        `https://resolvex-backend-01f9.onrender.com/api/tickets/${ticket._id}/image`,
         formData,
         {
           withCredentials: true,
@@ -145,7 +145,7 @@ const TicketDetails = () => {
       setDeleting(true);
       setDeleteError("");
 
-      await axios.delete(`http://localhost:3000/api/tickets/my/${ticketId}`, {
+      await axios.delete(`https://resolvex-backend-01f9.onrender.com/api/tickets/my/${ticketId}`, {
         withCredentials: true,
       });
 

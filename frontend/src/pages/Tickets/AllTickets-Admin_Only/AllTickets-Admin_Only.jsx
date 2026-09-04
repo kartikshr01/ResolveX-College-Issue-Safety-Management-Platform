@@ -36,7 +36,7 @@ const AllTickets_Admin_Only = () => {
       setError("");
 
       const response = await axios.get(
-        "http://localhost:3000/api/tickets/all",
+        "https://resolvex-backend-01f9.onrender.com/api/tickets/all",
         {
           withCredentials: true,
         },
