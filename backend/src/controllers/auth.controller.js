@@ -9,12 +9,37 @@ const apiResponse = require("../utils/apiResponse");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 
 const register = async (req, res) => {
+  /*
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/RegisterBody"
+          }
+        }
+      }
+    }
+  */
   const user = await authService.register(req.body);
 
   return apiResponse(res, 201, "User registered successfully", user);
 };
 
 const login = async (req, res) => {
+/*
+    #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/LoginBody"
+          }
+        }
+      }
+    }
+  */
+
   const user = await authService.login(req.body);
 
   const accessToken = generateAccessToken(user);

@@ -1,6 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output.json");
+
 
 require("dotenv").config();
 const technicianRoutes = require("./routes/technician.routes");
@@ -35,6 +38,14 @@ app.use("/api/users", userRouter);
 app.use("/api/tickets", ticketRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/assignments", assignmentRoutes);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, {
+    swaggerOptions: { withCredentials: true },
+  }),
+);
+
 
 app.use(errorHandler);
 
