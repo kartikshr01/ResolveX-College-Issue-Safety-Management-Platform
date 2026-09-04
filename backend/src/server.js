@@ -13,9 +13,11 @@ const start = async () => {
 
     initializeSocket(server);
 
-    server.listen(process.env.PORT, () => {
-      console.log(`Server is listening on port ${process.env.PORT}`);
-    });
+    const PORT = process.env.PORT || 5000;
+
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
   } catch (err) {
     console.error("Database Connection Error:", err.message);
     process.exit(1);
