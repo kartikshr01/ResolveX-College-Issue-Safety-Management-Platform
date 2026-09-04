@@ -1,0 +1,793 @@
+/* =====================================================
+   PAGE
+===================================================== */
+
+.ticket-details-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 4px 0 40px;
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.ticket-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 24px;
+  padding: 9px 14px;
+
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #333333;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.ticket-back-button:hover {
+  border-color: #c7f32f;
+  background: #c7f32f;
+  color: #111111;
+  transform: translateX(-2px);
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.ticket-details-header {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 28px;
+}
+
+.ticket-header-left {
+  min-width: 0;
+}
+
+.ticket-eyebrow {
+  margin: 0 0 6px;
+
+  color: #777777;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.ticket-id {
+  margin: 0 0 8px;
+
+  color: #999999;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+.ticket-details-header h1 {
+  margin: 0;
+
+  color: #111111;
+
+  font-size: 32px;
+  font-weight: 800;
+
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+}
+
+.ticket-header-subtitle {
+  margin: 10px 0 0;
+
+  color: #777777;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ticket-header-right {
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.ticket-details-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 100px;
+
+  padding: 9px 15px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.ticket-details-status.status-assigned {
+  background: #111111;
+  color: #c7f32f;
+}
+
+.ticket-details-status.status-progress {
+  background: #fff3cf;
+  color: #9a6800;
+}
+
+.ticket-details-status.status-resolved {
+  background: #e5f7dc;
+  color: #3e7d29;
+}
+
+.ticket-details-status.status-pending {
+  background: #eeeeee;
+  color: #555555;
+}
+
+/* =====================================================
+   MAIN GRID
+===================================================== */
+
+.ticket-details-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.65fr)
+    minmax(280px, 0.8fr);
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+.ticket-main-column,
+.ticket-side-column {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+/* =====================================================
+   COMMON CARD
+===================================================== */
+
+.ticket-image-card,
+.ticket-description-card,
+.ticket-info-card,
+.ticket-workflow-card,
+.ticket-reporter-card,
+.ticket-technician-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.035);
+}
+
+/* =====================================================
+   IMAGE
+===================================================== */
+
+.ticket-image-card {
+  width: 100%;
+
+  overflow: hidden;
+
+  background: #f3f4ef;
+}
+
+.ticket-details-image {
+  width: 100%;
+
+  height: 360px;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.ticket-image-placeholder {
+  width: 100%;
+  height: 280px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background: #f5f6f2;
+}
+
+.ticket-image-placeholder span {
+  color: #888888;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.ticket-image-placeholder p {
+  margin: 6px 0 0;
+
+  color: #aaaaaa;
+
+  font-size: 12px;
+}
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.section-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.section-number {
+  width: 30px;
+  height: 30px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #111111;
+
+  color: #c7f32f;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.section-label {
+  margin: 0 0 3px;
+
+  color: #999999;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  color: #111111;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.ticket-description-card {
+  padding: 22px;
+}
+
+.ticket-description {
+  margin: 0;
+
+  color: #555555;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+
+  white-space: pre-wrap;
+}
+
+/* =====================================================
+   INFORMATION CARD
+===================================================== */
+
+.ticket-info-card {
+  padding: 22px;
+}
+
+.ticket-info-list {
+  display: flex;
+
+  flex-direction: column;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.ticket-info-row {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 13px 0;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.ticket-info-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.ticket-info-row span {
+  color: #888888;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.ticket-info-row strong {
+  max-width: 60%;
+
+  color: #222222;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  text-align: right;
+
+  word-break: break-word;
+}
+
+/* =====================================================
+   WORKFLOW
+===================================================== */
+
+.ticket-workflow-card {
+  padding: 22px;
+}
+
+/* =====================================================
+   REPORTER
+===================================================== */
+
+.ticket-reporter-card {
+  padding: 22px;
+}
+
+.reporter-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px;
+
+  border-radius: 13px;
+
+  background: #f6f7f3;
+}
+
+.reporter-avatar {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #111111;
+
+  color: #c7f32f;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.reporter-details {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.reporter-details strong {
+  color: #222222;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.reporter-details span {
+  color: #888888;
+
+  font-size: 10px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =====================================================
+   TECHNICIAN
+===================================================== */
+
+.ticket-technician-card {
+  padding: 22px;
+}
+
+.technician-box {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px;
+
+  border-radius: 13px;
+
+  background: #111111;
+}
+
+.technician-avatar {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #c7f32f;
+
+  color: #111111;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.technician-box > div:last-child {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.technician-box strong {
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.technician-box span {
+  color: #aaaaaa;
+
+  font-size: 10px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.ticket-details-loading {
+  min-height: 400px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #777777;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+
+  margin-bottom: 14px;
+
+  border: 3px solid #eeeeee;
+  border-top-color: #111111;
+
+  border-radius: 50%;
+
+  animation: ticketSpin 0.8s linear infinite;
+}
+
+.ticket-details-loading p {
+  margin: 0;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@keyframes ticketSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.ticket-details-error {
+  min-height: 350px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e5;
+
+  border-radius: 18px;
+
+  box-sizing: border-box;
+}
+
+.error-icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 14px;
+
+  border-radius: 50%;
+
+  background: #fff1f1;
+
+  color: #c0392b;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.ticket-details-error h2 {
+  margin: 0;
+
+  color: #222222;
+
+  font-size: 19px;
+}
+
+.ticket-details-error p {
+  max-width: 450px;
+
+  margin: 8px 0 18px;
+
+  color: #777777;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.back-button {
+  padding: 10px 16px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #111111;
+
+  color: #c7f32f;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.back-button:hover {
+  background: #c7f32f;
+  color: #111111;
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 950px) {
+  .ticket-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ticket-side-column {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+  }
+
+  .ticket-info-card {
+    grid-column: span 2;
+  }
+
+  .ticket-details-image {
+    height: 320px;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+  .ticket-details-page {
+    padding-bottom: 25px;
+  }
+
+  .ticket-details-header {
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .ticket-details-header h1 {
+    font-size: 26px;
+  }
+
+  .ticket-header-subtitle {
+    font-size: 12px;
+  }
+
+  .ticket-header-right {
+    align-self: flex-start;
+  }
+
+  .ticket-details-grid {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .ticket-side-column {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .ticket-info-card,
+  .ticket-reporter-card,
+  .ticket-technician-card,
+  .ticket-description-card,
+  .ticket-workflow-card {
+    padding: 18px;
+  }
+
+  .ticket-details-image {
+    height: 230px;
+  }
+
+  .ticket-image-placeholder {
+    height: 210px;
+  }
+
+  .ticket-info-row {
+    gap: 10px;
+  }
+
+  .ticket-info-row strong {
+    max-width: 55%;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+  .ticket-details-header h1 {
+    font-size: 23px;
+  }
+
+  .ticket-details-status {
+    font-size: 10px;
+
+    padding: 8px 12px;
+  }
+
+  .ticket-details-image {
+    height: 190px;
+  }
+
+  .section-heading h2 {
+    font-size: 16px;
+  }
+
+  .ticket-description {
+    font-size: 12px;
+  }
+
+  .ticket-info-row span,
+  .ticket-info-row strong {
+    font-size: 10px;
+  }
+}
