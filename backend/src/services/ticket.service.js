@@ -17,6 +17,7 @@ const createTicket = async (userId, ticketData, imageFile) => {
   if (!user) {
     throw apiError(404, "User not found");
   }
+
   const department = await Department.findById(ticketData.departmentId);
 
   if (!department) {
@@ -48,15 +49,27 @@ const createTicket = async (userId, ticketData, imageFile) => {
 
   // 2. Automatically assign technician
   const assignment = await assignmentService.assignTechnician(
-  ticket._id,
-  ticket.departmentId
-);
+    ticket._id,
+    ticket.departmentId
+  );
 
-if (!assignment) {
-  ticket.status = "PENDING";
-  ticket.technicianId = null;
-  await ticket.save();
-}
+  if (!assignment) {
+    ticket.status = "PENDING";
+    ticket.technicianId = null;
+
+    await ticket.save();
+  } else {
+    // Notify assigned technician
+    if (assignment.technician?.userId) {
+      await notificationService.createNotification({
+        userId: assignment.technician.userId,
+        ticketId: ticket._id,
+        type: "TICKET_ASSIGNED",
+        message: `A new ticket "${ticket.title}" has been assigned to you.`,
+      });
+    }
+  }
+
   // 3. Notify ticket creator
   await notificationService.createNotification({
     userId: ticket.userId,
@@ -110,6 +123,7 @@ const getMyTickets = async (userId) => {
 
   return tickets;
 };
+
 // Service: Get assigned tickets for technician
 const getAssignedTickets = async (userId) => {
   const technician = await Technician.findOne({
@@ -130,6 +144,7 @@ const getAssignedTickets = async (userId) => {
 
   return tickets;
 };
+
 // Service: Get resolved tickets for technician
 const getTechnicianHistory = async (userId) => {
   const technician = await Technician.findOne({
@@ -151,6 +166,7 @@ const getTechnicianHistory = async (userId) => {
 
   return tickets;
 };
+
 const getTicketByIdForTechnician = async (ticketId, userId) => {
   const technician = await Technician.findOne({
     userId,
@@ -174,6 +190,7 @@ const getTicketByIdForTechnician = async (ticketId, userId) => {
 
   return ticket;
 };
+
 // Service : get all tickets ( admin use only )
 const getAllTickets = async () => {
   const tickets = await Ticket.find()
@@ -201,7 +218,7 @@ const getTicketById = async (ticketId, userId) => {
   return ticket;
 };
 
-// Service :  Get ticket by ID ( admin use only )
+// Service : Get ticket by ID ( admin use only )
 const getTicketById_forAdmin = async (ticketId) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -214,7 +231,7 @@ const getTicketById_forAdmin = async (ticketId) => {
   }
 
   return ticket;
-}; 
+};
 
 // Service: Delete ticket
 const deleteTicketById = async (ticketId, userId) => {
@@ -234,7 +251,6 @@ const deleteTicketById = async (ticketId, userId) => {
     };
   }
 
-  // Delete Cloudinary image if it exists
   if (ticket.imagePublicId) {
     await deleteImage(ticket.imagePublicId);
   }
@@ -269,7 +285,6 @@ const updateTicketById = async (ticketId, userId, updateData) => {
     throw apiError(403, "Ticket can only be updated while it is OPEN");
   }
 
-  // Check department if department is being changed
   if (updateData.departmentId) {
     const department = await Department.findById(updateData.departmentId);
 
@@ -288,6 +303,7 @@ const updateTicketById = async (ticketId, userId, updateData) => {
 
   return ticket;
 };
+
 const updateTicketStatus = async (ticketId, status) => {
   const allowedStatuses = [
     "ASSIGNED",
@@ -314,6 +330,7 @@ const updateTicketStatus = async (ticketId, status) => {
     .populate("technicianId", "name email phone")
     .populate("userId", "name email");
 };
+
 // Service: Update ticket image
 const updateTicketImage = async (ticketId, userId, imageFile) => {
   const ticket = await Ticket.findOne({
@@ -335,7 +352,6 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
 
   const oldImagePublicId = ticket.imagePublicId;
 
-  // Upload new image
   const result = await uploadImage(imageFile.buffer);
 
   ticket.imageUrl = result.secure_url;
@@ -343,7 +359,6 @@ const updateTicketImage = async (ticketId, userId, imageFile) => {
 
   await ticket.save();
 
-  // Delete old image
   if (oldImagePublicId) {
     await deleteImage(oldImagePublicId);
   }
