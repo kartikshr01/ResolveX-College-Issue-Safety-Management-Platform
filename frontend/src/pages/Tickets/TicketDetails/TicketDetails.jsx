@@ -31,11 +31,16 @@ const TicketDetails = () => {
       try {
         const endpoint = fromAdmin
           ? `/api/tickets/admin/${ticketId}`
-          : `/api/tickets/my/${ticketId}`;
+          : location.pathname.startsWith("/technician/")
+            ? `/api/tickets/technician/${ticketId}`
+            : `/api/tickets/my/${ticketId}`;
 
-        const response = await axios.get(`https://resolvex-backend-01f9.onrender.com${endpoint}`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `https://resolvex-backend-01f9.onrender.com${endpoint}`,
+          {
+            withCredentials: true,
+          },
+        );
 
         setTicket(response.data.data);
       } catch (error) {
@@ -145,9 +150,12 @@ const TicketDetails = () => {
       setDeleting(true);
       setDeleteError("");
 
-      await axios.delete(`https://resolvex-backend-01f9.onrender.com/api/tickets/my/${ticketId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(
+        `https://resolvex-backend-01f9.onrender.com/api/tickets/my/${ticketId}`,
+        {
+          withCredentials: true,
+        },
+      );
 
       navigate("/tickets/my-tickets");
     } catch (error) {
