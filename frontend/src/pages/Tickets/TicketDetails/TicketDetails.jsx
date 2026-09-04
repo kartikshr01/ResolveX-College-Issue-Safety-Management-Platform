@@ -1,7 +1,9 @@
+import "./TicketDetails.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./TicketDetails.css";
+import DeleteTicketModal from "../../../components/Common/DeleteTicketModal";
+import Loading from "../../../components/Common/Loading";
 
 const TicketDetails = () => {
   // const { id } = useParams();
@@ -18,6 +20,11 @@ const TicketDetails = () => {
   const [imageUpdating, setImageUpdating] = useState(false);
   const [imageMessage, setImageMessage] = useState("");
   const [imageError, setImageError] = useState("");
+  // const [deleting, setDeleting] = useState(false);
+  // const [deleteError, setDeleteError] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
     const fetchTicketDetails = async () => {
@@ -48,7 +55,7 @@ const TicketDetails = () => {
   if (loading) {
     return (
       <div className="ticket-details-container">
-        <p className="loading-message">Loading ticket details...</p>
+        <Loading message="Loading ticket details..." />
       </div>
     );
   }
@@ -132,11 +139,38 @@ const TicketDetails = () => {
       setImageUpdating(false);
     }
   };
+
+  const handleDeleteTicket = async () => {
+    try {
+      setDeleting(true);
+      setDeleteError("");
+
+      await axios.delete(`http://localhost:3000/api/tickets/my/${ticketId}`, {
+        withCredentials: true,
+      });
+
+      navigate("/tickets/my-tickets");
+    } catch (error) {
+      console.error("Error deleting ticket:", error);
+
+      setDeleteError(
+        error.response?.data?.message ||
+          "Failed to delete ticket. Please try again.",
+      );
+
+      setShowDeleteModal(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
   return (
     <div className="ticket-details-container">
       {/* Back Button */}
 
-      <button className="back-btn" onClick={() => navigate("/tickets/my-tickets")}>
+      <button
+        className="back-btn"
+        onClick={() => navigate("/tickets/my-tickets")}
+      >
         ← Back to My Tickets
       </button>
 
@@ -165,19 +199,33 @@ const TicketDetails = () => {
               <span className="safety-badge">⚠ Safety Issue</span>
             )}
           </div>
+
           {ticket.status === "OPEN" && !fromAdmin && (
-            <button
-              className="edit-ticket-btn"
-              onClick={() => navigate(`/tickets/${ticket._id}/edit`)}
-            >
-              ✏️ Edit Ticket
-            </button>
+            <div className="ticket-action-buttons">
+              <button
+                className="edit-ticket-btn"
+                onClick={() => navigate(`/tickets/${ticket._id}/edit`)}
+                disabled={deleting}
+              >
+                ✏️ Edit Ticket
+              </button>
+
+              <button
+                className="delete-ticket-btn"
+                onClick={() => setShowDeleteModal(true)}
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "🗑️ Delete Ticket"}
+              </button>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Delete Error */}
+      {deleteError && <div className="delete-error-message">{deleteError}</div>}
 
+      {/* Main Content */}
       <div className="ticket-details-content">
         {/* Left Section */}
 
@@ -189,8 +237,6 @@ const TicketDetails = () => {
 
             <p className="full-description">{ticket.description}</p>
           </div>
-
-          {/* Image */}
 
           {/* Image */}
 
@@ -366,6 +412,13 @@ const TicketDetails = () => {
           </div>
         </div>
       </div>
+      <DeleteTicketModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteTicket}
+        loading={deleting}
+        ticketTitle={ticket.title}
+      />
     </div>
   );
 };
