@@ -1,157 +1,275 @@
 import { useAuth } from "../../context/AuthContext";
 
 import {
-  FiUser,
   FiMail,
-  FiShield,
-  FiCalendar,
+  FiBriefcase,
+  FiCheckCircle,
+  FiEdit3,
+  FiLock,
+  FiChevronRight,
+  FiUser,
 } from "react-icons/fi";
 
 import "./Profile.css";
 
+import { useState } from "react";
+
+import EditProfileModal from "./EditProfileModal";
+import ChangePasswordModal from "./ChangePasswordModal";
+
 const Profile = () => {
   const { user } = useAuth();
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
 
   const getInitials = (name = "") => {
     return name
       .split(" ")
-      .map((word) => word.charAt(0))
+      .map((word) => word[0])
       .join("")
       .slice(0, 2)
       .toUpperCase();
   };
 
-  const formatRole = (role) => {
-    if (!role) return "User";
+  const getRoleLabel = (role) => {
+    const roles = {
+      STUDENT: "Student",
+      FACULTY: "Faculty",
+      TECHNICIAN: "Technician",
+      ADMIN: "Administrator",
+    };
 
-    return role.charAt(0) + role.slice(1).toLowerCase();
+    return roles[role] || role;
   };
+
+  const getStats = () => {
+    switch (user?.role) {
+      case "TECHNICIAN":
+        return [
+          {
+            label: "Assigned Tickets",
+            value: "0",
+          },
+          {
+            label: "In Progress",
+            value: "0",
+          },
+          {
+            label: "Resolved",
+            value: "0",
+            highlighted: true,
+          },
+        ];
+
+      case "ADMIN":
+        return [
+          {
+            label: "Total Users",
+            value: "0",
+          },
+          {
+            label: "Technicians",
+            value: "0",
+          },
+          {
+            label: "Departments",
+            value: "0",
+            highlighted: true,
+          },
+        ];
+
+      case "FACULTY":
+      case "STUDENT":
+      default:
+        return [
+          {
+            label: "Total Reports",
+            value: "0",
+          },
+          {
+            label: "Open Reports",
+            value: "0",
+          },
+          {
+            label: "Resolved",
+            value: "0",
+            highlighted: true,
+          },
+        ];
+    }
+  };
+
+  const stats = getStats();
 
   return (
     <div className="profile-page">
-      {/* ================= HEADER ================= */}
+      {/* PAGE HEADER */}
 
-      <div className="profile-page-header">
+      <section className="profile-page-header">
         <div>
-          <p className="profile-overline">ACCOUNT</p>
+          <p className="profile-overline">ACCOUNT SETTINGS</p>
 
-          <h1>My Profile</h1>
+          <h1>Profile</h1>
 
-          <p>
-            View your account information and workspace details.
-          </p>
+          <p>Manage your account and workspace preferences.</p>
         </div>
-      </div>
+      </section>
 
-      {/* ================= PROFILE CARD ================= */}
+      {/* PROFILE HERO */}
 
-      <div className="profile-card">
-        <div className="profile-top">
-          {/* Avatar */}
-
-          <div className="profile-avatar">
-            {getInitials(user?.name)}
-          </div>
-
-          {/* User Information */}
+      <section className="profile-hero-card">
+        <div className="profile-main-info">
+          <div className="profile-avatar">{getInitials(user?.name)}</div>
 
           <div className="profile-user-details">
-            <h2>{user?.name || "User"}</h2>
+            <div className="profile-name-row">
+              <h2>{user?.name || "User"}</h2>
 
-            <p>{user?.email}</p>
+              <span className="profile-role-badge">
+                {getRoleLabel(user?.role)}
+              </span>
+            </div>
 
-            <span
-              className={`profile-role role-${user?.role?.toLowerCase()}`}
-            >
-              {formatRole(user?.role)}
-            </span>
+            <div className="profile-contact">
+              <FiMail />
+              <span>{user?.email || "No email available"}</span>
+            </div>
+
+            <div className="profile-status">
+              <FiCheckCircle />
+              <span>Account active</span>
+            </div>
           </div>
         </div>
 
-        <div className="profile-divider"></div>
+        <button
+          type="button"
+          className="profile-edit-button"
+          onClick={() => setIsEditModalOpen(true)}
+        >
+          <FiEdit3 />
+          Edit Profile
+        </button>
+      </section>
 
-        {/* ================= ACCOUNT DETAILS ================= */}
+      {/* ROLE BASED STATS */}
 
-        <div className="profile-details-section">
-          <h3>Account Information</h3>
+      <section className="profile-stats-grid">
+        {stats.map((stat) => (
+          <article
+            key={stat.label}
+            className={`profile-stat-card ${
+              stat.highlighted ? "highlighted" : ""
+            }`}
+          >
+            <p>{stat.label}</p>
 
-          <div className="profile-details-grid">
+            <h2>{stat.value}</h2>
+          </article>
+        ))}
+      </section>
 
-            {/* Name */}
+      {/* PROFILE CONTENT */}
 
-            <div className="profile-detail-item">
-              <div className="profile-detail-icon">
-                <FiUser />
-              </div>
+      <section className="profile-content-grid">
+        {/* ACCOUNT INFORMATION */}
 
-              <div>
-                <span className="profile-detail-label">
-                  Full Name
-                </span>
+        <article className="profile-info-card">
+          <div className="profile-card-header">
+            <div>
+              <p className="profile-overline">PERSONAL DETAILS</p>
 
-                <strong>
-                  {user?.name || "Not available"}
-                </strong>
-              </div>
+              <h2>Account information</h2>
             </div>
 
-            {/* Email */}
-
-            <div className="profile-detail-item">
-              <div className="profile-detail-icon">
-                <FiMail />
-              </div>
-
-              <div>
-                <span className="profile-detail-label">
-                  Email Address
-                </span>
-
-                <strong>
-                  {user?.email || "Not available"}
-                </strong>
-              </div>
-            </div>
-
-            {/* Role */}
-
-            <div className="profile-detail-item">
-              <div className="profile-detail-icon">
-                <FiShield />
-              </div>
-
-              <div>
-                <span className="profile-detail-label">
-                  Account Role
-                </span>
-
-                <strong>
-                  {formatRole(user?.role)}
-                </strong>
-              </div>
-            </div>
-
-            {/* Account Status */}
-
-            <div className="profile-detail-item">
-              <div className="profile-detail-icon">
-                <FiCalendar />
-              </div>
-
-              <div>
-                <span className="profile-detail-label">
-                  Account Status
-                </span>
-
-                <strong className="account-active">
-                  Active
-                </strong>
-              </div>
-            </div>
-
+            <FiUser className="profile-header-icon" />
           </div>
-        </div>
-      </div>
+
+          <div className="profile-info-list">
+            <div className="profile-info-row">
+              <span className="profile-info-label">Full name</span>
+
+              <span className="profile-info-value">{user?.name || "—"}</span>
+            </div>
+
+            <div className="profile-info-row">
+              <span className="profile-info-label">Email address</span>
+
+              <span className="profile-info-value">{user?.email || "—"}</span>
+            </div>
+
+            <div className="profile-info-row">
+              <span className="profile-info-label">Role</span>
+
+              <span className="profile-info-value">
+                {getRoleLabel(user?.role)}
+              </span>
+            </div>
+
+            <div className="profile-info-row">
+              <span className="profile-info-label">Department</span>
+
+              <span className="profile-info-value">
+                {user?.departmentId?.name || "Not assigned"}
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="profile-secondary-button"
+            onClick={() => setIsEditModalOpen(true)}
+          >
+            <FiEdit3 />
+            Edit account information
+          </button>
+        </article>
+
+        {/* SECURITY */}
+
+        <article className="profile-security-card">
+          <div className="profile-card-header">
+            <div>
+              <p className="profile-overline">SECURITY</p>
+
+              <h2>Password & security</h2>
+            </div>
+
+            <FiLock className="profile-header-icon" />
+          </div>
+
+          <div className="security-password-row">
+            <div>
+              <h3>Password</h3>
+
+              <p>Keep your account secure with a strong password.</p>
+            </div>
+
+            <span className="password-dots">••••••••</span>
+          </div>
+
+          <button
+            type="button"
+            className="profile-security-button"
+            onClick={() => setIsPasswordModalOpen(true)}
+          >
+            Change password
+            <FiChevronRight />
+          </button>
+        </article>
+      </section>
+
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
+
+      <ChangePasswordModal
+        isOpen={isPasswordModalOpen}
+        onClose={() => setIsPasswordModalOpen(false)}
+      />
     </div>
   );
 };
