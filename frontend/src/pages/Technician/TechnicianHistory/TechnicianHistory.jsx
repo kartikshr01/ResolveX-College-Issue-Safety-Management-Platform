@@ -4,7 +4,7 @@ import "./TechnicianHistory.css";
 
 import {
   getTechnicianHistory,
-} from "../../services/ticket.service";
+} from "../../../services/ticket.service";
 
 function TechnicianHistory() {
   const [tickets, setTickets] = useState([]);

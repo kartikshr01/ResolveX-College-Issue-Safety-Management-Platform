@@ -16,11 +16,15 @@ const Statistics = () => {
 
       const response = await api.get("/admin/statistics");
 
-      console.log("Statistics API response:", response.data);
+      console.log(
+        "Statistics API response:",
+        response.data
+      );
 
       setStatistics(response.data?.data || {});
     } catch (err) {
       console.error("Statistics API error:", err);
+
       setError(true);
       setStatistics(null);
     } finally {
@@ -32,38 +36,39 @@ const Statistics = () => {
     fetchStatistics();
   }, []);
 
-  /*
-   * Backend statistics data
-   */
+  /* =====================================================
+     BACKEND STATISTICS DATA
+     ===================================================== */
 
-  const statusBreakdown = statistics?.statusBreakdown || [];
+  const statusBreakdown =
+    statistics?.statusBreakdown || [];
 
   const departmentBreakdown =
     statistics?.departmentBreakdown || [];
 
-  const priorityBreakdown =
-    statistics?.priorityBreakdown || [];
-
   const technicianWorkload =
     statistics?.technicianWorkload || [];
 
-  /*
-   * Get count of a particular ticket status
-   */
+
+  /* =====================================================
+     STATUS HELPERS
+     ===================================================== */
 
   const getStatusCount = (status) => {
-    return (
-      statusBreakdown.find(
-        (item) =>
-          String(item._id).toUpperCase() ===
-          status.toUpperCase()
-      )?.count || 0
+    const found = statusBreakdown.find(
+      (item) =>
+        String(item._id || "")
+          .toUpperCase()
+          .trim() === status.toUpperCase().trim()
     );
+
+    return Number(found?.count || 0);
   };
 
-  /*
-   * Total complaints
-   */
+
+  /* =====================================================
+     TOTAL COMPLAINTS
+     ===================================================== */
 
   const totalComplaints = statusBreakdown.reduce(
     (total, item) =>
@@ -71,40 +76,69 @@ const Statistics = () => {
     0
   );
 
-  /*
-   * Documentation workflow:
-   * ASSIGNED → IN PROGRESS → RESOLVED → CLOSED
-   */
 
-  const resolved = getStatusCount("RESOLVED");
+  /* =====================================================
+     STATUS COUNTS
+     ===================================================== */
 
-  const pending =
-    getStatusCount("ASSIGNED") +
+  const resolved =
+    getStatusCount("RESOLVED");
+
+  const assigned =
+    getStatusCount("ASSIGNED");
+
+  const inProgress =
     getStatusCount("IN PROGRESS");
 
-  const open = getStatusCount("OPEN");
+  const open =
+    getStatusCount("OPEN");
+
+  const pending =
+    assigned + inProgress;
+
+
+  /* =====================================================
+     RESOLUTION RATE
+     ===================================================== */
 
   const resolutionRate =
     totalComplaints > 0
       ? (resolved / totalComplaints) * 100
       : 0;
 
-  /*
-   * Department-wise complaint overview
-   */
 
-  const complaintOverview = departmentBreakdown;
+  /* =====================================================
+     DEPARTMENT DATA
+     ===================================================== */
+
+  const complaintOverview =
+    departmentBreakdown.map((item) => ({
+      name:
+        item.departmentName ||
+        item.department ||
+        item.name ||
+        item._id ||
+        "Unknown",
+
+      count: Number(item.count || 0),
+    }));
+
+
+  /* =====================================================
+     MAX BAR VALUE
+     ===================================================== */
 
   const maxComplaintCount = Math.max(
     ...complaintOverview.map(
-      (item) => Number(item.count || 0)
+      (item) => item.count
     ),
     1
   );
 
-  /*
-   * Donut chart percentages
-   */
+
+  /* =====================================================
+     DONUT PERCENTAGES
+     ===================================================== */
 
   const resolvedPercentage =
     totalComplaints > 0
@@ -113,25 +147,35 @@ const Statistics = () => {
 
   const pendingPercentage =
     totalComplaints > 0
-      ? ((resolved + pending) / totalComplaints) * 100
-      : 0;
+      ? ((resolved + pending) /
+          totalComplaints) *
+        100
+      : resolvedPercentage;
+
+
+  /* =====================================================
+     RENDER
+     ===================================================== */
 
   return (
     <div className="statistics-page">
-      {/* ================================
-          PAGE CONTENT
-      ================================= */}
 
       <main className="statistics-content">
-        {/* Page Header */}
+
+        {/* =================================================
+            HEADER
+            ================================================= */}
 
         <header className="statistics-header">
+
           <div>
             <p className="statistics-eyebrow">
               ANALYTICS
             </p>
 
-            <h1>Statistics</h1>
+            <h1>
+              Statistics
+            </h1>
 
             <p className="statistics-subtitle">
               Monitor complaint activity and system
@@ -155,12 +199,17 @@ const Statistics = () => {
               Last 90 days
             </option>
           </select>
+
         </header>
 
-        {/* API Error */}
+
+        {/* =================================================
+            ERROR
+            ================================================= */}
 
         {error && (
           <div className="statistics-error">
+
             <strong>
               Unable to load statistics
             </strong>
@@ -175,79 +224,118 @@ const Statistics = () => {
             >
               Retry
             </button>
+
           </div>
         )}
 
-        {/* Summary Cards */}
+
+        {/* =================================================
+            SUMMARY CARDS
+            ================================================= */}
 
         <section className="statistics-summary">
-          {/* Total Complaints */}
+
+          {/* Total */}
 
           <div className="summary-card">
+
             <div className="summary-top">
-              <span>Total Complaints</span>
+
+              <span>
+                Total Complaints
+              </span>
 
               <div className="summary-icon purple">
                 ≡
               </div>
+
             </div>
 
             <strong>
-              {loading ? "--" : totalComplaints}
+              {loading
+                ? "--"
+                : totalComplaints}
             </strong>
 
-            <small>All complaints</small>
+            <small>
+              All complaints
+            </small>
+
           </div>
+
 
           {/* Resolved */}
 
           <div className="summary-card">
+
             <div className="summary-top">
-              <span>Resolved</span>
+
+              <span>
+                Resolved
+              </span>
 
               <div className="summary-icon lime">
                 ✓
               </div>
+
             </div>
 
             <strong>
-              {loading ? "--" : resolved}
+              {loading
+                ? "--"
+                : resolved}
             </strong>
 
             <small>
               Successfully resolved
             </small>
+
           </div>
+
 
           {/* Pending */}
 
           <div className="summary-card">
+
             <div className="summary-top">
-              <span>Pending</span>
+
+              <span>
+                Pending
+              </span>
 
               <div className="summary-icon purple">
                 ◷
               </div>
+
             </div>
 
             <strong>
-              {loading ? "--" : pending}
+              {loading
+                ? "--"
+                : pending}
             </strong>
 
             <small>
               Awaiting resolution
             </small>
+
           </div>
+
 
           {/* Resolution Rate */}
 
           <div className="summary-card dark-summary">
+
             <div className="summary-top">
-              <span>Resolution Rate</span>
+
+              <span>
+                Resolution Rate
+              </span>
 
               <div className="summary-icon lime">
                 %
               </div>
+
             </div>
 
             <strong>
@@ -259,31 +347,52 @@ const Statistics = () => {
             <small>
               Overall resolution rate
             </small>
+
           </div>
+
         </section>
 
-        {/* Charts */}
+
+        {/* =================================================
+            CHARTS
+            ================================================= */}
 
         <section className="statistics-grid">
-          {/* Department Complaint Overview */}
+
+
+          {/* =================================================
+              COMPLAINT OVERVIEW
+              ================================================= */}
 
           <div className="statistics-card complaint-chart-card">
+
             <div className="statistics-card-header">
+
               <div>
-                <p>COMPLAINTS</p>
+
+                <p>
+                  COMPLAINTS
+                </p>
 
                 <h2>
                   Complaint Overview
                 </h2>
+
               </div>
 
               <span className="chart-badge">
                 By Department
               </span>
+
             </div>
 
+
             <div className="chart-placeholder">
+
+              {/* Y Axis */}
+
               <div className="chart-y-axis">
+
                 <span>
                   {maxComplaintCount}
                 </span>
@@ -306,146 +415,253 @@ const Statistics = () => {
                   )}
                 </span>
 
-                <span>0</span>
+                <span>
+                  0
+                </span>
+
               </div>
 
+
+              {/* Chart */}
+
               <div className="chart-area">
+
+                {/* Grid */}
+
                 <div className="chart-grid-lines">
+
                   <span />
                   <span />
                   <span />
                   <span />
                   <span />
+
                 </div>
 
+
+                {/* Bars */}
+
                 <div className="chart-line">
+
                   {loading ? (
+
                     <span
                       style={{
-                        height: "3%",
+                        height: "10%",
                       }}
                     />
+
                   ) : complaintOverview.length > 0 ? (
+
                     complaintOverview.map(
-                      (item, index) => (
-                        <span
-                          key={`${item.departmentName}-${index}`}
-                          style={{
-                            height: `${Math.max(
-                              ((item.count || 0) /
-                                maxComplaintCount) *
-                                100,
-                              2
-                            )}%`,
-                          }}
-                        />
-                      )
+                      (item, index) => {
+
+                        const count =
+                          Number(
+                            item.count || 0
+                          );
+
+                        const height =
+                          Math.max(
+                            (count /
+                              maxComplaintCount) *
+                              100,
+                            5
+                          );
+
+                        return (
+                          <span
+                            key={`${item.name}-${index}`}
+                            style={{
+                              height:
+                                `${height}%`,
+                            }}
+                            title={`${item.name}: ${count}`}
+                          />
+                        );
+                      }
                     )
+
                   ) : (
+
                     <div className="chart-no-data">
                       No complaint data
                     </div>
+
                   )}
+
                 </div>
+
+
+                {/* Labels */}
 
                 <div className="chart-labels">
+
                   {complaintOverview.map(
                     (item, index) => (
+
                       <span
-                        key={`${item.departmentName}-label-${index}`}
+                        key={`${item.name}-label-${index}`}
                       >
-                        {item.departmentName}
+                        {item.name}
                       </span>
+
                     )
                   )}
+
                 </div>
+
               </div>
+
             </div>
+
           </div>
 
-          {/* Complaint Status */}
+
+          {/* =================================================
+              COMPLAINT STATUS
+              ================================================= */}
 
           <div className="statistics-card status-card">
+
             <div className="statistics-card-header">
+
               <div>
-                <p>STATUS</p>
+
+                <p>
+                  STATUS
+                </p>
 
                 <h2>
                   Complaint Status
                 </h2>
+
               </div>
+
             </div>
 
+
             <div className="status-visual">
+
               <div
                 className="status-circle"
                 style={{
-                  background: `conic-gradient(
-                    var(--lime-primary) 0% ${resolvedPercentage}%,
-                    var(--lavender) ${resolvedPercentage}% ${pendingPercentage}%,
-                    var(--border-subtle) ${pendingPercentage}% 100%
-                  )`,
+                  background:
+                    `conic-gradient(
+                      var(--lime-primary) 0% ${resolvedPercentage}%,
+                      var(--lavender) ${resolvedPercentage}% ${pendingPercentage}%,
+                      var(--border-subtle) ${pendingPercentage}% 100%
+                    )`,
                 }}
               >
+
                 <div className="status-circle-inner">
+
                   <strong>
-                    {loading ? "--" : resolved}
+                    {loading
+                      ? "--"
+                      : resolved}
                   </strong>
 
-                  <span>Resolved</span>
+                  <span>
+                    Resolved
+                  </span>
+
                 </div>
+
               </div>
+
             </div>
+
+
+            {/* Legend */}
 
             <div className="status-legend">
+
               <div>
+
                 <span className="legend-dot resolved" />
 
-                <span>Resolved</span>
+                <span>
+                  Resolved
+                </span>
 
                 <strong>
-                  {loading ? "--" : resolved}
+                  {loading
+                    ? "--"
+                    : resolved}
                 </strong>
+
               </div>
 
+
               <div>
+
                 <span className="legend-dot pending" />
 
-                <span>Pending</span>
+                <span>
+                  Pending
+                </span>
 
                 <strong>
-                  {loading ? "--" : pending}
+                  {loading
+                    ? "--"
+                    : pending}
                 </strong>
+
               </div>
+
 
               <div>
+
                 <span className="legend-dot open" />
 
-                <span>Open</span>
+                <span>
+                  Open
+                </span>
 
                 <strong>
-                  {loading ? "--" : open}
+                  {loading
+                    ? "--"
+                    : open}
                 </strong>
+
               </div>
+
             </div>
+
           </div>
+
         </section>
 
-        {/* Technician Performance */}
+
+        {/* =================================================
+            TECHNICIAN PERFORMANCE
+            ================================================= */}
 
         <section className="statistics-card technician-performance">
+
           <div className="statistics-card-header">
+
             <div>
-              <p>PERFORMANCE</p>
+
+              <p>
+                PERFORMANCE
+              </p>
 
               <h2>
                 Technician Performance
               </h2>
+
             </div>
+
           </div>
 
+
           {loading ? (
+
             <div className="performance-empty">
+
               <div className="performance-icon">
                 ♙
               </div>
@@ -457,18 +673,26 @@ const Statistics = () => {
               <p>
                 Fetching technician workload data.
               </p>
+
             </div>
+
           ) : technicianWorkload.length > 0 ? (
+
             <div className="performance-list">
+
               {technicianWorkload.map(
                 (technician, index) => (
+
                   <div
                     className="performance-row"
                     key={
-                      technician._id || index
+                      technician._id ||
+                      index
                     }
                   >
+
                     <div>
+
                       <strong>
                         {technician.name ||
                           "Unknown Technician"}
@@ -479,18 +703,25 @@ const Statistics = () => {
                           0}{" "}
                         active complaints
                       </span>
+
                     </div>
 
                     <strong>
                       {technician.status ||
                         "active"}
                     </strong>
+
                   </div>
+
                 )
               )}
+
             </div>
+
           ) : (
+
             <div className="performance-empty">
+
               <div className="performance-icon">
                 ♙
               </div>
@@ -500,14 +731,19 @@ const Statistics = () => {
               </h3>
 
               <p>
-                Technician workload data will appear
-                here once technicians are assigned
-                complaints.
+                Technician workload data will
+                appear here once technicians are
+                assigned complaints.
               </p>
+
             </div>
+
           )}
+
         </section>
+
       </main>
+
     </div>
   );
 };

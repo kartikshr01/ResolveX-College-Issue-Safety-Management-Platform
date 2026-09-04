@@ -5,7 +5,6 @@ const authMiddleware = require("../middleware/auth.middleware");
 const validate = require("../middleware/validation.middleware");
 const roleMiddleware = require("../middleware/role.middleware");
 
-const roleMiddleware = require("../middleware/role.middleware");
 
 const {
   updateProfileValidator,

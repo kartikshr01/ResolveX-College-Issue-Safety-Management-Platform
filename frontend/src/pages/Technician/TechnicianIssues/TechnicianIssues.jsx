@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./TechnicianIssues.css";
 
-import { getAssignedTickets } from "../../services/ticket.service";
+import { getAssignedTickets } from "../../../services/ticket.service";
 
 function TechnicianIssues() {
   const navigate = useNavigate();

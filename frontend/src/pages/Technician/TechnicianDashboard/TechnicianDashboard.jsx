@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-import TechnicianStats from "../../components/TechnicianStats/TechnicianStats";
-import TechnicianTicketCard from "../../components/TechnicianTicketCard/TechnicianTicketCard";
-import TicketDetailModal from "../../components/TicketDetailModal/TicketDetailModal";
+import TechnicianStats from "../../../components/TechnicianStats/TechnicianStats";
+import TechnicianTicketCard from "../../../components/TechnicianTicketCard/TechnicianTicketCard";
+import TicketDetailModal from "../../../components/TicketDetailModal/TicketDetailModal";
 
-import { getAssignedTickets } from "../../services/ticket.service";
+import { getAssignedTickets } from "../../../services/ticket.service";
 
 import "./TechnicianDashboard.css";
 

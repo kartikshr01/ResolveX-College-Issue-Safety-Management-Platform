@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-
 import { useNavigate } from "react-router-dom";
+import {
+  FiArrowUpRight,
+  FiCheck,
+  FiUsers,
+  FiAlertCircle,
+  FiBarChart2,
+  FiPlus,
+} from "react-icons/fi";
 
 import api from "../../services/api";
 
@@ -11,15 +18,17 @@ const AdminDashboard = () => {
 
   const [statistics, setStatistics] = useState(null);
   const [activities, setActivities] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [activityLoading, setActivityLoading] = useState(true);
+
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    // ========================================
-    // STATISTICS API
-    // ========================================
+  /* =========================================
+     FETCH DASHBOARD DATA
+  ========================================= */
 
+  useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
@@ -35,10 +44,6 @@ const AdminDashboard = () => {
         setLoading(false);
       }
     };
-
-    // ========================================
-    // ADMIN ACTIVITY API
-    // ========================================
 
     const fetchActivities = async () => {
       try {
@@ -65,38 +70,28 @@ const AdminDashboard = () => {
     fetchActivities();
   }, []);
 
-  // ========================================
-  // STATISTICS DATA
-  // ========================================
+  /* =========================================
+     STATISTICS
+  ========================================= */
 
   const statusBreakdown = statistics?.statusBreakdown || [];
   const technicianWorkload = statistics?.technicianWorkload || [];
 
-  // ========================================
-  // STATUS HELPER
-  // ========================================
-
   const getStatusCount = (status) => {
     const item = statusBreakdown.find(
-      (item) => item._id?.toUpperCase() === status.toUpperCase(),
+      (item) =>
+        item?._id?.toUpperCase() === status.toUpperCase(),
     );
 
     return item?.count || 0;
   };
 
-  // ========================================
-  // TECHNICIAN STATISTICS
-  // ========================================
-
   const totalTechnicians = technicianWorkload.length;
 
   const activeTechnicians = technicianWorkload.filter(
-    (technician) => technician.status?.toLowerCase() === "active",
+    (technician) =>
+      technician?.status?.toLowerCase() === "active",
   ).length;
-
-  // ========================================
-  // COMPLAINT STATISTICS
-  // ========================================
 
   const openComplaints =
     getStatusCount("OPEN") +
@@ -104,14 +99,17 @@ const AdminDashboard = () => {
     getStatusCount("IN_PROGRESS");
 
   const resolvedComplaints =
-    getStatusCount("RESOLVED") + getStatusCount("CLOSED");
+    getStatusCount("RESOLVED") +
+    getStatusCount("CLOSED");
 
-  // ========================================
-  // ACTIVITY CLICK
-  // ========================================
+  /* =========================================
+     ACTIVITY CLICK
+  ========================================= */
 
   const handleActivityClick = (ticket) => {
-    if (!ticket?._id) return;
+    if (!ticket?._id) {
+      return;
+    }
 
     navigate(`/admin/activity/ticket/${ticket._id}`, {
       state: {
@@ -121,255 +119,407 @@ const AdminDashboard = () => {
     });
   };
 
-  // ========================================
-  // UI
-  // ========================================
+  /* =========================================
+     STAT CARDS
+  ========================================= */
+
+  const stats = [
+    {
+      label: "Total Technicians",
+      value: totalTechnicians,
+      note: "Registered technicians",
+      icon: <FiUsers />,
+    },
+    {
+      label: "Active Technicians",
+      value: activeTechnicians,
+      note: "Currently active",
+      icon: <FiCheck />,
+    },
+    {
+      label: "Open Complaints",
+      value: openComplaints,
+      note: "Open, assigned or in progress",
+      icon: <FiAlertCircle />,
+    },
+    {
+      label: "Resolved",
+      value: resolvedComplaints,
+      note: "Resolved or closed complaints",
+      icon: <FiCheck />,
+      highlighted: true,
+    },
+  ];
+
+  /* =========================================
+     RENDER
+  ========================================= */
 
   return (
     <div className="admin-dashboard">
-      {/* ======================================
-          DASHBOARD BODY
-      ====================================== */}
 
-      <div className="dashboard-body">
-        {/* ==================================
-            ERROR
-        ================================== */}
+      {/* =====================================
+          DASHBOARD HERO
+      ===================================== */}
 
-        {error && (
-          <div className="dashboard-error">
-            <strong>Unable to load dashboard data</strong>
-            <span>Please try again later.</span>
-          </div>
-        )}
+      <section className="admin-dashboard-hero">
 
-        {/* ==================================
-            STATISTICS CARDS
-        ================================== */}
+        <div>
+          <p className="admin-dashboard-overline">
+            ADMINISTRATION
+          </p>
 
-        <section className="dashboard-stats">
-          {/* TOTAL TECHNICIANS */}
+          <h1>
+            Admin Dashboard
+          </h1>
 
-          <div className="stat-card">
-            <div className="stat-card-top">
-              <span className="stat-label">Total Technicians</span>
+          <p className="admin-dashboard-description">
+            Monitor campus issues, manage technicians,
+            and keep track of system activity.
+          </p>
+        </div>
 
-              <div className="stat-icon purple">♙</div>
+        <button
+          type="button"
+          className="admin-report-button"
+          onClick={() => navigate("/admin/issues")}
+        >
+          <FiArrowUpRight />
+          View Issues
+        </button>
+
+      </section>
+
+
+      {/* =====================================
+          ERROR
+      ===================================== */}
+
+      {error && (
+        <div className="admin-dashboard-error">
+          <strong>
+            Unable to load dashboard data
+          </strong>
+
+          <span>
+            Please try again later.
+          </span>
+        </div>
+      )}
+
+
+      {/* =====================================
+          STATISTICS
+      ===================================== */}
+
+      <section className="admin-stats-grid">
+
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className={`admin-stat-card ${
+              stat.highlighted
+                ? "highlighted"
+                : ""
+            }`}
+          >
+
+            <div className="admin-stat-top">
+
+              <p>
+                {stat.label}
+              </p>
+
+              <span className="admin-stat-icon">
+                {stat.icon}
+              </span>
+
             </div>
 
-            <strong className="stat-value">
-              {loading ? "--" : totalTechnicians}
-            </strong>
+            <h2>
+              {loading ? "--" : stat.value}
+            </h2>
 
-            <span className="stat-note">Registered technicians</span>
-          </div>
-
-          {/* ACTIVE TECHNICIANS */}
-
-          <div className="stat-card">
-            <div className="stat-card-top">
-              <span className="stat-label">Active Technicians</span>
-
-              <div className="stat-icon lime">✓</div>
-            </div>
-
-            <strong className="stat-value">
-              {loading ? "--" : activeTechnicians}
-            </strong>
-
-            <span className="stat-note">Currently active</span>
-          </div>
-
-          {/* OPEN COMPLAINTS */}
-
-          <div className="stat-card">
-            <div className="stat-card-top">
-              <span className="stat-label">Open Complaints</span>
-
-              <div className="stat-icon purple">!</div>
-            </div>
-
-            <strong className="stat-value">
-              {loading ? "--" : openComplaints}
-            </strong>
-
-            <span className="stat-note">
-              Open, assigned or in progress
+            <span className="admin-stat-note">
+              {stat.note}
             </span>
+
           </div>
+        ))}
 
-          {/* RESOLVED */}
+      </section>
 
-          <div className="stat-card dark-card">
-            <div className="stat-card-top">
-              <span className="stat-label">Resolved</span>
 
-              <div className="stat-icon lime">✓</div>
+      {/* =====================================
+          MAIN CONTENT
+      ===================================== */}
+
+      <section className="admin-content-grid">
+
+
+        {/* ===================================
+            RECENT ACTIVITY
+        =================================== */}
+
+        <div className="admin-recent-section">
+
+          <div className="admin-section-header">
+
+            <div>
+              <p className="admin-section-overline">
+                RECENT ACTIVITY
+              </p>
+
+              <h2>
+                System activity
+              </h2>
             </div>
 
-            <strong className="stat-value">
-              {loading ? "--" : resolvedComplaints}
-            </strong>
+            <button
+              type="button"
+              className="admin-view-all"
+              onClick={() =>
+                navigate("/admin/activity")
+              }
+            >
+              View all
+              <FiArrowUpRight />
+            </button>
 
-            <span className="stat-note">
-              Resolved or closed complaints
-            </span>
           </div>
-        </section>
 
-        {/* ==================================
-            MAIN DASHBOARD GRID
-        ================================== */}
 
-        <section className="dashboard-grid">
-          {/* =================================
-              RECENT ACTIVITY
-          ================================= */}
+          {/* LOADING */}
 
-          <div className="dashboard-panel">
-            <div className="panel-header">
-              <div>
-                <p className="panel-eyebrow">ACTIVITY</p>
+          {activityLoading && (
+            <div className="admin-empty-state">
 
-                <h2>Recent Activity</h2>
+              <div className="admin-empty-icon">
+                <FiBarChart2 />
               </div>
 
-              {/* VIEW ALL */}
+              <h3>
+                Loading activity...
+              </h3>
 
-              <button
-                type="button"
-                className="panel-action"
-                onClick={() => navigate("/admin/activity")}
-              >
-                View all
-              </button>
+              <p>
+                Fetching recent system activity.
+              </p>
+
             </div>
+          )}
 
-            {/* ACTIVITY LOADING */}
 
-            {activityLoading ? (
-              <div className="empty-state">
-                <div className="empty-icon">◌</div>
+          {/* EMPTY */}
 
-                <h3>Loading activity...</h3>
+          {!activityLoading &&
+            activities.length === 0 && (
+              <div className="admin-empty-state">
 
-                <p>Fetching recent system activity.</p>
-              </div>
-            ) : activities.length === 0 ? (
-              /* NO ACTIVITY */
+                <div className="admin-empty-icon">
+                  <FiCheck />
+                </div>
 
-              <div className="empty-state">
-                <div className="empty-icon">◌</div>
+                <h3>
+                  No recent activity
+                </h3>
 
-                <h3>No recent activity</h3>
+                <p>
+                  No recent system activity found.
+                </p>
 
-                <p>No recent system activity found.</p>
-              </div>
-            ) : (
-              /* ACTIVITY LIST */
-
-              <div className="activity-list">
-                {activities.slice(0, 5).map((activity, index) => {
-                  const ticket = activity.ticketId;
-
-                  return (
-                    <button
-                      type="button"
-                      className="activity-item"
-                      key={activity._id || index}
-                      onClick={() => handleActivityClick(ticket)}
-                    >
-                      {/* ACTIVITY ICON */}
-
-                      <div className="activity-icon">✓</div>
-
-                      {/* ACTIVITY CONTENT */}
-
-                      <div className="activity-content">
-                        <strong>
-                          {activity.action
-                            ? activity.action.replaceAll("_", " ")
-                            : "System activity"}
-                        </strong>
-
-                        <span>
-                          {activity.message ||
-                            ticket?.title ||
-                            "Ticket activity"}
-                        </span>
-
-                        <small>
-                          {activity.createdAt
-                            ? new Date(
-                                activity.createdAt,
-                              ).toLocaleString("en-IN")
-                            : ""}
-                        </small>
-                      </div>
-
-                      {/* ARROW */}
-
-                      <div className="activity-arrow">→</div>
-                    </button>
-                  );
-                })}
               </div>
             )}
-          </div>
 
-          {/* =================================
-              QUICK ACTIONS
-          ================================= */}
 
-          <div className="dashboard-panel quick-panel">
-            <div className="panel-header">
-              <div>
-                <p className="panel-eyebrow">ACTIONS</p>
+          {/* ACTIVITY LIST */}
 
-                <h2>Quick Actions</h2>
+          {!activityLoading &&
+            activities.length > 0 && (
+
+              <div className="admin-activity-list">
+
+                {activities
+                  .slice(0, 5)
+                  .map((activity, index) => {
+
+                    const ticket =
+                      activity.ticketId;
+
+                    return (
+                      <button
+                        type="button"
+                        className="admin-activity-card"
+                        key={
+                          activity._id ||
+                          index
+                        }
+                        onClick={() =>
+                          handleActivityClick(
+                            ticket,
+                          )
+                        }
+                      >
+
+                        <div className="admin-activity-icon">
+                          <FiCheck />
+                        </div>
+
+
+                        <div className="admin-activity-content">
+
+                          <h3>
+                            {activity.action
+                              ? activity.action
+                                  .replaceAll(
+                                    "_",
+                                    " ",
+                                  )
+                              : "System activity"}
+                          </h3>
+
+                          <p>
+                            {activity.message ||
+                              ticket?.title ||
+                              "Ticket activity"}
+                          </p>
+
+                          <small>
+                            {activity.createdAt
+                              ? new Date(
+                                  activity.createdAt,
+                                ).toLocaleString(
+                                  "en-IN",
+                                )
+                              : ""}
+                          </small>
+
+                        </div>
+
+
+                        <FiArrowUpRight className="admin-activity-arrow" />
+
+                      </button>
+                    );
+                  })}
+
               </div>
+            )}
+
+        </div>
+
+
+        {/* ===================================
+            QUICK ACTIONS
+        =================================== */}
+
+        <aside className="admin-quick-actions">
+
+          <p className="admin-section-overline">
+            QUICK ACTIONS
+          </p>
+
+          <h2>
+            What would you like to do?
+          </h2>
+
+
+          {/* ADD TECHNICIAN */}
+
+          <button
+            type="button"
+            className="admin-quick-action primary"
+            onClick={() =>
+              navigate("/admin/technicians")
+            }
+          >
+
+            <div>
+
+              <span className="admin-quick-icon">
+                <FiPlus />
+              </span>
+
+              <h3>
+                Add Technician
+              </h3>
+
+              <p>
+                Create a new technician account.
+              </p>
+
             </div>
 
-            <div className="quick-actions">
-              {/* ADD TECHNICIAN */}
+            <FiArrowUpRight />
 
-              <button
-                type="button"
-                className="quick-action"
-                onClick={() => navigate("/admin/technicians")}
-              >
-                <span className="quick-action-icon purple">+</span>
+          </button>
 
-                <span>
-                  <strong>Add Technician</strong>
 
-                  <small>Create a new technician account</small>
-                </span>
+          {/* ALL ISSUES */}
 
-                <span className="arrow">→</span>
-              </button>
+          <button
+            type="button"
+            className="admin-quick-action"
+            onClick={() =>
+              navigate("/admin/issues")
+            }
+          >
 
-              {/* VIEW STATISTICS */}
+            <div>
 
-              <button
-                type="button"
-                className="quick-action"
-                onClick={() => navigate("/admin/statistics")}
-              >
-                <span className="quick-action-icon lime">↗</span>
+              <span className="admin-quick-icon">
+                <FiArrowUpRight />
+              </span>
 
-                <span>
-                  <strong>View Statistics</strong>
+              <h3>
+                View All Issues
+              </h3>
 
-                  <small>Check system performance</small>
-                </span>
+              <p>
+                Review and manage reported issues.
+              </p>
 
-                <span className="arrow">→</span>
-              </button>
             </div>
-          </div>
-        </section>
-      </div>
+
+            <FiArrowUpRight />
+
+          </button>
+
+
+          {/* STATISTICS */}
+
+          <button
+            type="button"
+            className="admin-quick-action"
+            onClick={() =>
+              navigate("/admin/statistics")
+            }
+          >
+
+            <div>
+
+              <span className="admin-quick-icon">
+                <FiBarChart2 />
+              </span>
+
+              <h3>
+                View Statistics
+              </h3>
+
+              <p>
+                Check system performance.
+              </p>
+
+            </div>
+
+            <FiArrowUpRight />
+
+          </button>
+
+        </aside>
+
+      </section>
+
     </div>
   );
 };
