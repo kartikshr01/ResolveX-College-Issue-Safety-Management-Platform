@@ -1,4 +1,4 @@
-const User = require("../models/User.model");
+const User = require("../models/user.model");
 
 const getMyProfile = async (userId) => {
   const user = await User.findById(userId)
@@ -34,6 +34,7 @@ const updateMyProfile = async (userId, data) => {
 
   return user;
 };
+
 const getAllUsers = async () => {
   const users = await User.find()
     .select("-passwordHash")
@@ -42,7 +43,6 @@ const getAllUsers = async () => {
 
   return users;
 };
-
 
 const changePassword = async (userId, passwordData) => {
   const { currentPassword, newPassword } = passwordData;
@@ -61,7 +61,7 @@ const changePassword = async (userId, passwordData) => {
     throw apiError(400, "Current password is incorrect");
   }
 
-  user.passwordHash = newPassword;
+  user.passwordHash = bcrypt.hash(newPassword,10);
 
   await user.save();
 

@@ -21,28 +21,28 @@ const login = async (req, res) => {
   const refreshToken = generateRefreshToken(user);
 
   const cookieOptions = {
-  httpOnly: true,
-  secure: false,
-  sameSite: "lax",
-};
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  };
 
-res.cookie("accessToken", accessToken, {
-  ...cookieOptions,
-  maxAge: 15 * 60 * 1000,
-});
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    maxAge: 15 * 60 * 1000,
+  });
 
-res.cookie("refreshToken", refreshToken, {
-  ...cookieOptions,
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-});
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieOptions,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   return apiResponse(res, 200, "User logged in successfully", {
-  id: user._id,
-  name: user.name,
-  email: user.email,
-  role: user.role,
-  departmentId: user.departmentId,
-});
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    departmentId: user.departmentId,
+  });
 };
 
 const refresh = async (req, res) => {
@@ -73,9 +73,7 @@ const refresh = async (req, res) => {
   const accessToken = generateAccessToken(user);
 
   res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    ...cookieOptions,
     maxAge: 15 * 60 * 1000,
   });
 
@@ -83,8 +81,17 @@ const refresh = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.clearCookie("accessToken");
-  res.clearCookie("refreshToken");
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite:
+      process.env.NODE_ENV === "production"
+        ? "none"
+        : "lax",
+  };
+
+  res.clearCookie("accessToken", cookieOptions);
+  res.clearCookie("refreshToken", cookieOptions);
 
   return apiResponse(res, 200, "User logged out successfully");
 };
