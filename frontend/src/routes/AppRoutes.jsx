@@ -35,6 +35,7 @@ import TechnicianHistory from "../pages/Technician/TechnicianHistory/TechnicianH
 import CreateTicket from "../pages/Tickets/CreateTicket/CreateTicket";
 import MyTickets from "../pages/Tickets/MyTicket/MyTicket";
 import TicketDetails from "../pages/Tickets/TicketDetails/TicketDetails";
+import TechnicianTicketCard from "../components/TechnicianTicketCard/TechnicianTicketCard";
 import EditTicket from "../pages/Tickets/EditTickets/EditTickets";
 import AllTickets_Admin_Only from "../pages/Tickets/AllTickets-Admin_Only/AllTickets-Admin_Only";
 
@@ -169,6 +170,7 @@ const AppRoutes = () => {
           <Route path="/admin/profile" element={<Profile />} />
         </Route>
       </Route>
+
       {/* =================================================
           TECHNICIAN ROUTES
       ================================================= */}
@@ -182,6 +184,13 @@ const AppRoutes = () => {
           {/* ASSIGNED ISSUES */}
 
           <Route path="/technician/issues" element={<TechnicianIssues />} />
+
+          {/* Ticket details */}
+
+          <Route
+            path="/technician/ticket/:ticketId"
+            element={<TechnicianTicketDetails />}
+          />
 
           {/* HISTORY */}
 
