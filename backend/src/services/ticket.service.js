@@ -6,7 +6,7 @@ const assignmentService = require("./assignment.service");
 const deleteImage = require("../utils/deleteImage");
 const notificationService = require("./notification.service");
 const activityService = require("./activity.service");
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 const Activity = require("../models/Activity.model");
 const Technician = require("../models/Technician.model");
 

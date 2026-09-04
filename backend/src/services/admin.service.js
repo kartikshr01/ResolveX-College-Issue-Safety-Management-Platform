@@ -1,6 +1,6 @@
 const Ticket = require("../models/Ticket.model");
 const Technician = require("../models/Technician.model");
-const User = require("../models/user.model");
+const User = require("../models/User.model");
 const Department = require("../models/Department.model");
 const ApiError = require("../utils/apiError");
 const bcrypt = require("bcrypt");
