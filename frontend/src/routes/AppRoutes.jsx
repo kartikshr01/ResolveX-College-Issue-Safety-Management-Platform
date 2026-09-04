@@ -189,7 +189,7 @@ const AppRoutes = () => {
 
           <Route
             path="/technician/ticket/:ticketId"
-            element={<TechnicianTicketDetails />}
+            element={<TechnicianTicketCard />}
           />
 
           {/* HISTORY */}
