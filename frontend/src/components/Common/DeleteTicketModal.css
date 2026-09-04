@@ -1,0 +1,187 @@
+.delete-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(17, 24, 39, 0.55);
+
+  animation: fadeIn 0.2s ease;
+}
+
+.delete-modal {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 30px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25);
+
+  animation: modalSlide 0.25s ease;
+
+  box-sizing: border-box;
+}
+
+.delete-modal-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fee2e2;
+
+  font-size: 26px;
+}
+
+.delete-modal h2 {
+  margin: 0 0 12px;
+
+  color: #111827;
+
+  font-size: 22px;
+}
+
+.delete-modal p {
+  margin: 8px 0;
+
+  color: #6b7280;
+
+  line-height: 1.6;
+}
+
+.delete-modal strong {
+  color: #111827;
+}
+
+.delete-warning {
+  color: #dc2626 !important;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.delete-modal-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.modal-cancel-btn,
+.modal-delete-btn {
+  min-width: 130px;
+
+  padding: 11px 18px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.modal-cancel-btn {
+  background: #e5e7eb;
+
+  color: #374151;
+}
+
+.modal-cancel-btn:hover:not(:disabled) {
+  background: #d1d5db;
+}
+
+.modal-delete-btn {
+  background: #dc2626;
+
+  color: white;
+}
+
+.modal-delete-btn:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.modal-cancel-btn:hover:not(:disabled),
+.modal-delete-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.modal-cancel-btn:disabled,
+.modal-delete-btn:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlide {
+  from {
+    opacity: 0;
+
+    transform: translateY(20px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 500px) {
+  .delete-modal {
+    padding: 24px 20px;
+  }
+
+  .delete-modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-cancel-btn,
+  .modal-delete-btn {
+    width: 100%;
+  }
+}
