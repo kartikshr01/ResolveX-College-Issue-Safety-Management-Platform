@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./TechnicianIssues.css";
 
-import { getAssignedTickets } from "../../../services/ticket.service";
-
-import TechnicianTicketCard from "../../../components/TechnicianTicketCard/TechnicianTicketCard";
+import { getAssignedTickets } from "../../services/ticket.service";
 
 function TechnicianIssues() {
   const navigate = useNavigate();
@@ -63,8 +61,11 @@ function TechnicianIssues() {
   };
 
   const handleViewTicket = (ticketId) => {
-    if (!ticketId) return;
-    navigate(`/tickets/${ticketId}`);
+    if (!ticketId) {
+      return;
+    }
+
+    navigate(`/technician/ticket/${ticketId}`);
   };
 
   if (loading) {
@@ -112,14 +113,60 @@ function TechnicianIssues() {
           <p>You currently have no issues assigned to you.</p>
         </div>
       ) : (
-        <div className="technician-tickets-list">
-          {tickets.map((ticket) => (
-            <TechnicianTicketCard
-              key={ticket._id}
-              ticket={ticket}
-              onClick={() => handleViewTicket(ticket._id)}
-            />
-          ))}
+        <div className="issues-list">
+          {tickets.map((ticket) => {
+            const ticketId = ticket._id;
+
+            return (
+              <article className="issue-card" key={ticketId}>
+                <div className="issue-image">
+                  {ticket.imageUrl ? (
+                    <img src={ticket.imageUrl} alt={ticket.title || "Issue"} />
+                  ) : (
+                    <div className="issue-image-placeholder">No Image</div>
+                  )}
+                </div>
+
+                <div className="issue-content">
+                  <div className="issue-top">
+                    <span className="issue-code">
+                      #{ticket.ticketCode || ticketId}
+                    </span>
+
+                    <span
+                      className={`issue-status ${getStatusClass(
+                        ticket.status,
+                      )}`}
+                    >
+                      {ticket.status || "ASSIGNED"}
+                    </span>
+                  </div>
+
+                  <h2>{ticket.title || "Untitled Issue"}</h2>
+
+                  <p className="issue-description">
+                    {ticket.description || "No description available."}
+                  </p>
+
+                  <div className="issue-meta">
+                    <span>{ticket.category || "General"}</span>
+
+                    <span>{ticket.priority || "Normal"}</span>
+
+                    <span>📍 {ticket.location || "Location unavailable"}</span>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="view-ticket-button"
+                    onClick={() => handleViewTicket(ticketId)}
+                  >
+                    View Ticket →
+                  </button>
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>
