@@ -33,7 +33,7 @@ const TicketDetails = () => {
           ? `/api/tickets/admin/${ticketId}`
           : `/api/tickets/my/${ticketId}`;
 
-        const response = await axios.get(`https://resolvex-backend-01f9.onrender.com/api${endpoint}`, {
+        const response = await axios.get(`https://resolvex-backend-01f9.onrender.com${endpoint}`, {
           withCredentials: true,
         });
 
