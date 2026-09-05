@@ -77,9 +77,9 @@ const Sidebar = ({
               className="sidebar-logo"
               onClick={handleNavigationClick}
             >
-              <div className="sidebar-logo-mark">
+              {/* <div className="sidebar-logo-mark">
                 RX
-              </div>
+              </div> */}
 
               <span>ResolveX</span>
             </NavLink>

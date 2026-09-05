@@ -40,7 +40,7 @@ const Sidebar = () => {
         ========================== */}
 
         <div className="sidebar-brand">
-          <div className="brand-logo">RX</div>
+          {/* <div className="brand-logo">RX</div> */}
 
           <div className="brand-text">
             <h2>ResolveX</h2>
