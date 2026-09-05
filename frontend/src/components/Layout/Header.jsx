@@ -13,7 +13,7 @@ import NotificationPanel from "../notification/NotificationPanel";
 const Header = () => {
   const { user } = useAuth();
 
-  const [isificationOpen, setIsNotificationOpen] = useState(false);
+  const [isnotificationOpen, setIsNotificationOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const getInitials = (name = "") => {
