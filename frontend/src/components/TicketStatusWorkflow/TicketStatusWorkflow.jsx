@@ -48,8 +48,7 @@ function TicketStatusWorkflow({ ticketId, status, setStatus }) {
           className={`status-button status-assigned ${
             status === "ASSIGNED" ? "active" : ""
           }`}
-          onClick={() => handleStatusChange("ASSIGNED")}
-          disabled={updating}
+          disabled
         >
           Assigned
         </button>
@@ -60,7 +59,7 @@ function TicketStatusWorkflow({ ticketId, status, setStatus }) {
             status === "IN_PROGRESS" ? "active" : ""
           }`}
           onClick={() => handleStatusChange("IN_PROGRESS")}
-          disabled={updating}
+          disabled={updating || status !== "ASSIGNED"}
         >
           In Progress
         </button>
@@ -71,7 +70,7 @@ function TicketStatusWorkflow({ ticketId, status, setStatus }) {
             status === "RESOLVED" ? "active" : ""
           }`}
           onClick={() => handleStatusChange("RESOLVED")}
-          disabled={updating}
+          disabled={updating || status !== "IN_PROGRESS"}
         >
           Resolved
         </button>
