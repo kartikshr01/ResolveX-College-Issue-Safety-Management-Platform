@@ -82,7 +82,7 @@ const Login = () => {
       <section className="auth-brand-panel">
         <div className="brand-content">
           <div className="brand-logo">
-            <span className="logo-mark">RX</span>
+            {/* <span className="logo-mark">RX</span> */}
             <span>ResolveX</span>
           </div>
 
