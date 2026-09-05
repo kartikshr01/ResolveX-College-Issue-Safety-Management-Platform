@@ -423,7 +423,7 @@ const updateTicketStatus = async (
   await notificationService.createNotification({
     userId: ticket.userId,
     ticketId: ticket._id,
-    type: "STATUS_UPDATED",
+    type: "STATUS_CHANGED",
     message: `Your ticket "${ticket.title}" is now ${status}.`,
   });
 

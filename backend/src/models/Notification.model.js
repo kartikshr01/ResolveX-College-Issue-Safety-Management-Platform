@@ -18,7 +18,7 @@ const notificationSchema = new mongoose.Schema(
       type: String,
       enum: [
         "TICKET_ASSIGNED",
-        "STATUS_UPDATED",
+        "STATUS_CHANGED",
         "SAFETY_ALERT",
         "TICKET_RESOLVED",
         "TICKET_CREATED",
