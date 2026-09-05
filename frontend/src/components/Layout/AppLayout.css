@@ -576,3 +576,23 @@
   }
 
 }
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 17px;
+  height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  background: #ef4444;
+  color: white;
+  border: 2px solid var(--dark-charcoal);
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  z-index: 2;
+}
