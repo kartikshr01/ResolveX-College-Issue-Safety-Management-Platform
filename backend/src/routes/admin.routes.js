@@ -14,6 +14,7 @@ authRouter.use(roleMiddleware("ADMIN"));
 // Admin statistics
 authRouter.get("/statistics", adminController.getStatistics);
 
+
 // Technician management
 authRouter.get("/technicians", adminController.getTechnicians);
 

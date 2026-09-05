@@ -1,6 +1,8 @@
 const asyncHandler = require('../utils/asyncHandler');
 const ApiResponse = require('../utils/apiResponse');
-const ApiError = require('../utils/apiError'); // Factory function
+const ApiError = require('../utils/apiError'); 
+
+// Factory function
 const adminService = require('../services/admin.service');
 const { 
     createTechnicianSchema, 
@@ -41,7 +43,7 @@ const createTechnician = asyncHandler(async (req, res) => {
 const updateTechnician = asyncHandler(async (req, res) => {
     const { error, value } = updateTechnicianSchema.validate(req.body);
     if (error) {
-        throw ApiError(400, error.details[0].message); // FIXED: Already matching function call
+        throw ApiError(400, error.details[0].message); 
     }
 
   if (error) {

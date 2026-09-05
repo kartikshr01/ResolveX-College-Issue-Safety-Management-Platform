@@ -17,7 +17,7 @@ const upload = require("../middleware/upload.middleware");
 const roleMiddleware = require("../middleware/role.middleware");
 
 
-//Route : create ticket
+// CREATE TICKET
 router.post(
   "/",
   authMiddleware,
@@ -26,10 +26,10 @@ router.post(
   asyncHandler(ticketController.createTicket),
 );
 
-//Route : get All User Tickets
+// GET USER TICKETS
 router.get("/my", authMiddleware, asyncHandler(ticketController.getMyTickets));
 
-//Route : get ticket by id
+// GET TICKET BY ID
 router.get(
   "/my/:ticketId",
   authMiddleware,
@@ -37,40 +37,29 @@ router.get(
 );
 
 
-// ======================================================
 // TECHNICIAN - ASSIGNED TICKETS
-// ======================================================
-
 router.get(
   "/technician/assigned",
   authMiddleware,
   asyncHandler(ticketController.getAssignedTickets),
 );
 
-// ======================================================
 // TECHNICIAN - HISTORY
-// ======================================================
-
 router.get(
   "/technician/history",
   authMiddleware,
   asyncHandler(ticketController.getTechnicianHistory),
 );
 
-// ======================================================
 // TECHNICIAN - SINGLE TICKET
-// ======================================================
-
 router.get(
   "/technician/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.getTechnicianTicketById),
 );
 
-// ======================================================
-// ADMIN - SINGLE TICKET
-// ======================================================
 
+// ADMIN - SINGLE TICKET
 router.get(
   "/admin/:ticketId",
   authMiddleware,
@@ -78,10 +67,7 @@ router.get(
   asyncHandler(ticketController.getTicketById_forAdmin),
 );
 
-// ======================================================
 // ADMIN - ALL TICKETS
-// ======================================================
-
 router.get(
   "/all",
   authMiddleware,
@@ -89,17 +75,15 @@ router.get(
   asyncHandler(ticketController.getAllTickets),
 );
 
-// ======================================================
-// USER - DELETE TICKET
-// ======================================================
 
+// USER - DELETE TICKET
 router.delete(
   "/my/:ticketId",
   authMiddleware,
   asyncHandler(ticketController.deleteTicketById),
 );
 
-//Route : update ticket
+// USER - UPDATE TICKET
 router.patch(
   "/:id",
   authMiddleware,

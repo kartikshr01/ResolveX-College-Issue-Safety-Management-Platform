@@ -2,9 +2,8 @@ const ticketService = require("../services/ticket.service");
 const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 
-// ======================================================
+
 // CREATE TICKET
-// ======================================================
 
 const createTicket = async (req, res) => {
   const ticket = await ticketService.createTicket(
@@ -21,9 +20,8 @@ const createTicket = async (req, res) => {
   );
 };
 
-// ======================================================
+
 // GET MY TICKETS
-// ======================================================
 
 const getMyTickets = async (req, res) => {
   const tickets = await ticketService.getMyTickets(req.user);
@@ -37,6 +35,7 @@ const getMyTickets = async (req, res) => {
 };
 
 //Controller - get ticket by id
+
 const getTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketById(
     req.params.ticketId,
@@ -53,9 +52,8 @@ const getTicketById = async (req, res) => {
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
-// ======================================================
+
 // GET TICKET BY ID - TECHNICIAN
-// ======================================================
 
 const getTechnicianTicketById = async (req, res) => {
   const ticket = await ticketService.getTicketByIdForTechnician(
@@ -71,9 +69,8 @@ const getTechnicianTicketById = async (req, res) => {
   );
 };
 
-// ======================================================
+
 // GET TICKET BY ID - ADMIN
-// ======================================================
 
 const getTicketById_forAdmin = async (req, res) => {
   const ticket = await ticketService.getTicketById_forAdmin(
@@ -90,9 +87,8 @@ const getTicketById_forAdmin = async (req, res) => {
   return apiResponse(res, 200, "Ticket fetched successfully", ticket);
 };
 
-// ======================================================
+
 // GET ALL TICKETS - ADMIN
-// ======================================================
 
 const getAllTickets = async (req, res) => {
   const tickets = await ticketService.getAllTickets();
@@ -104,9 +100,8 @@ const getAllTickets = async (req, res) => {
   return apiResponse(res, 200, "All tickets fetched successfully", tickets);
 };
 
-// ======================================================
+
 // DELETE TICKET
-// ======================================================
 
 const deleteTicketById = async (req, res) => {
   const result = await ticketService.deleteTicketById(
@@ -133,9 +128,8 @@ const deleteTicketById = async (req, res) => {
   );
 };
 
-// ======================================================
+
 // UPDATE TICKET
-// ======================================================
 
 const updateTicket = async (req, res) => {
   const ticket = await ticketService.updateTicketById(
@@ -152,9 +146,8 @@ const updateTicket = async (req, res) => {
   );
 };
 
-// ======================================================
+
 // UPDATE TICKET IMAGE
-// ======================================================
 
 const updateTicketImage = async (req, res) => {
   const ticket = await ticketService.updateTicketImage(
@@ -171,7 +164,9 @@ const updateTicketImage = async (req, res) => {
   );
 };
 
+
 // Controller - get ticket from notification
+
 const getTicketForNotification = async (req, res) => {
   const ticket =
     await ticketService.getTicketForNotification(
@@ -187,10 +182,8 @@ const getTicketForNotification = async (req, res) => {
   );
 };
 
-// ======================================================
-// UPDATE TICKET STATUS - TECHNICIAN
-// ======================================================
 
+// UPDATE TICKET STATUS - TECHNICIAN
  
 const updateTicketStatus = async (req, res) => {
   const ticket = await ticketService.updateTicketStatus(
@@ -208,9 +201,7 @@ const updateTicketStatus = async (req, res) => {
 };
  
 
-// ======================================================
 // GET ASSIGNED TICKETS - TECHNICIAN
-// ======================================================
 
 const getAssignedTickets = async (req, res) => {
   const tickets = await ticketService.getAssignedTickets(req.user._id);
@@ -223,10 +214,8 @@ const getAssignedTickets = async (req, res) => {
   );
 };
 
-// ======================================================
-// GET TECHNICIAN HISTORY
-// ======================================================
 
+// GET TECHNICIAN HISTORY
 const getTechnicianHistory = async (req, res) => {
   const tickets = await ticketService.getTechnicianHistory(req.user._id);
 

@@ -10,9 +10,8 @@ const User = require("../models/User.model");
 const Activity = require("../models/Activity.model");
 const Technician = require("../models/Technician.model");
 
-// ======================================================
+
 // CREATE TICKET
-// ======================================================
 
 const createTicket = async (userId, ticketData, imageFile) => {
   const user = await User.findById(userId);
@@ -102,9 +101,8 @@ const createTicket = async (userId, ticketData, imageFile) => {
     .populate("userId", "name email");
 };
 
-// ======================================================
+
 // GET MY TICKETS
-// ======================================================
 
 const getMyTickets = async (user) => {
   const tickets = await Ticket.find({
@@ -121,9 +119,8 @@ const getMyTickets = async (user) => {
   return tickets;
 };
 
-// ======================================================
+
 // GET ASSIGNED TICKETS - TECHNICIAN
-// ======================================================
 
 const getAssignedTickets = async (userId) => {
   const technician = await Technician.findOne({
@@ -145,9 +142,8 @@ const getAssignedTickets = async (userId) => {
   return tickets;
 };
 
-// ======================================================
+
 // GET TECHNICIAN HISTORY
-// ======================================================
 
 const getTechnicianHistory = async (userId) => {
   const technician = await Technician.findOne({
@@ -170,10 +166,8 @@ const getTechnicianHistory = async (userId) => {
   return tickets;
 };
 
-// ======================================================
-// GET SINGLE TICKET - TECHNICIAN
-// ======================================================
 
+// GET SINGLE TICKET - TECHNICIAN
 const getTicketByIdForTechnician = async (ticketId, userId) => {
   const technician = await Technician.findOne({
     userId,
@@ -201,10 +195,8 @@ const getTicketByIdForTechnician = async (ticketId, userId) => {
   return ticket;
 };
 
-// ======================================================
-// GET ALL TICKETS - ADMIN
-// ======================================================
 
+// GET ALL TICKETS - ADMIN
 const getAllTickets = async () => {
   const tickets = await Ticket.find()
     .populate("userId", "name email")
@@ -215,10 +207,8 @@ const getAllTickets = async () => {
   return tickets;
 };
 
-// ======================================================
-// GET TICKET BY ID - USER
-// ======================================================
 
+// GET TICKET BY ID - USER
 const getTicketById = async (ticketId, user) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -234,10 +224,8 @@ const getTicketById = async (ticketId, user) => {
   return ticket;
 };
 
-// ======================================================
-// GET TICKET BY ID - ADMIN
-// ======================================================
 
+// GET TICKET BY ID - ADMIN
 const getTicketById_forAdmin = async (ticketId) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -253,10 +241,8 @@ const getTicketById_forAdmin = async (ticketId) => {
   return ticket;
 };
 
-// ======================================================
-// DELETE TICKET
-// ======================================================
 
+// DELETE TICKET
 const deleteTicketById = async (ticketId, userId) => {
   const ticket = await Ticket.findOne({
     _id: ticketId,
@@ -295,10 +281,8 @@ const deleteTicketById = async (ticketId, userId) => {
   };
 };
 
-// ======================================================
-// UPDATE TICKET
-// ======================================================
 
+// UPDATE TICKET
 const updateTicketById = async (
   ticketId,
   userId,
@@ -342,9 +326,8 @@ const updateTicketById = async (
   return ticket;
 };
 
-// ======================================================
+
 // UPDATE TICKET STATUS - TECHNICIAN ONLY
-// ======================================================
 
 const updateTicketStatus = async (
   ticketId,

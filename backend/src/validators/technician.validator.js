@@ -5,30 +5,19 @@ const technicianSchema = Joi.object({
 
   name: Joi.string().required(),
 
-  email: Joi.string()
-    .email()
-    .required(),
+  email: Joi.string().email().required(),
 
-  phone: Joi.string()
-    .required(),
+  phone: Joi.string().required(),
 
-  departmentId: Joi.string()
-    .required(),
+  departmentId: Joi.string().required(),
 
-  skills: Joi.array()
-    .items(Joi.string())
-    .default([]),
+  skills: Joi.array().items(Joi.string()).default([]),
 
-  availability: Joi.boolean()
-    .default(true),
+  availability: Joi.boolean().default(true),
 
-  currentWorkload: Joi.number()
-    .min(0)
-    .default(0),
+  currentWorkload: Joi.number().min(0).default(0),
 
-  status: Joi.string()
-    .valid("active", "inactive")
-    .default("active"),
+  status: Joi.string().valid("active", "inactive").default("active"),
 });
 
 const validateTechnician = (req, res, next) => {

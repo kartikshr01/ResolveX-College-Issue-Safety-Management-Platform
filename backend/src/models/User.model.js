@@ -26,10 +26,10 @@ const userSchema = new mongoose.Schema(
     },
 
     role: {
-  type: String,
-  enum: ["TECHNICIAN", "ADMIN", "STUDENT", "FACULTY"],
-  default: "STUDENT",
-},
+      type: String,
+      enum: ["TECHNICIAN", "ADMIN", "USER"],
+      default: "USER",
+    },
 
     departmentId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -47,5 +47,4 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-module.exports =
-  mongoose.models.User || mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

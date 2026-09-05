@@ -3,13 +3,13 @@ const userService = require("../services/user.service");
 const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 
+// GET MY PROFILE
 const getMyProfile = async (req, res) => {
   const user = await userService.getMyProfile(req.user._id);
 
   if (!user) {
     throw apiError(404, "User not found");
   }
-  
   
   return apiResponse(
     res,
@@ -19,6 +19,7 @@ const getMyProfile = async (req, res) => {
   );
 };
 
+// UPDATE MY PROFILE
 const updateMyProfile = async (req, res) => {
   const user = await userService.updateMyProfile(
     req.user._id,
@@ -37,6 +38,7 @@ const updateMyProfile = async (req, res) => {
   );
 };
 
+// CHANGE PASSWORD
 const changePassword = async (req, res) => {
   const user = await userService.changePassword(
     req.user._id,
@@ -55,6 +57,7 @@ const changePassword = async (req, res) => {
   );
 };
 
+// GET ALL USERS - FOR ADMIN
 const getAllUsers = async (req, res) => {
   const users = await userService.getAllUsers();
 
