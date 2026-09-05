@@ -423,7 +423,7 @@ const updateTicketStatus = async (
   await activityService.createActivity({
     ticketId: ticket._id,
     actorId: technician.userId,
-    action: "STATUS_UPDATED",
+    action: "STATUS_CHANGED",
     message: `Ticket status changed from ${previousStatus} to ${status}.`,
   });
 
@@ -431,7 +431,7 @@ const updateTicketStatus = async (
   await notificationService.createNotification({
     userId: ticket.userId,
     ticketId: ticket._id,
-    type: "TICKET_STATUS_UPDATED",
+    type: "STATUS_UPDATED",
     message: `Your ticket "${ticket.title}" is now ${status}.`,
   });
 
