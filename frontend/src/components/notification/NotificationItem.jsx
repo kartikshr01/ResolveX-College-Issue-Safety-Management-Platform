@@ -81,7 +81,7 @@ const notificationConfig = {
     ),
   },
 
-  STATUS_UPDATED: {
+  STATUS_CHANGED: {
     title: "Status Updated",
     variant: "lavender",
     icon: (
