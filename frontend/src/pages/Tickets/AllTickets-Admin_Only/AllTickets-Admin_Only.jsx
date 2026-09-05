@@ -21,10 +21,8 @@ const AllTickets_Admin_Only = () => {
 
   const navigate = useNavigate();
 
-  // =========================
   // FETCH ALL TICKETS
-  // =========================
-
+  
   const fetchAllTickets = async (isRefresh = false) => {
     try {
       if (isRefresh) {
@@ -60,19 +58,15 @@ const AllTickets_Admin_Only = () => {
     fetchAllTickets();
   }, []);
 
-  // =========================
   // GET UNIQUE DEPARTMENTS
-  // =========================
-
+  
   const departments = [
     ...new Set(
       tickets.map((ticket) => ticket.departmentId?.name).filter(Boolean),
     ),
   ].sort();
 
-  // =========================
   // FILTER + SEARCH + SORT
-  // =========================
 
   const filteredTickets = tickets
     .filter((ticket) => {
@@ -116,9 +110,7 @@ const AllTickets_Admin_Only = () => {
       return new Date(a.createdAt) - new Date(b.createdAt);
     });
 
-  // =========================
   // CLEAR FILTERS
-  // =========================
 
   const handleClearFilters = () => {
     setSearchQuery("");
@@ -137,9 +129,7 @@ const AllTickets_Admin_Only = () => {
     safetyFilter ||
     sortOrder !== "newest";
 
-  // =========================
   // LOADING
-  // =========================
 
   if (loading) {
     return (
@@ -149,10 +139,8 @@ const AllTickets_Admin_Only = () => {
     );
   }
 
-  // =========================
   // ERROR
-  // =========================
-
+  
   if (error) {
     return (
       <div className="my-tickets-container">
@@ -163,7 +151,7 @@ const AllTickets_Admin_Only = () => {
 
   return (
     <div className="my-tickets-container">
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
 
       <div className="my-tickets-header">
         <div>
@@ -191,7 +179,7 @@ const AllTickets_Admin_Only = () => {
         </div>
       </div>
       
-      {/* ================= FILTER SECTION ================= */}
+      {/* FILTER SECTION */}
 
       {tickets.length > 0 && (
         <div className="ticket-filters">
@@ -301,7 +289,7 @@ const AllTickets_Admin_Only = () => {
           <p>No tickets have been submitted yet.</p>
         </div>
       ) : filteredTickets.length === 0 ? (
-        /* ================= NO FILTER RESULTS ================= */
+        /* NO FILTER RESULTS */
 
         <div className="empty-state">
           <h2>No matching tickets found</h2>
@@ -313,7 +301,7 @@ const AllTickets_Admin_Only = () => {
           </button>
         </div>
       ) : (
-        /* ================= TICKETS GRID ================= */
+        /* TICKETS GRID */
 
         <div className="tickets-grid">
           {filteredTickets.map((ticket) => (

@@ -16,10 +16,8 @@ function SafetyFeed() {
 
         const data = await getPublicSafetyIssues();
 
-        // =========================
         // PRIORITY ORDER
         // Critical → High → Medium → Low
-        // =========================
         const priorityOrder = {
           critical: 1,
           high: 2,
@@ -71,9 +69,7 @@ function SafetyFeed() {
 
   return (
     <section className={styles.container}>
-      {/* =========================
-          PAGE HEADER
-      ========================= */}
+      {/* PAGE HEADER */}
 
       <div className={styles.header}>
         <div className={styles.headerText}>
@@ -92,9 +88,7 @@ function SafetyFeed() {
         </span>
       </div>
 
-      {/* =========================
-          EMPTY STATE
-      ========================= */}
+      {/* EMPTY STATE */}
 
       {issues.length === 0 ? (
         <div className={styles.empty}>
@@ -108,9 +102,7 @@ function SafetyFeed() {
           </p>
         </div>
       ) : (
-        /* =========================
-           SAFETY CARDS
-        ========================= */
+        /* SAFETY CARDS */
 
         <div className={styles.feed}>
           {issues.map((issue) => (

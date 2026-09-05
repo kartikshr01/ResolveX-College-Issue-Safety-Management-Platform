@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+
 import styles from "./SafetyCard.module.css";
 
 function SafetyCard({ issue }) {
@@ -29,10 +30,6 @@ function SafetyCard({ issue }) {
         }
       }}
     >
-      {/* =================================================
-          IMAGE
-      ================================================= */}
-
       <div className={styles.imageWrapper}>
         {issue.imageUrl ? (
           <img
@@ -50,15 +47,7 @@ function SafetyCard({ issue }) {
         )}
       </div>
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
-
       <div className={styles.content}>
-        {/* =================================================
-            CATEGORY + PRIORITY
-        ================================================= */}
-
         <div className={styles.topRow}>
           <span className={styles.category}>
             {issue.category || "General"}
@@ -73,25 +62,13 @@ function SafetyCard({ issue }) {
           )}
         </div>
 
-        {/* =================================================
-            TITLE
-        ================================================= */}
-
         <h2 className={styles.title}>
           {issue.title}
         </h2>
 
-        {/* =================================================
-            DESCRIPTION
-        ================================================= */}
-
         <p className={styles.description}>
           {issue.description || "No description provided."}
         </p>
-
-        {/* =================================================
-            BOTTOM
-        ================================================= */}
 
         <div className={styles.bottomRow}>
           <div className={styles.location}>

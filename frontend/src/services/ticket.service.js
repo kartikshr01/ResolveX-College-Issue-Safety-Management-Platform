@@ -1,8 +1,6 @@
 import api from "../api/axios";
 
-// ======================================================
 // GET ASSIGNED TICKETS - TECHNICIAN
-// ======================================================
 
 export const getAssignedTickets = async () => {
   const response = await api.get(
@@ -13,9 +11,7 @@ export const getAssignedTickets = async () => {
 };
 
 
-// ======================================================
 // GET TECHNICIAN HISTORY
-// ======================================================
 
 export const getTechnicianHistory = async () => {
   const response = await api.get(
@@ -26,9 +22,7 @@ export const getTechnicianHistory = async () => {
 };
 
 
-// ======================================================
 // GET SINGLE TICKET - TECHNICIAN
-// ======================================================
 
 export const getTechnicianTicketById = async (ticketId) => {
   const response = await api.get(
@@ -39,9 +33,7 @@ export const getTechnicianTicketById = async (ticketId) => {
 };
 
 
-// ======================================================
 // UPDATE TICKET STATUS
-// ======================================================
 
 export const updateTicketStatus = async (
   ticketId,
@@ -58,9 +50,7 @@ export const updateTicketStatus = async (
 };
 
 
-// ======================================================
 // USER - GET MY TICKETS
-// ======================================================
 
 export const getMyTickets = async () => {
   const response = await api.get(
@@ -71,9 +61,7 @@ export const getMyTickets = async () => {
 };
 
 
-// ======================================================
 // USER - GET SINGLE TICKET
-// ======================================================
 
 export const getTicketById = async (ticketId) => {
   const response = await api.get(
@@ -84,9 +72,7 @@ export const getTicketById = async (ticketId) => {
 };
 
 
-// ======================================================
 // DELETE TICKET
-// ======================================================
 
 export const deleteTicket = async (ticketId) => {
   const response = await api.delete(

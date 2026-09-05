@@ -101,9 +101,7 @@ function Activity() {
 
               <h2>No activity yet</h2>
 
-              <p>
-                Activity related to your reported issues will appear here.
-              </p>
+              <p>Activity related to your reported issues will appear here.</p>
 
               <button
                 className={styles.backButton}

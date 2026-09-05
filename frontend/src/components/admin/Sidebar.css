@@ -1,6 +1,4 @@
-/* =========================
-   ADMIN SIDEBAR
-========================= */
+/* ADMIN SIDEBAR */
 
 .admin-sidebar {
   width: 260px;
@@ -21,18 +19,14 @@
 }
 
 
-/* =========================
-   TOP SECTION
-========================= */
+/* TOP SECTION */
 
 .sidebar-top {
   width: 100%;
 }
 
 
-/* =========================
-   BRAND
-========================= */
+/* BRAND */
 
 .sidebar-brand {
   display: flex;
@@ -297,9 +291,7 @@
 }
 
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
 

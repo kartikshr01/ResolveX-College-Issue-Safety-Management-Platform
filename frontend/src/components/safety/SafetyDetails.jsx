@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+
 import styles from "./SafetyDetails.module.css";
 
 function SafetyDetails() {
@@ -7,9 +8,7 @@ function SafetyDetails() {
 
   const issue = location.state?.issue;
 
-  // Where did the user come from?
-  // Activity sends "/activity"
-  // Safety Feed sends "/safety"
+  // Preserve the page the user came from when navigating back
   const from = location.state?.from || "/safety";
 
   const handleBack = () => {
@@ -36,10 +35,6 @@ function SafetyDetails() {
 
   return (
     <section className={styles.page}>
-      {/* =========================
-          BACK BUTTON
-      ========================= */}
-
       <button
         className={styles.backButton}
         onClick={handleBack}
@@ -49,10 +44,6 @@ function SafetyDetails() {
       </button>
 
       <article className={styles.detailsCard}>
-        {/* =========================
-            LEFT - INFORMATION
-        ========================= */}
-
         <div className={styles.infoSection}>
           <div className={styles.header}>
             <span className={styles.category}>
@@ -72,7 +63,6 @@ function SafetyDetails() {
 
           <div className={styles.status}>
             <span>Status</span>
-
             <strong>{issue.status}</strong>
           </div>
 
@@ -83,13 +73,11 @@ function SafetyDetails() {
           <div className={styles.meta}>
             <div>
               <span>Location</span>
-
               <strong>{issue.location}</strong>
             </div>
 
             <div>
               <span>Reported On</span>
-
               <strong>
                 {issue.createdAt
                   ? new Date(issue.createdAt).toLocaleString()
@@ -99,7 +87,6 @@ function SafetyDetails() {
 
             <div>
               <span>Last Updated</span>
-
               <strong>
                 {issue.updatedAt
                   ? new Date(issue.updatedAt).toLocaleString()
@@ -108,10 +95,6 @@ function SafetyDetails() {
             </div>
           </div>
         </div>
-
-        {/* =========================
-            RIGHT - IMAGE
-        ========================= */}
 
         {issue.imageUrl ? (
           <div className={styles.imageSection}>
@@ -124,9 +107,7 @@ function SafetyDetails() {
         ) : (
           <div className={styles.imageSection}>
             <div className={styles.noImage}>
-              <div className={styles.noImageIcon}>
-                ▧
-              </div>
+              <div className={styles.noImageIcon}>▧</div>
 
               <span className={styles.noImageText}>
                 No image uploaded

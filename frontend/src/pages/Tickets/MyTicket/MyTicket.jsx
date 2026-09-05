@@ -101,10 +101,8 @@ const MyTickets = () => {
     safetyFilter ||
     sortOrder !== "newest";
 
-  // =========================
   // LOADING
-  // =========================
-
+ 
   if (loading) {
     return (
       <div className="my-tickets-container">
@@ -113,9 +111,7 @@ const MyTickets = () => {
     );
   }
 
-  // =========================
   // ERROR
-  // =========================
 
   if (error) {
     return (
@@ -127,7 +123,7 @@ const MyTickets = () => {
 
   return (
     <div className="my-tickets-container">
-      {/* ================= HEADER ================= */}
+      {/* HEADER */}
 
       <div className="my-tickets-header">
         <div>
@@ -151,7 +147,7 @@ const MyTickets = () => {
         </div>
       </div>
 
-      {/* ================= FILTER SECTION ================= */}
+      {/* FILTER SECTION */}
 
       {tickets.length > 0 && (
         <div className="ticket-filters">
@@ -237,7 +233,7 @@ const MyTickets = () => {
         </div>
       )}
 
-      {/* ================= EMPTY STATE ================= */}
+      {/* EMPTY STATE */}
 
       {tickets.length === 0 ? (
         <div className="empty-state">
@@ -253,7 +249,7 @@ const MyTickets = () => {
           </button>
         </div>
       ) : filteredTickets.length === 0 ? (
-        /* ================= NO FILTER RESULTS ================= */
+        /* NO FILTER RESULTS */
 
         <div className="empty-state">
           <h2>No matching tickets found</h2>
@@ -265,7 +261,7 @@ const MyTickets = () => {
           </button>
         </div>
       ) : (
-        /* ================= TICKETS GRID ================= */
+        /* TICKETS GRID */
 
         <div className="tickets-grid">
           {filteredTickets.map((ticket) => (

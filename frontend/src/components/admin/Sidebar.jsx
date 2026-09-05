@@ -30,14 +30,10 @@ const Sidebar = () => {
 
   return (
     <aside className="admin-sidebar">
-      {/* =========================
-          TOP SECTION
-      ========================== */}
+      {/* TOP SECTION */}
 
       <div className="sidebar-top">
-        {/* =========================
-            BRAND
-        ========================== */}
+        {/* BRAND */}
 
         <div className="sidebar-brand">
           {/* <div className="brand-logo">RX</div> */}
@@ -48,16 +44,12 @@ const Sidebar = () => {
           </div>
         </div>
 
-        {/* =========================
-            NAVIGATION
-        ========================== */}
+        {/* NAVIGATION */}
 
         <nav className="sidebar-nav">
           <p className="sidebar-section-title">MENU</p>
 
-          {/* =========================
-              DASHBOARD
-          ========================== */}
+          {/* DASHBOARD */}
 
           <NavLink
             to="/admin"
@@ -73,9 +65,7 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </NavLink>
 
-          {/* =========================
-              TECHNICIANS
-          ========================== */}
+          {/* TECHNICIANS */}
 
           <NavLink
             to="/admin/technicians"
@@ -90,9 +80,7 @@ const Sidebar = () => {
             <span>Technicians</span>
           </NavLink>
 
-          {/* =========================
-              STATISTICS
-          ========================== */}
+          {/*STATISTICS */}
 
           <NavLink
             to="/admin/statistics"
@@ -107,17 +95,9 @@ const Sidebar = () => {
             <span>Statistics</span>
           </NavLink>
 
-          {/* =========================
-              DIVIDER
-          ========================== */}
-
           <div className="sidebar-divider"></div>
         </nav>
       </div>
-
-      {/* =========================
-          BOTTOM SECTION
-      ========================== */}
 
       <div className="sidebar-footer">
         {/* =========================
@@ -137,9 +117,7 @@ const Sidebar = () => {
           <span>Profile</span>
         </NavLink>
 
-        {/* =========================
-            LOGOUT
-        ========================== */}
+        {/* LOGOUT */}
 
         <button
           type="button"
