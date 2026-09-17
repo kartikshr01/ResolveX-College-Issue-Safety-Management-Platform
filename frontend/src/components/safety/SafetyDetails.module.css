@@ -1,0 +1,615 @@
+.page {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 32px 40px 60px;
+
+  background: #f4f4f5;
+  color: #1a1a1a;
+}
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.backButton {
+  display: block;
+
+  width: 100%;
+  max-width: 1280px;
+
+  margin: 0 auto 20px;
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #6f7075;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.backButton:hover {
+  color: #141414;
+  transform: translateX(-2px);
+}
+
+/* =========================
+   DETAILS CARD
+========================= */
+
+.detailsCard {
+  width: 100%;
+  max-width: 1280px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(360px, 480px);
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   LEFT INFORMATION
+========================= */
+
+.infoSection {
+  min-width: 0;
+
+  padding: 48px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* =========================
+   CATEGORY + PRIORITY
+========================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  padding: 7px 11px;
+
+  border-radius: 7px;
+
+  background: #e9e4ff;
+  color: #5546b8;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+.priority {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 11px;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+/* =========================
+   PRIORITIES
+========================= */
+
+.low {
+  background: #edf6c8;
+  color: #617900;
+}
+
+.medium {
+  background: #fff1c7;
+  color: #8a6a00;
+}
+
+.high {
+  background: #fce4e4;
+  color: #c24848;
+}
+
+.critical {
+  background: #141414;
+  color: #c9f31d;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.infoSection h1 {
+  margin: 0;
+
+  color: #1a1a1a;
+
+  font-size: clamp(30px, 3vw, 44px);
+
+  line-height: 1.1;
+
+  /*
+    Less heavy than the previous version.
+    Still professional and prominent.
+  */
+  font-weight: 700;
+
+  letter-spacing: -1.3px;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.status span {
+  color: #8a8a8e;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status strong {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 11px;
+
+  border-radius: 8px;
+
+  background: #141414;
+  color: #c9f31d;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.description {
+  max-width: 720px;
+
+  margin: 26px 0 0;
+
+  color: #747579;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+/* =========================
+   META INFORMATION
+========================= */
+
+.meta {
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  margin-top: 34px;
+  padding-top: 24px;
+
+  border-top: 1px solid #e7e7e9;
+}
+
+.meta > div {
+  min-width: 0;
+
+  padding: 0 20px;
+
+  border-right: 1px solid #e7e7e9;
+}
+
+.meta > div:first-child {
+  padding-left: 0;
+}
+
+.meta > div:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.meta span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #8a8a8e;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.9px;
+
+  text-transform: uppercase;
+}
+
+.meta strong {
+  display: block;
+
+  color: #1a1a1a;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   IMAGE SECTION
+========================= */
+
+.imageSection {
+  min-width: 0;
+  min-height: 520px;
+
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f7f7f8;
+
+  border-left: 1px solid #e7e7e9;
+
+  overflow: hidden;
+}
+
+/*
+  Important:
+  The uploaded image can be portrait,
+  landscape or square.
+
+  contain prevents stretching/cropping.
+*/
+
+.image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  max-width: 100%;
+  max-height: 520px;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 10px;
+}
+
+/* =========================
+   NO IMAGE
+========================= */
+
+.noImage {
+  width: 100%;
+  height: 100%;
+
+  min-height: 470px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  background: #eeeeef;
+
+  border: 1px dashed #d2d2d5;
+  border-radius: 10px;
+
+  color: #8a8a8e;
+}
+
+.noImageIcon {
+  font-size: 28px;
+
+  color: #a0a0a4;
+}
+
+.noImageText {
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #8a8a8e;
+}
+
+/* =========================
+   NOT FOUND
+========================= */
+
+.notFound {
+  width: 100%;
+  max-width: 620px;
+
+  margin: 80px auto;
+  padding: 42px 36px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e5e7;
+  border-radius: 16px;
+
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+}
+
+.notFound h1 {
+  margin: 0 0 10px;
+
+  color: #1a1a1a;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  letter-spacing: -0.7px;
+}
+
+.notFound p {
+  margin: 0 0 24px;
+
+  color: #8a8a8e;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.notFound button {
+  padding: 11px 18px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #c9f31d;
+  color: #141414;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.notFound button:hover {
+  transform: translateY(-1px);
+  background: #bce714;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+  .page {
+    padding: 28px 24px 50px;
+  }
+
+  .detailsCard {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(300px, 400px);
+  }
+
+  .infoSection {
+    padding: 36px;
+  }
+
+  .infoSection h1 {
+    font-size: 34px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .imageSection {
+    min-height: 450px;
+    padding: 20px;
+  }
+
+  .image {
+    max-height: 450px;
+  }
+
+  .noImage {
+    min-height: 400px;
+  }
+
+  .meta {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .meta > div,
+  .meta > div:first-child,
+  .meta > div:last-child {
+    padding: 0 0 16px;
+
+    border-right: none;
+    border-bottom: 1px solid #e7e7e9;
+  }
+
+  .meta > div:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+  .page {
+    padding: 22px 16px 40px;
+  }
+
+  .backButton {
+    margin-bottom: 16px;
+    font-size: 13px;
+  }
+
+  .detailsCard {
+    grid-template-columns: 1fr;
+
+    border-radius: 14px;
+  }
+
+  .infoSection {
+    padding: 28px 22px;
+  }
+
+  .header {
+    align-items: flex-start;
+  }
+
+  .category {
+    font-size: 10px;
+  }
+
+  .priority {
+    padding: 6px 9px;
+    font-size: 9px;
+  }
+
+  .infoSection h1 {
+    font-size: 29px;
+  }
+
+  .status {
+    margin-top: 18px;
+  }
+
+  .description {
+    margin-top: 22px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .meta {
+    margin-top: 26px;
+    padding-top: 20px;
+  }
+
+  .imageSection {
+    min-height: 340px;
+
+    padding: 18px;
+
+    border-top: 1px solid #e7e7e9;
+    border-left: none;
+  }
+
+  .image {
+    max-height: 360px;
+  }
+
+  .noImage {
+    min-height: 300px;
+  }
+
+  .notFound {
+    margin: 50px auto;
+    padding: 34px 22px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 400px) {
+  .page {
+    padding: 18px 12px 32px;
+  }
+
+  .infoSection {
+    padding: 24px 18px;
+  }
+
+  .infoSection h1 {
+    font-size: 26px;
+  }
+
+  .imageSection {
+    min-height: 300px;
+    padding: 14px;
+  }
+
+  .image {
+    max-height: 320px;
+  }
+}
