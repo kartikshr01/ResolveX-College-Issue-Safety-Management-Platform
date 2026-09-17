@@ -1,0 +1,98 @@
+.rx-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 44px;
+
+  padding: 0 18px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-button);
+
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.rx-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.rx-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Primary */
+
+/* .rx-button-primary {
+  background: var(--color-ink);
+  color: var(--color-lime);
+} */
+ 
+.submit-ticket-button {
+  width: 100%;
+
+  background: linear-gradient(
+    135deg,
+    #1f2937,
+    #111827
+  );
+
+  color: #f8fafc;
+
+  border: 1px solid #374151;
+
+  box-shadow:
+    0 6px 18px rgba(17, 24, 39, 0.18);
+}
+
+.submit-ticket-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    #111827,
+    #030712
+  );
+
+  border-color: #d4a72c;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 24px rgba(17, 24, 39, 0.25);
+}
+
+.submit-ticket-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-ticket-button:disabled {
+  opacity: 0.6;
+}
+/* Secondary */
+
+.rx-button-secondary {
+  background: white;
+  color: var(--color-ink);
+
+  border-color: var(--color-border);
+}
+
+.rx-button-secondary:hover:not(:disabled) {
+  border-color: var(--color-ink);
+}
+
+/* Danger */
+
+.rx-button-danger {
+  background: var(--color-high-bg);
+  color: var(--color-high-text);
+
+  border-color: transparent;
+}
